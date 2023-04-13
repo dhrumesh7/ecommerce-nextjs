@@ -1,0 +1,43 @@
+.checkoutButton {
+  font-size: 15px;
+  width: 90%;
+  padding: 10px;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+  color: #ffffff;
+  background: darkgoldenrod;
+  border: none;
+  outline: none;
+  margin: 10px auto;
+  margin-bottom: 25px;
+  cursor: pointer;
+}
+
+.subTotal {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 10px auto;
+}
+
+.title {
+  letter-spacing: 0.1rem;
+  font-weight: 400;
+  font-size: 18px;
+  // margin-bottom: 10px;
+  margin: 10px;
+  text-transform: capitalize;
+}
+
+.emptyNote {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.productPrice {
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  // font-size: small;
+}

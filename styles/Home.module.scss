@@ -1,0 +1,39 @@
+.filterMain {
+    width: 23%;
+}
+
+.filterIconDiv {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: fit-content;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.filterOuterDiv {
+    width: 300px;
+    max-width: 300px;
+}
+
+.productGrid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+    .filterOuterDiv {
+        width: 100%;
+    }
+
+    .productGrid {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+}

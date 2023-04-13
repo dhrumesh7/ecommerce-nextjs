@@ -1,0 +1,101 @@
+.productListTitle {
+  font-weight: 300;
+  margin: 35px 0;
+  // margin-bottom: 15px;
+  text-transform: uppercase;
+  font-size: 24px;
+  text-align: center;
+  color: goldenrod
+}
+
+.productListDiv {
+  margin: 50px 0;
+}
+
+.productBox {
+  max-width: 225px;
+  width: 225px;
+
+  .productName {
+    font-weight: 400;
+    font-size: 13px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .productPrice {
+    font-weight: 400;
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  img {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}
+
+.productName {
+  font-weight: 400;
+  font-size: 15px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-left: 7px;
+  margin-right: 7px;
+  text-align: center;
+  text-transform: capitalize;
+  color: darkgoldenrod;
+  text-overflow: ellipsis; 
+  overflow: hidden; 
+  white-space: nowrap;
+}
+
+.categoryName{
+  font-weight: 400;
+  font-size: 15px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.productPrice {
+  font-weight: 500;
+  margin: 0;
+  font-size: 12px;
+  // letter-spacing: 0.2em;
+  text-align: center;
+}
+
+.productImage {
+  width: 100%;
+  max-width: 100%;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 13px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.productPrice {
+  font-weight: 500;
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.productImage {
+  width: 97%;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.productImage:hover {
+  -webkit-box-shadow: 0 8px 10px -10px #222;
+  -moz-box-shadow: 0 8px 10px -10px #222;
+  box-shadow: 0 8px 10px -10px #222;
+}

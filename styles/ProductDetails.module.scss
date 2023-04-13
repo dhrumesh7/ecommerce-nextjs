@@ -1,0 +1,94 @@
+.productTitle {
+  font-weight: 300;
+  margin: 0;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  color: darkgoldenrod;
+  font-size: 24px;
+}
+.productDescription {
+  font-weight: 400;
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 14px;
+  letter-spacing: 0.3em;
+}
+.productPrice {
+  font-weight: 500;
+  font-size: 1.3em;
+  margin: 0;
+  letter-spacing: 0.1em;
+}
+.detailsTitle {
+  letter-spacing: 0.3em;
+  font-weight: 400;
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+.descriptionText {
+  font-weight: 400;
+  font-size: 14px;
+//   margin-bottom: 10px;
+  line-height: 1.8;
+}
+.descriptionTitle {
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 25px;
+  line-height: 2;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  span{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.8;
+    text-transform: capitalize;
+  }
+}
+.detailsButton {
+  font-size: 12px;
+  padding: 9px 15px;
+  border: 1px solid #e0f1fd;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.detailsDiv {
+  margin: 20px 0;
+}
+.addToCartButton {
+  font-size: 15px;
+  width: 100%;
+  padding: 10px;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+  color: #ffffff;
+  background: darkgoldenrod;
+  border: none;
+  outline: none;
+  margin-bottom: 25px;
+  cursor: pointer;
+}
+.addToWishButton {
+  font-size: 15px;
+  width: 100%;
+  padding: 10px;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+  background: #ffffff;
+  color: darkgoldenrod;
+  border: 1px solid darkgoldenrod;
+  outline: none;
+  margin-bottom: 25px;
+  cursor: pointer;
+}
+
+.outOfStockNote {
+  color: red;
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 15px;
+}
