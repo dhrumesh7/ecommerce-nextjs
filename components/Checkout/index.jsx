@@ -47,6 +47,7 @@ import {
 } from "../../services/payment.service";
 import { getUserProfileService } from "../../services/user.services";
 import AddressForm from "../AddressForm";
+import { useRouter } from "next/navigation";
 
 const Img = styled("img")({
   margin: "auto",
@@ -56,6 +57,8 @@ const Img = styled("img")({
 });
 
 export default function Checkout({ setCheckoutOpen }) {
+  const router = useRouter()
+
   const [deliveryAddress, setDeliveryAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
   const [cartItems, setCartItems] = useState([]);
@@ -123,7 +126,7 @@ export default function Checkout({ setCheckoutOpen }) {
     );
 
     if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
+      toast.error("Razorpay SDK failed to load. Are you online?");
       return;
     }
 
@@ -146,7 +149,7 @@ export default function Checkout({ setCheckoutOpen }) {
         key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
         amount: amount.toString(),
         currency: currency,
-        name: "Gopinath Infotech",
+        name: "Arya Silk Mills",
         description: "Test Transaction",
         image: { logo },
         order_id: order_id,
@@ -159,9 +162,14 @@ export default function Checkout({ setCheckoutOpen }) {
             razorpaySignature: response.razorpay_signature,
           };
           console.log("data", data);
-          const result = await paymentSuccessService(data);
+          try {
+            const result = await paymentSuccessService(data);
+            toast.success('Your order has been successfully placed!');
+            router.push(`/account/orders/${result?.data?.order?._id}`)
+          } catch (error) {
+            toast(result.data.msg);
+          }
 
-          alert(result.data.msg);
         },
         prefill: {
           name: "Dhrumesh Kathiriya",
@@ -380,7 +388,7 @@ export default function Checkout({ setCheckoutOpen }) {
               />
             )}
           </Box>
-          {cartItems && priceTotal && (
+          {!addNew && cartItems && priceTotal && (
             <Box
               sx={{
                 marginLeft: "15px",

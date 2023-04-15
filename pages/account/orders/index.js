@@ -73,7 +73,7 @@ export default function Address() {
                           <Box>
                             <Img
                               alt="complex"
-                              src={`${process.env.BASE_IMAGE}/product/${products?.product?._id}/${products?.product?.image?.[0]?.url}`}
+                              src={`${process.env.BASE_IMAGE}/product/${products?.[0]?.product?._id}/${products?.[0]?.product?.image?.[0]?.url}`}
                             />
                           </Box>
                         </Grid>
@@ -87,6 +87,17 @@ export default function Address() {
                             justifyContent={"space-evenly"}
                           >
                             <Grid item xs>
+                            <Typography
+                                sx={{
+                                  color: "darkgoldenrod",
+                                  textTransform: "capitalize",
+                                }}
+                                gutterBottom
+                                variant="subtitle1"
+                                component="div"
+                              >
+                                Order# {_id}
+                              </Typography>
                               <Typography
                                 sx={{
                                   color: "darkgoldenrod",
@@ -96,7 +107,8 @@ export default function Address() {
                                 variant="subtitle1"
                                 component="div"
                               >
-                                {products?.product?.title}
+                                {products?.[0]?.product?.title}
+                              {products?.length > 1 && (<span style={{color: "black", fontWeight: 500}}> (+{products.length - 1} More)</span>)}  
                               </Typography>
                               <p
                                 className={
@@ -108,7 +120,7 @@ export default function Address() {
                                   fontSize: "0.8rem",
                                 }}
                               >Quantity: {products.quantity}</p>
-                              {products?.product?.color &&
+                              {products?.[0]?.product?.color &&
                                 <p
                                   className={
                                     productDetailsStyles.descriptionTitle
@@ -119,7 +131,7 @@ export default function Address() {
                                     fontSize: "0.8rem",
                                   }}
                                 >
-                                  COLOR : <span> {products?.product?.stocks?.find(stk => stk.sku === products.sku)?.color} </span>
+                                  COLOR : <span> {products?.[0]?.product?.stocks?.find(stk => stk.sku === products?.[0]?.sku)?.color} </span>
                                 </p>
                               }
                               {products?.product?.size &&
@@ -133,7 +145,7 @@ export default function Address() {
                                     fontSize: "0.8rem",
                                   }}
                                 >
-                                  SIZE : <span> {products?.product?.size} </span>
+                                  SIZE : <span> {products?.[0]?.product?.size} </span>
                                 </p>
                               }
                             </Grid>

@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography, styled } from "@mui/material";
+import { Box, Button, Grid, Typography, styled, Divider } from "@mui/material";
 import productDetailsStyles from "../../../styles/ProductDetails.module.scss";
 import styles from "../../../styles/cart.module.scss";
 import React, { useEffect, useState } from "react";
@@ -7,6 +7,8 @@ import RatingInput from "../../../components/Rating";
 import ShipmentStepper from "../../../components/Stepper";
 import { useRouter } from "next/router";
 import { getOrderService } from "../../../services/user.services";
+import { cancelShipmentService } from "../../../services/shipment.service";
+import { toast } from "react-toastify";
 
 const Order = () => {
   const router = useRouter();
@@ -119,154 +121,182 @@ const Order = () => {
     maxHeight: "100%",
   });
   console.log('data ', data)
+
+  const onCancelShipment = async () => {
+    try {
+      const response = await cancelShipmentService({ orderId: data._id });
+      toast.success(response.data.message)
+      fetchData()
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error?.message)
+    }
+  }
+  
   return (
     <>
-    {data && 
-    <ContainerStyled>
-      <Typography
-        sx={{
-          padding: "20px",
-          boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",
-          margin: "20px 0",
-        }}
-      >
-        Order ID - {data._id}
-      </Typography>
-      <Box
-        style={{
-          //   boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",
-          marginBottom: 20,
-          borderRadius: 10,
-        }}
-      >
-        <Grid container spacing={1} p={2}>
-          <Grid item xs={3} sm={2}>
-            <Box>
-              <Img
-                alt="complex"
-                src={`${process.env.BASE_IMAGE}/product/${data?.products?.product?._id}/${data?.products?.product?.image?.[0]?.url}`}
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={9} sm={5} container>
-            <Grid
-              item
-              xs
-              container
-              direction="column"
-              rowSpacing={1}
-              justifyContent={"space-evenly"}
-            >
-              <Grid item xs>
-                <Typography
-                  sx={{
-                    color: "darkgoldenrod",
-                    textTransform: "capitalize",
-                  }}
-                  gutterBottom
-                  variant="subtitle1"
-                  component="div"
-                >
-                  {data?.products?.product?.title}
-                </Typography>
-                <p
-                  className={productDetailsStyles.descriptionTitle}
+      {data &&
+        <ContainerStyled>
+          <Typography
+            sx={{
+              padding: "20px",
+              boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",
+              margin: "20px 0",
+            }}
+          >
+            Order ID - {data._id}
+          </Typography>
+          <Box
+            style={{
+              //   boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",
+              marginBottom: 20,
+              borderRadius: 10,
+            }}
+          >
+            <Grid container spacing={3} p={2}>
+              {
+                data?.products?.map(pr => {
+                  return (
+                    <>
+                      <Grid item xs={3} sm={1.2}>
+                        <Box>
+                          <Img
+                            alt="complex"
+                            src={`${process.env.BASE_IMAGE}/product/${pr?.product?._id}/${pr?.product?.image?.[0]?.url}`}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={9} sm={5} container>
+                        <Grid
+                          item
+                          xs
+                          container
+                          direction="column"
+                          rowSpacing={1}
+                          justifyContent={"space-evenly"}
+                        >
+                          <Grid item xs>
+                            <Typography
+                              sx={{
+                                color: "darkgoldenrod",
+                                textTransform: "capitalize",
+                              }}
+                              gutterBottom
+                              variant="subtitle1"
+                              component="div"
+                            >
+                              {pr?.product?.title}
+                            </Typography>
+                            <p
+                              className={productDetailsStyles.descriptionTitle}
+                              style={{
+                                marginBottom: 0,
+                                lineHeight: "inherit",
+                                fontSize: "0.8rem",
+                              }}
+                            >
+                              Quantity: {pr?.quantity}
+                            </p>
+                            {pr?.product?.color && (
+                              <p
+                                className={productDetailsStyles.descriptionTitle}
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                COLOR : <span> {pr?.product?.color} </span>
+                              </p>
+                            )}
+                            {pr?.product?.size && (
+                              <p
+                                className={productDetailsStyles.descriptionTitle}
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                SIZE : <span> {pr?.product?.size} </span>
+                              </p>
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item sm={2} xs={12}>
+                        <p className={styles.productPrice}>₹ {pr?.product?.price}</p>
+                      </Grid>
+                      <Grid item sm={3} xs={12}>
+                        {data?.orderStatus}
+                      </Grid>
+                      {/* <Grid item xs={12}>
+                        <RatingInput />
+                      </Grid> */}
+                      <Divider />
+                    </>)
+                })
+
+              }
+              <Box sx={{ margin: "30px", fontWeight: 500 }}>
+                Total amount : Rs. {data.amount}
+              </Box>
+              <Grid item xs={6}>
+                {/* <ShipmentStepper /> */}
+              </Grid>
+
+              <Grid item xs={12}>
+                <div
                   style={{
-                    marginBottom: 0,
-                    lineHeight: "inherit",
-                    fontSize: "0.8rem",
+                    padding: "20px 0",
+                    display: "flex",
+                    justifyContent: "space-evenly",
                   }}
                 >
-                  Quantity: {data?.products?.quantity}
-                </p>
-                {data?.products?.product?.color && (
-                  <p
-                    className={productDetailsStyles.descriptionTitle}
-                    style={{
-                      marginBottom: 0,
-                      lineHeight: "inherit",
-                      fontSize: "0.8rem",
+                    <Button
+                    disabled={data?.orderStatus === 'cancelled'}
+                    variant="contained"
+                    onClick={() => onCancelShipment()}
+                    sx={{
+                      backgroundColor: "#ffffff",
+                      color: "#000000",
+                      width: "48%",
+                      padding: "10px",
+                      border: "1px solid #000000",
+                      ":hover": {
+                        color: "#ffffff",
+                        backgroundColor: "#000000",
+                      },
+                      display: "block",
+                      margin: "0px auto",
                     }}
                   >
-                    COLOR : <span> {data?.products?.product?.color} </span>
-                  </p>
-                )}
-                {data?.products?.product?.size && (
-                  <p
-                    className={productDetailsStyles.descriptionTitle}
-                    style={{
-                      marginBottom: 0,
-                      lineHeight: "inherit",
-                      fontSize: "0.8rem",
+                    Cancel order
+                  </Button>
+                
+                  <Button
+                    variant="contained"
+                    disabled={true}
+                    sx={{
+                      backgroundColor: "#000000",
+                      color: "white",
+                      width: "48%",
+                      padding: "10px",
+                      ":hover": {
+                        color: "#000000",
+                        backgroundColor: "white",
+                        border: "1px solid #000000",
+                      },
+                      display: "block",
+                      margin: "0px auto",
                     }}
                   >
-                    SIZE : <span> {data?.products?.product?.size} </span>
-                  </p>
-                )}
+                    Download Invoice
+                  </Button>
+                </div>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item sm={2} xs={12}>
-            <p className={styles.productPrice}>₹ {data?.amount}</p>
-          </Grid>
-          <Grid item sm={3} xs={12}>
-            {data?.orderStatus}
-          </Grid>
-          <Grid item xs={12}>
-            <RatingInput />
-          </Grid>
-          <Grid item xs={6}>
-            <ShipmentStepper />
-          </Grid>
-          <Grid item xs={12}>
-            <div
-              style={{
-                padding: "20px 0",
-                display: "flex",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#ffffff",
-                  color: "#000000",
-                  width: "48%",
-                  padding: "10px",
-                  border: "1px solid #000000",
-                  ":hover": {
-                    color: "#ffffff",
-                    backgroundColor: "#000000",
-                  },
-                  display: "block",
-                  margin: "0px auto",
-                }}
-              >
-                Cancel order
-              </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#000000",
-                  color: "white",
-                  width: "48%",
-                  padding: "10px",
-                  ":hover": {
-                    color: "#000000",
-                    backgroundColor: "white",
-                    border: "1px solid #000000",
-                  },
-                  display: "block",
-                  margin: "0px auto",
-                }}
-              >
-                Download Invoice
-              </Button>
-            </div>
-          </Grid>
-        </Grid>
-      </Box>
-    </ContainerStyled>}
+          </Box>
+        </ContainerStyled>}
     </>
   );
 };

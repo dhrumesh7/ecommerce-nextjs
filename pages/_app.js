@@ -26,15 +26,15 @@ const Spinner = () => {
 export default function App({ Component, pageProps }) {
   const { promiseInProgress } = usePromiseTracker();
 
-const theme = createTheme({
-  palette:{
-    primary: {
-      main: '#0052cc',
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#0052cc',
+      },
+      secondary: {
+        main: '#daa520',
+      },
     },
-    secondary: {
-      main: '#daa520',
-    },
-  },
     typography: {
       "fontFamily": `"Poppins", sans-serif`,
       "fontSize": 14,
@@ -46,13 +46,15 @@ const theme = createTheme({
 
   return (
     <ThemeProvider theme={theme}>
-      <Layout>
-        <Suspense fallback={<Spinner />}>
-          {promiseInProgress && <Spinner />}
+      <Suspense fallback={<Spinner />}>
+        {promiseInProgress && <Spinner />}
+
+        <Layout>
           <ToastContainer position="top-right" toastOptions={{ duration: 7000 }} />
           <Component {...pageProps} />
-        </Suspense>
-      </Layout>
+        </Layout>
+      </Suspense>
+
     </ThemeProvider>
   );
 }
