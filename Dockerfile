@@ -18,6 +18,9 @@ RUN npm install --production --force
 # Add the node_modules/.bin directory to the PATH environment variable
 ENV PATH /app/node_modules/.bin:$PATH
 
+# Set NODE_ENV to production
+ENV NODE_ENV production
+
 # Expose port 3000
 EXPOSE 3000
 
