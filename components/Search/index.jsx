@@ -132,8 +132,10 @@ export default function Search() {
       // clearIcon={<CloseIconStyled sx={{width: "80%", }}/>}
       renderInput={(params) => (
         <TextField
+        sx={{border : '#000', color : '$000', outline: '#000'}}
+        variant="standard"
+        placeholder='Search'
           {...params}
-          label="Search"
           onChange={(e) => debouncedFetchData(e.target.value)}
           InputProps={{
             ...params.InputProps,

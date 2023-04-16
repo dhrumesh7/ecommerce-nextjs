@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import { useState } from "react";
-import { DialogContent, styled } from "@mui/material";
+import { DialogContent, styled, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -219,7 +219,7 @@ export default function Checkout({ setCheckoutOpen }) {
     setCheckoutOpen(false);
     await displayRazorpay();
   };
-
+  const theme = useTheme();
   console.log(cartItems, priceTotal);
   return (
     <>
@@ -228,14 +228,21 @@ export default function Checkout({ setCheckoutOpen }) {
         onClose={handleClose}
         aria-labelledby="address-modal-title"
         aria-describedby="address-modal-description"
-        maxWidth={"lg"}
+        maxWidth={"md"}
         fullWidth={true}
         scroll="body"
       >
-        <DialogContent sx={{padding : '45px'}}>
+        <DialogContent
+          sx={{
+            padding: "45px",
+            [theme.breakpoints.down("md")]: {
+              padding: "45px 15px",
+            },
+          }}
+        >
           <Grid container spacing={3}>
             {!addNew ? (
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={6}>
                 <Typography
                   variant="h6"
                   id="address-modal-title"
@@ -322,12 +329,11 @@ export default function Checkout({ setCheckoutOpen }) {
                     variant="contained"
                     sx={{
                       background: "darkgoldenrod",
-                      // margin: '0px auto',
-                      //   display : 'block',
+                      margin: "0px auto",
+                      display: "block",
                       ":hover": {
                         color: "white",
                         backgroundColor: "black",
-                        
                       },
                     }}
                     disabled={!selectedAddress}
@@ -347,7 +353,7 @@ export default function Checkout({ setCheckoutOpen }) {
               </Grid>
             )}
             {!addNew && cartItems && priceTotal && (
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={6}>
                 <Box
                   sx={{
                     backgroundColor: "whitesmoke",
@@ -371,8 +377,27 @@ export default function Checkout({ setCheckoutOpen }) {
                   <Box sx={{ maxHeight: 200, overflow: "auto" }}>
                     {cartItems?.map((item, index) => {
                       return (
-                        <Grid container key={index} spacing={2} sx={{maxWidth:'100%', marginBottom: '10px', marginLeft: '0px'}}>
-                          <Grid item xs={3}>
+                        <Grid
+                          container
+                          key={index}
+                          spacing={2}
+                          sx={{
+                            maxWidth: "100%",
+                            marginBottom: "10px",
+                            marginLeft: "0px",
+                          }}
+                        >
+                          <Grid
+                            item
+                            xs={12}
+                            sm={3}
+                            sx={{
+                              [theme.breakpoints.down("sm")]: {
+                                justifyContent: "center",
+                                display: "flex",
+                              },
+                            }}
+                          >
                             <ButtonBase sx={{ width: 90, height: 90 }}>
                               <Img
                                 alt="complex"
@@ -380,7 +405,7 @@ export default function Checkout({ setCheckoutOpen }) {
                               />
                             </ButtonBase>
                           </Grid>
-                          <Grid item xs={9}>
+                          <Grid item xs={12} sm={9}>
                             <Box sx={{ textAlign: "initial" }}>
                               <Typography
                                 sx={{
@@ -409,6 +434,7 @@ export default function Checkout({ setCheckoutOpen }) {
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
+                      padding: "10px 27px",
                     }}
                   >
                     <Typography sx={{ fontSize: "13px", fontWeight: 500 }}>
@@ -427,7 +453,9 @@ export default function Checkout({ setCheckoutOpen }) {
                 </Box>
               </Grid>
             )}
-           {!addNew && <CloseIconStyled onClick={() => setCheckoutOpen(false)} />}
+            {!addNew && (
+              <CloseIconStyled onClick={() => setCheckoutOpen(false)} />
+            )}
           </Grid>
         </DialogContent>
       </Dialog>
