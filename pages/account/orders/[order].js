@@ -30,90 +30,6 @@ const Order = () => {
   useEffect(() => {
     fetchData()
   }, [order])
-  // const data = {
-  //   _id: "64358ef32253899a680d44fb",
-  //   createdAt: "2023-04-11T16:46:39.780Z",
-  //   deliveryAddress: [
-  //     {
-  //       firstName: "NIlkanth ",
-  //       lastName: "savaliya",
-  //       company: "N/A",
-  //       address1: "B-110 Ishvarkrupa soc",
-  //       address2: "395011",
-  //       city: "Surat",
-  //       state: "Gujarat",
-  //       country: "India",
-  //       contactNumber: "8780445545",
-  //       isDefault: true,
-  //       _id: "64358f923cacab7743dede34",
-  //     },
-  //   ],
-  //   email: "nilpatel444444@gmail.com",
-  //   firstName: "ruhi",
-  //   lastName: "sharma",
-  //   order: {
-  //     products: {
-  //       product: {
-  //         _id: "6434e4caae80bd7c35e4ec01",
-  //         title: "Panghat Saree",
-  //         description: {
-  //           descriptionText: "",
-  //           features: ["Premium quality", " Best in market", " Unique design"],
-  //           occasion: ["Festive"],
-  //           fabric: "silk",
-  //           care: "Dry Clean Only",
-  //           packContains: "1 Saree, 1 Blouse Piece",
-  //           note: "",
-  //           _id: "6434e4caae80bd7c35e4ec02",
-  //         },
-  //         category: ["642b04586ba873f9fc6e3c16"],
-  //         subcategory: ["642b048b6ba873f9fc6e3c24"],
-  //         color: ["Pink", " Yellow", " Parrot", " Green"],
-  //         price: 2999,
-  //         noOfferprice: 4100,
-  //         image: [
-  //           {
-  //             url: "1681188069962.webp",
-  //             color: "Pink",
-  //             _id: "6434e4e7ae80bd7c35e4ec04",
-  //           },
-  //           {
-  //             url: "1681188094721.webp",
-  //             color: "Yellow",
-  //             _id: "6434e4ffae80bd7c35e4ec07",
-  //           },
-  //           {
-  //             url: "1681188114185.webp",
-  //             color: "Parrot",
-  //             _id: "6434e512ae80bd7c35e4ec0b",
-  //           },
-  //           {
-  //             url: "1681188133822.webp",
-  //             color: "Green",
-  //             _id: "6434e526ae80bd7c35e4ec10",
-  //           },
-  //         ],
-  //         stocks: [],
-  //         createdAt: "2023-04-11T04:40:42.229Z",
-  //         updatedAt: "2023-04-11T04:42:14.210Z",
-  //         slug: "panghat-saree",
-  //       },
-  //       quantity: 1,
-  //     },
-  //     _id: "64358f9d3cacab7743dede44",
-  //     razorpayOrderId: "order_LcYXPicolzuLY6",
-  //     amount: 2999,
-  //     currency: "INR",
-  //     paymentStatus: "completed",
-  //     orderStatus: "processing",
-  //     user: "64358ef32253899a680d44fb",
-  //     orderDate: "2023-04-11T16:49:33.916Z",
-  //     createdAt: "2023-04-11T16:49:34.032Z",
-  //     updatedAt: "2023-04-11T16:50:37.049Z",
-  //   },
-  //   updatedAt: "2023-04-11T16:50:38.126Z",
-  //   wishlist: [],
-  // };
   const Img = styled("img")({
     margin: "auto",
     display: "block",
@@ -145,18 +61,13 @@ const Order = () => {
           >
             Order ID - {data._id}
           </Typography>
-          <Box
-            style={{
-              //   boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",
-              marginBottom: 20,
-              borderRadius: 10,
-            }}
-          >
-            <Grid container spacing={3} p={2}>
+          
+            <Grid container rowSpacing={3} sx={{marginLeft : '0px', maxWidth:'100%', margin:'0px auto'}}>
               {
                 data?.products?.map(pr => {
                   return (
                     <>
+                    <Grid container item={12} spacing={3} sx={{paddingTop: 0,     boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",  maxWidth:'100%', margin:'0px auto 20px'}}>
                       <Grid item xs={3} sm={1.2}>
                         <Box>
                           <Img
@@ -232,17 +143,190 @@ const Order = () => {
                       {/* <Grid item xs={12}>
                         <RatingInput />
                       </Grid> */}
-                      <Divider />
+                       <Grid item xs={12}><Divider /></Grid>
+                      
+                      </Grid>
                     </>)
                 })
-
               }
-              <Box sx={{ margin: "30px", fontWeight: 500 }}>
+              {
+                data?.products?.map(pr => {
+                  return (
+                    <>
+                    <Grid container item={12} spacing={3} sx={{     boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",  maxWidth:'100%', margin:'0px auto 20px'}}>
+                      <Grid item xs={3} sm={1.2}>
+                        <Box>
+                          <Img
+                            alt="complex"
+                            src={`${process.env.BASE_IMAGE}/product/${pr?.product?._id}/${pr?.product?.image?.[0]?.url}`}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={9} sm={5} container>
+                        <Grid
+                          item
+                          xs
+                          container
+                          direction="column"
+                          rowSpacing={1}
+                          justifyContent={"space-evenly"}
+                        >
+                          <Grid item xs>
+                            <Typography
+                              sx={{
+                                color: "darkgoldenrod",
+                                textTransform: "capitalize",
+                              }}
+                              gutterBottom
+                              variant="subtitle1"
+                              component="div"
+                            >
+                              {pr?.product?.title}
+                            </Typography>
+                            <p
+                              className={productDetailsStyles.descriptionTitle}
+                              style={{
+                                marginBottom: 0,
+                                lineHeight: "inherit",
+                                fontSize: "0.8rem",
+                              }}
+                            >
+                              Quantity: {pr?.quantity}
+                            </p>
+                            {pr?.product?.color && (
+                              <p
+                                className={productDetailsStyles.descriptionTitle}
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                COLOR : <span> {pr?.product?.color} </span>
+                              </p>
+                            )}
+                            {pr?.product?.size && (
+                              <p
+                                className={productDetailsStyles.descriptionTitle}
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                SIZE : <span> {pr?.product?.size} </span>
+                              </p>
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item sm={2} xs={12}>
+                        <p className={styles.productPrice}>₹ {pr?.product?.price}</p>
+                      </Grid>
+                      <Grid item sm={3} xs={12}>
+                        {data?.orderStatus}
+                      </Grid>
+                      {/* <Grid item xs={12}>
+                        <RatingInput />
+                      </Grid> */}
+                       <Grid item xs={12}><Divider /></Grid>
+                      
+                      </Grid>
+                    </>)
+                })
+              }
+              {
+                data?.products?.map(pr => {
+                  return (
+                    <>
+                    <Grid container item={12} spacing={3} sx={{     boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",  maxWidth:'100%', margin:'0px auto 20px'}}>
+                      <Grid item xs={3} sm={1.2}>
+                        <Box>
+                          <Img
+                            alt="complex"
+                            src={`${process.env.BASE_IMAGE}/product/${pr?.product?._id}/${pr?.product?.image?.[0]?.url}`}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={9} sm={5} container>
+                        <Grid
+                          item
+                          xs
+                          container
+                          direction="column"
+                          rowSpacing={1}
+                          justifyContent={"space-evenly"}
+                        >
+                          <Grid item xs>
+                            <Typography
+                              sx={{
+                                color: "darkgoldenrod",
+                                textTransform: "capitalize",
+                              }}
+                              gutterBottom
+                              variant="subtitle1"
+                              component="div"
+                            >
+                              {pr?.product?.title}
+                            </Typography>
+                            <p
+                              className={productDetailsStyles.descriptionTitle}
+                              style={{
+                                marginBottom: 0,
+                                lineHeight: "inherit",
+                                fontSize: "0.8rem",
+                              }}
+                            >
+                              Quantity: {pr?.quantity}
+                            </p>
+                            {pr?.product?.color && (
+                              <p
+                                className={productDetailsStyles.descriptionTitle}
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                COLOR : <span> {pr?.product?.color} </span>
+                              </p>
+                            )}
+                            {pr?.product?.size && (
+                              <p
+                                className={productDetailsStyles.descriptionTitle}
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                SIZE : <span> {pr?.product?.size} </span>
+                              </p>
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item sm={2} xs={12}>
+                        <p className={styles.productPrice}>₹ {pr?.product?.price}</p>
+                      </Grid>
+                      <Grid item sm={3} xs={12}>
+                        {data?.orderStatus}
+                      </Grid>
+                      {/* <Grid item xs={12}>
+                        <RatingInput />
+                      </Grid> */}
+                       <Grid item xs={12}><Divider /></Grid>
+                      
+                      </Grid>
+                    </>)
+                })
+              }
+              <Grid item xs={12} sx={{ margin: "30px", fontWeight: 500 }}>
                 Total amount : Rs. {data.amount}
-              </Box>
-              <Grid item xs={6}>
-                {/* <ShipmentStepper /> */}
               </Grid>
+              {/* <Grid item xs={6}>
+                <ShipmentStepper />
+              </Grid> */}
 
               <Grid item xs={12}>
                 <div
@@ -295,7 +379,6 @@ const Order = () => {
                 </div>
               </Grid>
             </Grid>
-          </Box>
         </ContainerStyled>}
     </>
   );

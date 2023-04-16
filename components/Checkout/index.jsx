@@ -1,45 +1,17 @@
 import Box from "@mui/material/Box";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import List from "@mui/material/List";
+import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { KeyboardEvent, MouseEvent, useState } from "react";
-import { styled } from "@mui/material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { DrawerHeader, CloseIconStyled } from "../sideNavbar";
+import { useState } from "react";
+import { DialogContent, styled } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import ButtonBase from "@mui/material/ButtonBase";
-import globalStyles from "../../styles/global.module.scss";
-import styles from "../../styles/cart.module.scss";
-import productDetailsStyles from "../../styles/ProductDetails.module.scss";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import {
-  Modal,
-  Button,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-} from "@mui/material";
+import { Button, Radio } from "@mui/material";
 import logo from "../../public/category.jpg";
 import { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Country, State, City, ICountry } from "country-state-city";
-import Select from "react-select";
-import profileCSS from "../../styles/Account.module.scss";
-
-import {
-  getCartListService,
-  updateCartService,
-} from "../../services/user.services";
+import { getCartListService } from "../../services/user.services";
 import { toast } from "react-toastify";
-import axios from "axios";
 import {
   createOrderService,
   paymentFailureService,
@@ -48,6 +20,7 @@ import {
 import { getUserProfileService } from "../../services/user.services";
 import AddressForm from "../AddressForm";
 import { useRouter } from "next/navigation";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Img = styled("img")({
   margin: "auto",
@@ -55,9 +28,17 @@ const Img = styled("img")({
   maxWidth: "100%",
   maxHeight: "100%",
 });
-
+const CloseIconStyled = styled(CloseIcon)({
+  position: "absolute",
+  top: 10,
+  right: 10,
+  cursor: "pointer",
+  fontSize: 32,
+  zIndex: 1000,
+  strokeWidth: 1,
+});
 export default function Checkout({ setCheckoutOpen }) {
-  const router = useRouter()
+  const router = useRouter();
 
   const [deliveryAddress, setDeliveryAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
@@ -77,10 +58,12 @@ export default function Checkout({ setCheckoutOpen }) {
 
       const cartrResponse = await getCartListService();
       const cartItems = cartrResponse?.data?.data?.cart;
-      const stockChecked = cartItems.filter(item => {
-        const skuStock = item?.product?.stocks?.find(stk => stk.sku === item.sku)?.stock
-        return skuStock > item.quantity
-      })
+      const stockChecked = cartItems.filter((item) => {
+        const skuStock = item?.product?.stocks?.find(
+          (stk) => stk.sku === item.sku
+        )?.stock;
+        return skuStock > item.quantity;
+      });
       const priceTotal = stockChecked.reduce(
         (prev, next) => prev + next.product.price * next.quantity,
         0
@@ -164,12 +147,11 @@ export default function Checkout({ setCheckoutOpen }) {
           console.log("data", data);
           try {
             const result = await paymentSuccessService(data);
-            toast.success('Your order has been successfully placed!');
-            router.push(`/account/orders/${result?.data?.order?._id}`)
+            toast.success("Your order has been successfully placed!");
+            router.push(`/account/orders/${result?.data?.order?._id}`);
           } catch (error) {
             toast(result.data.msg);
           }
-
         },
         prefill: {
           name: "Dhrumesh Kathiriya",
@@ -196,7 +178,7 @@ export default function Checkout({ setCheckoutOpen }) {
       });
       paymentObject.open();
     } catch (error) {
-      return toast.error(error?.response?.data?.message || error.message)
+      return toast.error(error?.response?.data?.message || error.message);
     }
   }
 
@@ -241,48 +223,19 @@ export default function Checkout({ setCheckoutOpen }) {
   console.log(cartItems, priceTotal);
   return (
     <>
-      <Modal
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "fixed",
-        }}
+      <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="address-modal-title"
         aria-describedby="address-modal-description"
+        maxWidth={"lg"}
+        fullWidth={true}
+        scroll="body"
       >
-        <Paper
-          sx={{
-            backgroundColor: "white",
-            boxShadow: 5,
-            padding: "20px 40px 30px",
-            minWidth: 400,
-            textAlign: "initial",
-            display: "flex",
-            justifyContent: "space-between",
-            "@media only screen and (max-width: 767px)": {
-              flexDirection: "column-reverse",
-              gap: "20px",
-              justifyContent: "space-evenly",
-              alignItems: "center",
-              padding: "20px",
-              height: "100%",
-              width: "100%",
-            },
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+        <DialogContent sx={{padding : '45px'}}>
+          <Grid container spacing={3}>
             {!addNew ? (
-              <>
+              <Grid item xs={12} sm={6}>
                 <Typography
                   variant="h6"
                   id="address-modal-title"
@@ -290,7 +243,7 @@ export default function Checkout({ setCheckoutOpen }) {
                 >
                   Select Shipping Address
                 </Typography>
-                <div style={{ maxHeight: 200, overflow: "scroll" }}>
+                <div style={{ maxHeight: 200, overflow: "auto" }}>
                   {deliveryAddress?.map((address, index) => {
                     return (
                       <Box
@@ -302,7 +255,7 @@ export default function Checkout({ setCheckoutOpen }) {
                           border: "1px solid darkgoldenrod",
                           borderRadius: 4,
                           padding: 2,
-                          width: '100%',
+                          width: "100%",
                           marginBottom: 2,
                         }}
                       >
@@ -343,7 +296,6 @@ export default function Checkout({ setCheckoutOpen }) {
                       </Box>
                     );
                   })}
-
                   <Box my={2}>
                     <Button
                       variant="contained"
@@ -355,6 +307,8 @@ export default function Checkout({ setCheckoutOpen }) {
                           backgroundColor: "black",
                         },
                         border: "1px solid darkgoldenrod",
+                        // margin: '0px auto',
+                        // display : 'block',
                       }}
                       onClick={handleAddNewAddress}
                     >
@@ -368,9 +322,12 @@ export default function Checkout({ setCheckoutOpen }) {
                     variant="contained"
                     sx={{
                       background: "darkgoldenrod",
+                      // margin: '0px auto',
+                      //   display : 'block',
                       ":hover": {
                         color: "white",
                         backgroundColor: "black",
+                        
                       },
                     }}
                     disabled={!selectedAddress}
@@ -379,107 +336,101 @@ export default function Checkout({ setCheckoutOpen }) {
                     Continue
                   </Button>
                 </Box>
-              </>
-            ) : (
-              <AddressForm
-                setIsEdit={(data) => setAddNew(data)}
-                deliveryAddress={deliveryAddress}
-                setDeliveryAddress={(data) => setDeliveryAddress(data)}
-              />
-            )}
-          </Box>
-          {!addNew && cartItems && priceTotal && (
-            <Box
-              sx={{
-                marginLeft: "15px",
-                backgroundColor: "whitesmoke",
-                boxShadow: 2,
-                borderRadius: "5px",
-                width: 250,
-                justifyContent: "space-evenly",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Grid
-                container
-                spacing={2}
-                p={1}
-                sx={{ display: "flex", flexDirection: "column" }}
-              >
-                <Typography sx={{ margin: "15px", fontWeight: 500 }}>
-                  Order Summary
-                </Typography>
-                <Box sx={{ maxHeight: 200, overflow: "scroll" }}>
-                  {cartItems?.map((item, index) => {
-                    return (
-                      <Box
-                        key={index}
-                        sx={{
-                          display: "flex",
-                          marginBottom: "15px",
-                          justifyContent: "space-evenly",
-                        }}
-                      >
-                        <Grid item>
-                          <ButtonBase sx={{ width: 90, height: 90 }}>
-                            <Img
-                              alt="complex"
-                              src={`${process.env.BASE_IMAGE}/product/${item?.product?._id}/${item?.product?.image?.[0]?.url}`}
-                            />
-                          </ButtonBase>
-                        </Grid>
-                        <Grid item>
-                          <Box sx={{ textAlign: "initial" }}>
-                            <Typography
-                              sx={{
-                                fontSize: "11px",
-                                color: "darkgoldenrod",
-                                textTransform: "capitalize",
-                              }}
-                            >
-                              {item.product.title} {item.product.color}{" "}
-                              {item.product.size}
-                            </Typography>
-                            <Typography sx={{ fontSize: "11px" }}>
-                              Quantity: {item.quantity}
-                            </Typography>
-                            <Typography sx={{ fontSize: "11px" }}>
-                              Price: Rs. {item.product.price}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                      </Box>
-                    );
-                  })}
-                </Box>
               </Grid>
-              <Divider />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  margin: "10px",
-                }}
-              >
-                <Typography sx={{ fontSize: "13px", fontWeight: 500 }}>
-                  Total Price
-                </Typography>
-                <Typography
+            ) : (
+              <Grid item xs={12}>
+                <AddressForm
+                  setIsEdit={(data) => setAddNew(data)}
+                  deliveryAddress={deliveryAddress}
+                  setDeliveryAddress={(data) => setDeliveryAddress(data)}
+                />
+              </Grid>
+            )}
+            {!addNew && cartItems && priceTotal && (
+              <Grid item xs={12} sm={6}>
+                <Box
                   sx={{
-                    fontSize: "13px",
-                    fontWeight: 500,
-                    color: "darkgoldenrod",
+                    backgroundColor: "whitesmoke",
+                    boxShadow: 2,
+                    borderRadius: "5px",
+                    width: "100%",
+                    justifyContent: "space-evenly",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
                 >
-                  Rs. {priceTotal}
-                </Typography>
-              </Box>
-            </Box>
-          )}
-          <CloseIconStyled onClick={() => setCheckoutOpen(false)} />
-        </Paper>
-      </Modal>
+                  <Typography
+                    sx={{
+                      margin: "15px",
+                      fontWeight: 500,
+                      textAlign: "center",
+                    }}
+                  >
+                    Order Summary
+                  </Typography>
+                  <Box sx={{ maxHeight: 200, overflow: "auto" }}>
+                    {cartItems?.map((item, index) => {
+                      return (
+                        <Grid container key={index} spacing={2} sx={{maxWidth:'100%', marginBottom: '10px', marginLeft: '0px'}}>
+                          <Grid item xs={3}>
+                            <ButtonBase sx={{ width: 90, height: 90 }}>
+                              <Img
+                                alt="complex"
+                                src={`${process.env.BASE_IMAGE}/product/${item?.product?._id}/${item?.product?.image?.[0]?.url}`}
+                              />
+                            </ButtonBase>
+                          </Grid>
+                          <Grid item xs={9}>
+                            <Box sx={{ textAlign: "initial" }}>
+                              <Typography
+                                sx={{
+                                  fontSize: "11px",
+                                  color: "darkgoldenrod",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {item.product.title} {item.product.color}{" "}
+                                {item.product.size}
+                              </Typography>
+                              <Typography sx={{ fontSize: "11px" }}>
+                                Quantity: {item.quantity}
+                              </Typography>
+                              <Typography sx={{ fontSize: "11px" }}>
+                                Price: Rs. {item.product.price}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                        </Grid>
+                      );
+                    })}
+                  </Box>
+                  <Divider />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography sx={{ fontSize: "13px", fontWeight: 500 }}>
+                      Total Price
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "13px",
+                        fontWeight: 500,
+                        color: "darkgoldenrod",
+                      }}
+                    >
+                      Rs. {priceTotal}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Grid>
+            )}
+           {!addNew && <CloseIconStyled onClick={() => setCheckoutOpen(false)} />}
+          </Grid>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

@@ -8,6 +8,7 @@ import debounce from 'lodash.debounce';
 import { useRouter } from 'next/router';
 import { CloseIconStyled } from '../sideNavbar';
 import { Clear } from '@mui/icons-material';
+import { InputAdornment, ListItemIcon, ListItemText, styled } from '@mui/material';
 
 function sleep(delay = 0) {
   return new Promise((resolve) => {
@@ -78,7 +79,29 @@ export default function Search() {
    setOptions(res || [])
    }, 500);
    
- console.log(options)
+   const StyledOption = styled('li')(({ theme }) => ({
+    padding: theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center',
+    borderBottom: '1px solid #ccc',
+    '& > svg': {
+      marginRight: theme.spacing(1),
+    },
+  }));
+  
+  function renderOption(props, option, { selected }) {
+    console.log(props);
+    const label = props.key;
+    return (
+      <StyledOption selected={selected} component="li">
+        {/* <ListItemIcon>
+          {selected ? <CheckIcon /> : null}
+        </ListItemIcon> */}
+        <ListItemText primary={label} />
+      </StyledOption>
+    );
+  }
+  
   return (
     <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
     <Autocomplete
@@ -105,7 +128,7 @@ export default function Search() {
         event.target.value = ''
       }
       }}
-      popupIcon={<SearchIcon sx={{width: "80%", }}/>}
+      popupIcon={<></>}
       // clearIcon={<CloseIconStyled sx={{width: "80%", }}/>}
       renderInput={(params) => (
         <TextField
@@ -114,6 +137,8 @@ export default function Search() {
           onChange={(e) => debouncedFetchData(e.target.value)}
           InputProps={{
             ...params.InputProps,
+            startAdornment: (  <InputAdornment position="start"> <SearchIcon /> 
+            </InputAdornment>  ),
             endAdornment: (
               <React.Fragment>
                 {loading ? <CircularProgress color="inherit" size={20} />  : null }
@@ -123,7 +148,14 @@ export default function Search() {
           }}
         />
       )}
+      renderOption={(props, option, state) => renderOption(props, option, state)}
     />
+    {/* <ReactSearchBox
+        placeholder="Placeholder"
+        value="Doe"
+        data={this.data}
+        callback={(record) => console.log(record)}
+      /> */}
     </div>
   );
 }

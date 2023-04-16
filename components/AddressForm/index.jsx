@@ -52,7 +52,7 @@ export default function AddressForm({
       borderRadius: state.isFocused ? "3px 3px 0 0" : 3,
       boxShadow: state.isFocused ? null : null,
       "&:hover": {
-        borderColor: state.isFocused ? "black" : "trasperant",
+        borderColor: state.isFocused ? "black" : "transparent",
       },
     }),
     menu: (base) => ({
@@ -68,7 +68,7 @@ export default function AddressForm({
 
   return (
     <>
-      <form onSubmit={handleSubmit(saveFormData)} style={{ width: "100%" }}>
+      <form onSubmit={handleSubmit(saveFormData)} style={{ width: "100%"}}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <div className={profileCSS.inputDiv}>
