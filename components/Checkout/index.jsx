@@ -44,8 +44,9 @@ export default function Checkout({ setCheckoutOpen }) {
   const [selectedAddress, setSelectedAddress] = useState();
   const [cartItems, setCartItems] = useState([]);
   const [priceTotal, setPriceTotal] = useState([]);
+  const [currentStep, setCurrentStep] = useState(1);
 
-  const [addNew, setAddNew] = useState(false);
+  // const [addNew, setAddNew] = useState(false);
 
   //   const [default, setDeliveryAddress] = useState([])
 
@@ -144,7 +145,6 @@ export default function Checkout({ setCheckoutOpen }) {
             razorpayOrderId: response.razorpay_order_id,
             razorpaySignature: response.razorpay_signature,
           };
-          console.log("data", data);
           try {
             const result = await paymentSuccessService(data);
             toast.success("Your order has been successfully placed!");
@@ -202,7 +202,8 @@ export default function Checkout({ setCheckoutOpen }) {
 
   const handleAddNewAddress = (event) => {
     event.preventDefault();
-    setAddNew(true);
+    setCurrentStep(0);
+    // setAddNew(true);
     // setDefaultAddress(newAddress);
     // handleClose();
   };
@@ -210,7 +211,6 @@ export default function Checkout({ setCheckoutOpen }) {
   const handleCheckout = () => {
     // Call Razorpay payment modal here
   };
-
   useEffect(() => {
     console.log("selecte ", selectedAddress);
   }, [selectedAddress]);
@@ -220,7 +220,195 @@ export default function Checkout({ setCheckoutOpen }) {
     await displayRazorpay();
   };
   const theme = useTheme();
-  console.log(cartItems, priceTotal);
+  const RenderComponent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <Grid item xs={12} md={6}>
+            <Typography
+              variant="h6"
+              id="address-modal-title"
+              sx={{ marginBottom: "10px" }}
+            >
+              Select Shipping Address
+            </Typography>
+            <div style={{ maxHeight: 200, overflow: "auto" }}>
+              {deliveryAddress?.map((address, index) => {
+                return (
+                  <Box
+                    key={index}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      border: "1px solid darkgoldenrod",
+                      borderRadius: 4,
+                      padding: 2,
+                      width: "100%",
+                      marginBottom: 2,
+                    }}
+                  >
+                    <Radio
+                      sx={{
+                        color: "black",
+                        "&.Mui-checked": {
+                          color: "darkgoldenrod",
+                        },
+                      }}
+                      onChange={handleAddressChange}
+                      value={address._id}
+                      checked={selectedAddress === address._id}
+                    />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        fontSize: "20px",
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: "500", fontSize: "12px" }}>
+                        {address.firstName}
+                      </Typography>
+                      <Typography sx={{ fontWeight: "400", fontSize: "12px" }}>
+                        {address.address1} {address.address2}
+                      </Typography>
+                      <Typography sx={{ fontWeight: "400", fontSize: "12px" }}>
+                        {address.city}, {address.state} {address.pincode}
+                      </Typography>
+                    </Box>
+                  </Box>
+                );
+              })}
+              <Box my={2}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "white",
+                    color: "darkgoldenrod",
+                    ":hover": {
+                      color: "white",
+                      backgroundColor: "black",
+                    },
+                    border: "1px solid darkgoldenrod",
+                    // margin: '0px auto',
+                    // display : 'block',
+                  }}
+                  onClick={handleAddNewAddress}
+                >
+                  Add New Address
+                </Button>
+              </Box>
+            </div>
+
+            <Box my={2} sx={{ alignItems: "center" }}>
+              <Button
+                variant="contained"
+                sx={{
+                  background: "darkgoldenrod",
+                  margin: "0px auto",
+                  display: "block",
+                  ":hover": {
+                    color: "white",
+                    backgroundColor: "black",
+                  },
+                }}
+                disabled={!selectedAddress}
+                onClick={() => setCurrentStep(2)}
+              >
+                Continue
+              </Button>
+            </Box>
+          </Grid>
+        );
+
+      case 0:
+        return (
+          <Grid item xs={12}>
+            <AddressForm
+              setIsEdit={(data) => setCurrentStep(1)}
+              deliveryAddress={deliveryAddress}
+              setDeliveryAddress={(data) => setDeliveryAddress(data)}
+            />
+          </Grid>
+        );
+      case 2:
+        return (
+          <Grid item xs={12} md={6}>
+            <Typography variant="h6" sx={{ marginBottom: "10px" }}>
+              {" "}
+              Select Payment Method{" "}
+            </Typography>
+            <div
+              style={{
+                padding: "20px 0",
+                display: "flex",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#ffffff",
+                  color: "#000000",
+                  width: "48%",
+                  padding: "10px",
+                  border: "1px solid #000000",
+                  ":hover": {
+                    color: "#ffffff",
+                    backgroundColor: "#000000",
+                  },
+                  display: "block",
+                  margin: "0px auto",
+                }}
+              >
+                Cash On Delivery
+              </Button>
+
+              <Button
+                variant="contained"
+                onClick={() => onContinue()}
+                sx={{
+                  backgroundColor: "#000000",
+                  color: "white",
+                  width: "48%",
+                  padding: "10px",
+                  ":hover": {
+                    color: "#000000",
+                    backgroundColor: "white",
+                    border: "1px solid #000000",
+                  },
+                  display: "block",
+                  margin: "0px auto",
+                }}
+              >
+                Pay Now
+              </Button>
+            </div>
+            {/* <Box my={2} sx={{ alignItems: "center" }}>
+              <Button
+                variant="contained"
+                sx={{
+                  background: "darkgoldenrod",
+                  margin: "0px auto",
+                  display: "block",
+                  ":hover": {
+                    color: "white",
+                    backgroundColor: "black",
+                  },
+                }}
+                disabled={!selectedAddress}
+                onClick={() => onContinue()}
+              >
+                Continue
+              </Button>
+            </Box> */}
+          </Grid>
+        );
+
+      default:
+        break;
+    }
+  };
   return (
     <>
       <Dialog
@@ -241,118 +429,8 @@ export default function Checkout({ setCheckoutOpen }) {
           }}
         >
           <Grid container spacing={3}>
-            {!addNew ? (
-              <Grid item xs={12} md={6}>
-                <Typography
-                  variant="h6"
-                  id="address-modal-title"
-                  sx={{ marginBottom: "10px" }}
-                >
-                  Select Shipping Address
-                </Typography>
-                <div style={{ maxHeight: 200, overflow: "auto" }}>
-                  {deliveryAddress?.map((address, index) => {
-                    return (
-                      <Box
-                        key={index}
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          border: "1px solid darkgoldenrod",
-                          borderRadius: 4,
-                          padding: 2,
-                          width: "100%",
-                          marginBottom: 2,
-                        }}
-                      >
-                        <Radio
-                          sx={{
-                            color: "black",
-                            "&.Mui-checked": {
-                              color: "darkgoldenrod",
-                            },
-                          }}
-                          onChange={handleAddressChange}
-                          value={address._id}
-                          checked={selectedAddress === address._id}
-                        />
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            fontSize: "20px",
-                          }}
-                        >
-                          <Typography
-                            sx={{ fontWeight: "500", fontSize: "12px" }}
-                          >
-                            {address.firstName}
-                          </Typography>
-                          <Typography
-                            sx={{ fontWeight: "400", fontSize: "12px" }}
-                          >
-                            {address.address1} {address.address2}
-                          </Typography>
-                          <Typography
-                            sx={{ fontWeight: "400", fontSize: "12px" }}
-                          >
-                            {address.city}, {address.state} {address.pincode}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    );
-                  })}
-                  <Box my={2}>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        backgroundColor: "white",
-                        color: "darkgoldenrod",
-                        ":hover": {
-                          color: "white",
-                          backgroundColor: "black",
-                        },
-                        border: "1px solid darkgoldenrod",
-                        // margin: '0px auto',
-                        // display : 'block',
-                      }}
-                      onClick={handleAddNewAddress}
-                    >
-                      Add New Address
-                    </Button>
-                  </Box>
-                </div>
-
-                <Box my={2} sx={{ alignItems: "center" }}>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      background: "darkgoldenrod",
-                      margin: "0px auto",
-                      display: "block",
-                      ":hover": {
-                        color: "white",
-                        backgroundColor: "black",
-                      },
-                    }}
-                    disabled={!selectedAddress}
-                    onClick={onContinue}
-                  >
-                    Continue
-                  </Button>
-                </Box>
-              </Grid>
-            ) : (
-              <Grid item xs={12}>
-                <AddressForm
-                  setIsEdit={(data) => setAddNew(data)}
-                  deliveryAddress={deliveryAddress}
-                  setDeliveryAddress={(data) => setDeliveryAddress(data)}
-                />
-              </Grid>
-            )}
-            {!addNew && cartItems && priceTotal && (
+            {RenderComponent()}
+            {currentStep !== 0 && cartItems && priceTotal && (
               <Grid item xs={12} md={6}>
                 <Box
                   sx={{
@@ -453,7 +531,7 @@ export default function Checkout({ setCheckoutOpen }) {
                 </Box>
               </Grid>
             )}
-            {!addNew && (
+            {currentStep !== 0 && (
               <CloseIconStyled onClick={() => setCheckoutOpen(false)} />
             )}
           </Grid>
