@@ -40,6 +40,7 @@ const CloseIconStyled = styled(CloseIcon)({
 export default function Checkout({ setCheckoutOpen }) {
   const router = useRouter();
 
+  const [user, setUser] = useState();
   const [deliveryAddress, setDeliveryAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
   const [cartItems, setCartItems] = useState([]);
@@ -54,6 +55,7 @@ export default function Checkout({ setCheckoutOpen }) {
     try {
       const response = await getUserProfileService();
       const addresses = response?.data?.data?.deliveryAddress;
+      setUser(response?.data?.data)
       setDeliveryAddress(addresses);
       setSelectedAddress(addresses?.find((address) => address.isDefault)?._id);
 
@@ -154,9 +156,9 @@ export default function Checkout({ setCheckoutOpen }) {
           }
         },
         prefill: {
-          name: "Dhrumesh Kathiriya",
-          email: "dhrumesh.aws@gmail.com",
-          contact: "9999999999",
+          name: `${user.firstName} ${user.lastName}"`,
+          email: user.email,
+          contact: selectedAddress.contactNumber,
         },
         notes: {
           address: "Gopinath Infotech, Surat",
@@ -455,6 +457,7 @@ export default function Checkout({ setCheckoutOpen }) {
                   <Box sx={{ maxHeight: 200, overflow: "auto" }}>
                     {cartItems?.map((item, index) => {
                       return (
+                        <>
                         <Grid
                           container
                           key={index}
@@ -463,6 +466,7 @@ export default function Checkout({ setCheckoutOpen }) {
                             maxWidth: "100%",
                             marginBottom: "10px",
                             marginLeft: "0px",
+                            paddingTop: "10px"
                           }}
                         >
                           <Grid
@@ -504,6 +508,9 @@ export default function Checkout({ setCheckoutOpen }) {
                             </Box>
                           </Grid>
                         </Grid>
+                        <Divider />
+
+                        </>
                       );
                     })}
                   </Box>

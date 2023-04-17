@@ -34,11 +34,6 @@ export default function Address() {
     fetchData();
   }, []);
 
-
-
-
-
-
   const setAddressData = (data) => {
     setFormData(data);
     setIsEdit(true);

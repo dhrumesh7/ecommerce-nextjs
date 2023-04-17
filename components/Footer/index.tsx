@@ -28,10 +28,8 @@ const Footer = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Heading>Contact Us</Heading>
-            <FooterLink href="#">Uttar Pradesh</FooterLink>
-            <FooterLink href="#">Ahemdabad</FooterLink>
-            <FooterLink href="#">Indore</FooterLink>
-            <FooterLink href="#">Mumbai</FooterLink>
+            <FooterLink href="#">+91 70160 22603</FooterLink>
+            <FooterLink href="#">aryasilkmills@gmail.com</FooterLink>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Heading>Social Media</Heading>

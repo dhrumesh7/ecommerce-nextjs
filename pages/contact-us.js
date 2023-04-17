@@ -21,8 +21,8 @@ export default function ContactUs() {
         <h2 style={{ fontSize: "30px", fontWeight: 300 }}>GET IN TOUCH</h2>
         <div style={{ lineHeight: "50px", fontSize: "18px", fontWeight: 300 }}>
           <p>You can chat with us on our Instagram Page by direct messaging us between 10:30 am - 6:30 pm (Mon - Sat)</p>
-          <p>Call us: +91 378345 45687 between 10:30 am - 6:30 pm (Mon - Sat)</p>
-          <p>E-mail ID: support@raj.com</p>
+          <p>Call us: +91 70160 22603 between 10:30 am - 6:30 pm (Mon - Sat)</p>
+          <p>E-mail ID: aryasilkmills@gmail.com</p>
         </div>
         <h2 style={{ fontSize: "30px", fontWeight: 300 }}>SEND US A MESSAGE</h2>
         <form >

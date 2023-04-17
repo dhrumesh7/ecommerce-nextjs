@@ -17,6 +17,10 @@ export const addToWishListService = (body) => {
     return post('/user/wishlist', body);
 };
 
+export const removeFromWishListService = (productId) => {
+    return deleteReq(`/user/wishlist/${productId}`);
+};
+
 export const getWishListService = (body) => {
     return get('/user/wishlist', body);
 };

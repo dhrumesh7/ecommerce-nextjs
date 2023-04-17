@@ -17,7 +17,7 @@ import Select from "react-select";
 import SideBar from "../../components/Account/SideBar";
 import wishlistCSS from "../../styles/Account.module.scss";
 import { useEffect, useState, useId } from "react";
-import { getWishListService } from "../../services/user.services";
+import { getWishListService, removeFromWishListService } from "../../services/user.services";
 import { toast } from "react-toastify";
 import { ContainerStyled } from "../../components/Styled";
 import Link from "next/link";
@@ -43,6 +43,16 @@ export default function Address() {
     fetchData();
   }, []);
 
+
+  const removeFromWishlist = async (productId) => {
+    try {
+      const response = await removeFromWishListService(productId);
+      toast.success(response?.data?.message);
+      fetchData();
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message)
+    }
+  }
   return (
     <ContainerStyled>
       <div className={wishlistCSS.profileSideBarMain}>
@@ -83,7 +93,6 @@ export default function Address() {
                                 <p>Rs {wish.price}</p>
 
                                 <Button
-                                  disabled={user?.cart?.find(pr => pr.product === wish._id)}
                                   sx={{
                                     background: "darkgoldenrod",
                                     color: "white",
@@ -94,10 +103,10 @@ export default function Address() {
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();
-                                    addToCart(wish?._id)
+                                    removeFromWishlist(wish?._id)
                                   }}
                                 >
-                                  Add To Cart
+                                  Remove
                                 </Button>
                               </div>
                             </div>

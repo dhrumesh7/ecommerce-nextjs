@@ -147,221 +147,28 @@ const Order = () => {
                       </Grid>
                     </Grid>
                     <Grid item sm={2} xs={12}>
-                      <p className={styles.productPrice}>
+                      {/* <p className={styles.productPrice}>
                         ₹ {pr?.product?.price}
-                      </p>
+                      </p> */}
                     </Grid>
                     <Grid item sm={3} xs={12}>
-                      {data?.orderStatus}
+                    <p className={styles.productPrice}>
+                        ₹ {pr?.product?.price}
+                      </p>
                     </Grid>
                     {/* <Grid item xs={12}>
                         <RatingInput />
                       </Grid> */}
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                  </Grid>
-                </>
-              );
-            })}
-            {data?.products?.map((pr) => {
-              return (
-                <>
-                  <Grid
-                    container
-                    item={12}
-                    spacing={3}
-                    sx={{
-                      boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",
-                      maxWidth: "100%",
-                      margin: "0px auto 20px",
-                    }}
-                  >
-                    <Grid item xs={3} sm={1.2}>
-                      <Box>
-                        <Img
-                          alt="complex"
-                          src={`${process.env.BASE_IMAGE}/product/${pr?.product?._id}/${pr?.product?.image?.[0]?.url}`}
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={9} sm={5} container>
-                      <Grid
-                        item
-                        xs
-                        container
-                        direction="column"
-                        rowSpacing={1}
-                        justifyContent={"space-evenly"}
-                      >
-                        <Grid item xs>
-                          <Typography
-                            sx={{
-                              color: "darkgoldenrod",
-                              textTransform: "capitalize",
-                            }}
-                            gutterBottom
-                            variant="subtitle1"
-                            component="div"
-                          >
-                            {pr?.product?.title}
-                          </Typography>
-                          <p
-                            className={productDetailsStyles.descriptionTitle}
-                            style={{
-                              marginBottom: 0,
-                              lineHeight: "inherit",
-                              fontSize: "0.8rem",
-                            }}
-                          >
-                            Quantity: {pr?.quantity}
-                          </p>
-                          {pr?.product?.color && (
-                            <p
-                              className={productDetailsStyles.descriptionTitle}
-                              style={{
-                                marginBottom: 0,
-                                lineHeight: "inherit",
-                                fontSize: "0.8rem",
-                              }}
-                            >
-                              COLOR : <span> {pr?.product?.color} </span>
-                            </p>
-                          )}
-                          {pr?.product?.size && (
-                            <p
-                              className={productDetailsStyles.descriptionTitle}
-                              style={{
-                                marginBottom: 0,
-                                lineHeight: "inherit",
-                                fontSize: "0.8rem",
-                              }}
-                            >
-                              SIZE : <span> {pr?.product?.size} </span>
-                            </p>
-                          )}
-                        </Grid>
+                       <Grid item xs={12}><Divider /></Grid>
+                      
                       </Grid>
-                    </Grid>
-                    <Grid item sm={2} xs={12}>
-                      <p className={styles.productPrice}>
-                        ₹ {pr?.product?.price}
-                      </p>
-                    </Grid>
-                    <Grid item sm={3} xs={12}>
-                      {data?.orderStatus}
-                    </Grid>
-                    {/* <Grid item xs={12}>
-                        <RatingInput />
-                      </Grid> */}
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                  </Grid>
-                </>
-              );
-            })}
-            {data?.products?.map((pr) => {
-              return (
-                <>
-                  <Grid
-                    container
-                    item={12}
-                    spacing={3}
-                    sx={{
-                      boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",
-                      maxWidth: "100%",
-                      margin: "0px auto 20px",
-                    }}
-                  >
-                    <Grid item xs={3} sm={1.2}>
-                      <Box>
-                        <Img
-                          alt="complex"
-                          src={`${process.env.BASE_IMAGE}/product/${pr?.product?._id}/${pr?.product?.image?.[0]?.url}`}
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={9} sm={5} container>
-                      <Grid
-                        item
-                        xs
-                        container
-                        direction="column"
-                        rowSpacing={1}
-                        justifyContent={"space-evenly"}
-                      >
-                        <Grid item xs>
-                          <Typography
-                            sx={{
-                              color: "darkgoldenrod",
-                              textTransform: "capitalize",
-                            }}
-                            gutterBottom
-                            variant="subtitle1"
-                            component="div"
-                          >
-                            {pr?.product?.title}
-                          </Typography>
-                          <p
-                            className={productDetailsStyles.descriptionTitle}
-                            style={{
-                              marginBottom: 0,
-                              lineHeight: "inherit",
-                              fontSize: "0.8rem",
-                            }}
-                          >
-                            Quantity: {pr?.quantity}
-                          </p>
-                          {pr?.product?.color && (
-                            <p
-                              className={productDetailsStyles.descriptionTitle}
-                              style={{
-                                marginBottom: 0,
-                                lineHeight: "inherit",
-                                fontSize: "0.8rem",
-                              }}
-                            >
-                              COLOR : <span> {pr?.product?.color} </span>
-                            </p>
-                          )}
-                          {pr?.product?.size && (
-                            <p
-                              className={productDetailsStyles.descriptionTitle}
-                              style={{
-                                marginBottom: 0,
-                                lineHeight: "inherit",
-                                fontSize: "0.8rem",
-                              }}
-                            >
-                              SIZE : <span> {pr?.product?.size} </span>
-                            </p>
-                          )}
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item sm={2} xs={12}>
-                      <p className={styles.productPrice}>
-                        ₹ {pr?.product?.price}
-                      </p>
-                    </Grid>
-                    <Grid item sm={3} xs={12}>
-                      {data?.orderStatus}
-                    </Grid>
-                    {/* <Grid item xs={12}>
-                        <RatingInput />
-                      </Grid> */}
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                  </Grid>
-                </>
-              );
-            })}
-            <Grid item xs={12} sx={{ margin: "30px", fontWeight: 500 }} >
-              Total amount : Rs. {data.amount}
-            </Grid>
-            {/* <Grid item xs={6}>
+                    </>)
+                })
+              }
+              <Grid item xs={12} sx={{ marginBottom: "30px", fontWeight: 500, fontSize: "20px" }}>
+                Total amount : <span style={{color: "darkgoldenrod"}}>Rs. {data.amount}</span>
+              </Grid>
+              {/* <Grid item xs={6}>
                 <ShipmentStepper />
               </Grid> */}
 
@@ -370,13 +177,14 @@ const Order = () => {
               xs={12}
               sx={{ boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px", padding: '10px 20px' }}
             >
-              <Typography variant="h4" sx={{marginBottom: '10px'}} >Delivery Address</Typography>
-              <Typography sx={{marginBottom: '10px'}}>
+              <Typography variant="h5" sx={{marginBottom: '10px', color: "darkgoldenrod"}} >Delivery Address</Typography>
+              <Typography sx={{marginBottom: '10px', textTransform: "capitalize", fontWeight: 500}}>
                 {" "}
-                <b>Dhrumesh Kathiriya </b> <b>9876543210</b>{" "}
+                <p>{data?.address?.firstName} {data?.address?.lastName} - {data?.address?.contactNumber} </p> {" "}
               </Typography>
-              <Typography sx={{marginBottom: '10px'}}>
-                B-110 ishvarkrupa soc, Near laxman nagar, Punagam ,Surat-395010
+              <Typography sx={{marginBottom: '10px', textTransform: "capitalize"}}>
+                {data?.address?.address1}{data?.address?.address2 ? `, ${data?.address?.address2}` : ''}<br />
+                 {data?.address?.city}-{data?.address?.zipCode}, {data?.address?.state}
               </Typography>
             </Grid>
             <Grid item xs={12}>

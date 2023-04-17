@@ -23,9 +23,18 @@ export default function AddressForm({
   const [selectedCity, setSelectedCity] = useState(null);
 
   useEffect(() => {
+    if (data) {
+      const country = Country.getAllCountries()?.find(cn => cn.name === data.country)
+      const state = State.getStatesOfCountry(country?.isoCode)?.find(cn => cn.name === data.state)
+      const city = City.getCitiesOfState(state?.countryCode, state?.isoCode)?.find(cn => cn.name === data.city)
+      setSelectedCountry(country)
+      setSelectedState(state)
+      setSelectedCity(city)
+    }
+
     reset(data);
   }, [data]);
-  
+
   useEffect(() => {
     console.log(selectedCountry);
     console.log(selectedCountry?.isoCode);
@@ -65,10 +74,10 @@ export default function AddressForm({
       padding: 0,
     }),
   };
-
+  console.log('setcted', selectedCountry)
   return (
     <>
-      <form onSubmit={handleSubmit(saveFormData)} style={{ width: "100%"}}>
+      <form onSubmit={handleSubmit(saveFormData)} style={{ width: "100%" }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <div className={profileCSS.inputDiv}>
@@ -127,12 +136,12 @@ export default function AddressForm({
           </Grid>
           <Grid item xs={12} sm={6}>
             <div className={profileCSS.inputDiv}>
-              <label htmlFor="address2">Postal/Zip Code</label>
+              <label htmlFor="zipCode">Postal/Zip Code</label>
               <input
                 type="text"
-                autoComplete="address2"
+                autoComplete="zipCode"
                 className={profileCSS.inputBox}
-                {...register("address2", { required: true })}
+                {...register("zipCode", { required: true })}
               />
             </div>
           </Grid>

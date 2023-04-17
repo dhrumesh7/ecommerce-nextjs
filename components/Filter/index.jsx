@@ -93,7 +93,7 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
     <Box
       boxShadow={3}
       component="div"
-      style={{ width: "100%", height: "max-content" }}
+      style={{ width: "100%", height: "max-content", position: "-webkit-sticky" }}
     >
       <Accordion defaultExpanded={true}>
         <AccordionSummary
@@ -200,7 +200,7 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
           </div>
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded={true}>
+      {/* <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="size-filter-content"
@@ -214,7 +214,6 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
               <FormControlLabel control={<Checkbox />} label="Size S" />
               <FormControlLabel control={<Checkbox />} label="Size M" />
               <FormControlLabel control={<Checkbox />} label="Size L" />
-              {/* add more sizes here */}
             </FormGroup>
           </FormControl>
         </AccordionDetails>
@@ -234,11 +233,10 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
               <FormControlLabel control={<Checkbox />} label="Red" />
               <FormControlLabel control={<Checkbox />} label="Blue" />
               <FormControlLabel control={<Checkbox />} label="Green" />
-              {/* add more colors here */}
             </FormGroup>
           </FormControl>
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <div style={{ padding: "20px 0",display:'flex', justifyContent: 'space-evenly' }}>
       <Button
           variant="contained"
