@@ -12,11 +12,14 @@ COPY public ./public
 # Copy package.json and package-lock.json into the image
 COPY package*.json ./
 
+# Copy .env file to image
+COPY .env ./
+
 # Install dependencies
 RUN npm install --production --force
 
 # Add the node_modules/.bin directory to the PATH environment variable
-ENV PATH /app/node_modules/.bin:$PATH
+# ENV PATH /app/node_modules/.bin:$PATH
 
 # Set NODE_ENV to production
 ENV NODE_ENV production

@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { getOrderService } from "../../../services/user.services";
 import { cancelShipmentService } from "../../../services/shipment.service";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 const Order = () => {
   const router = useRouter();
@@ -69,6 +70,7 @@ const Order = () => {
             {data?.products?.map((pr) => {
               return (
                 <>
+                <Link href={`/products/${pr?.product?.slug}`} style={{textDecoration: "none", color: "black"}}>
                   <Grid
                     container
                     item={12}
@@ -121,14 +123,25 @@ const Order = () => {
                           </p>
                           {pr?.product?.color && (
                             <p
-                              className={productDetailsStyles.descriptionTitle}
+                              className={
+                                productDetailsStyles.descriptionTitle
+                              }
                               style={{
                                 marginBottom: 0,
                                 lineHeight: "inherit",
                                 fontSize: "0.8rem",
                               }}
                             >
-                              COLOR : <span> {pr?.product?.color} </span>
+                              COLOR :{" "}
+                              <span>
+                                {" "}
+                                {
+                                  pr?.product?.stocks?.find(
+                                    (stk) =>
+                                      stk.sku === pr?.sku
+                                  )?.color
+                                }{" "}
+                              </span>
                             </p>
                           )}
                           {pr?.product?.size && (
@@ -152,23 +165,24 @@ const Order = () => {
                       </p> */}
                     </Grid>
                     <Grid item sm={3} xs={12}>
-                    <p className={styles.productPrice}>
+                      <p className={styles.productPrice}>
                         ₹ {pr?.product?.price}
                       </p>
                     </Grid>
                     {/* <Grid item xs={12}>
                         <RatingInput />
                       </Grid> */}
-                       <Grid item xs={12}><Divider /></Grid>
-                      
-                      </Grid>
-                    </>)
-                })
-              }
-              <Grid item xs={12} sx={{ marginBottom: "30px", fontWeight: 500, fontSize: "20px" }}>
-                Total amount : <span style={{color: "darkgoldenrod"}}>Rs. {data.amount}</span>
-              </Grid>
-              {/* <Grid item xs={6}>
+                    <Grid item xs={12}><Divider /></Grid>
+
+                  </Grid>
+                  </Link>
+                </>)
+            })
+            }
+            <Grid item xs={12} sx={{ marginBottom: "30px", fontWeight: 500, fontSize: "20px" }}>
+              Total amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.amount}</span>
+            </Grid>
+            {/* <Grid item xs={6}>
                 <ShipmentStepper />
               </Grid> */}
 
@@ -177,14 +191,14 @@ const Order = () => {
               xs={12}
               sx={{ boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px", padding: '10px 20px' }}
             >
-              <Typography variant="h5" sx={{marginBottom: '10px', color: "darkgoldenrod"}} >Delivery Address</Typography>
-              <Typography sx={{marginBottom: '10px', textTransform: "capitalize", fontWeight: 500}}>
+              <Typography variant="h5" sx={{ marginBottom: '10px', color: "darkgoldenrod" }} >Delivery Address</Typography>
+              <Typography sx={{ marginBottom: '10px', textTransform: "capitalize", fontWeight: 500 }}>
                 {" "}
                 <p>{data?.address?.firstName} {data?.address?.lastName} - {data?.address?.contactNumber} </p> {" "}
               </Typography>
-              <Typography sx={{marginBottom: '10px', textTransform: "capitalize"}}>
+              <Typography sx={{ marginBottom: '10px', textTransform: "capitalize" }}>
                 {data?.address?.address1}{data?.address?.address2 ? `, ${data?.address?.address2}` : ''}<br />
-                 {data?.address?.city}-{data?.address?.zipCode}, {data?.address?.state}
+                {data?.address?.city}-{data?.address?.zipCode}, {data?.address?.state}
               </Typography>
             </Grid>
             <Grid item xs={12}>

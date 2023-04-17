@@ -125,7 +125,9 @@ export default function Address() {
                 textAlign: "center",
                 justifyContent: "center",
                 gap: "5px",
-                alignItems: "center"
+                alignItems: "center",
+                // height: "max-content"
+                minHeight: "300px"
               }}>
                 <h2>Your wishlist is empty!</h2>
                 <p>Save your favourite items so you don’t lose sight of them.</p>

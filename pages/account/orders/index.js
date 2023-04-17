@@ -143,7 +143,7 @@ export default function Address() {
                                     fontSize: "0.8rem",
                                   }}
                                 >
-                                  Quantity: {products.quantity}
+                                  Quantity: {products?.[0]?.quantity}
                                 </p>
                                 {products?.[0]?.product?.color && (
                                   <p
