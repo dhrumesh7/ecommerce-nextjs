@@ -180,7 +180,8 @@ const Order = () => {
             })
             }
             <Grid item xs={12} sx={{ marginBottom: "30px", fontWeight: 500, fontSize: "20px" }}>
-              Total amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.amount}</span>
+             {data?.codPrice > 0 && <p>COD amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.codPrice}</span></p>}
+              <p>Total amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.amount}</span></p>
             </Grid>
             {/* <Grid item xs={6}>
                 <ShipmentStepper />

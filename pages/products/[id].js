@@ -31,6 +31,7 @@ import Link from "next/link";
 
 export const addToCart = async (productId, sku) => {
   try {
+    if(!sku || !productId)  toast.error("Sorry! We can't add this product to cart.")
     const response = await addToCartService({ productId, sku });
     if (response.data.flag) {
       toast.success(response?.data?.message);

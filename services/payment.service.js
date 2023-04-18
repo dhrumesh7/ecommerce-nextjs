@@ -11,3 +11,8 @@ export const paymentSuccessService = (body) => {
 export const paymentFailureService = (body) => {
     return post('/payment/failure', body);
 };
+
+
+export const CODOrderService = (body) => {
+    return post('/payment/cod', body);
+};

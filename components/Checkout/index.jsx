@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { getCartListService } from "../../services/user.services";
 import { toast } from "react-toastify";
 import {
+  CODOrderService,
   createOrderService,
   paymentFailureService,
   paymentSuccessService,
@@ -44,8 +45,9 @@ export default function Checkout({ setCheckoutOpen }) {
   const [deliveryAddress, setDeliveryAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
   const [cartItems, setCartItems] = useState([]);
-  const [priceTotal, setPriceTotal] = useState([]);
+  const [priceTotal, setPriceTotal] = useState(0);
   const [currentStep, setCurrentStep] = useState(1);
+  const [codPrice, setcodPrice] = useState(0);
 
   // const [addNew, setAddNew] = useState(false);
 
@@ -210,9 +212,32 @@ export default function Checkout({ setCheckoutOpen }) {
     // handleClose();
   };
 
-  const handleCheckout = () => {
-    // Call Razorpay payment modal here
+  const handleCOD = async () => {
+    try {
+      const codPrice = 100
+      setcodPrice(codPrice)
+      setPriceTotal(priceTotal + codPrice)
+      const address = deliveryAddress.find(
+        (address) => address._id === selectedAddress
+      );
+
+      const checkoutData = {
+        cartItems,
+        priceTotal : priceTotal + (codPrice || 0),
+        codPrice,
+        address,
+      };
+
+      const result = await CODOrderService(checkoutData)
+      toast.success("Your order has been successfully placed!");
+      setCheckoutOpen(false)
+
+      return router.push(`/account/orders/${result?.data?.order?._id}`);
+    } catch (error) {
+      return toast.error(error?.response?.data?.message || error.message);
+    }
   };
+
   useEffect(() => {
     console.log("selecte ", selectedAddress);
   }, [selectedAddress]);
@@ -340,6 +365,7 @@ export default function Checkout({ setCheckoutOpen }) {
               {" "}
               Select Payment Method{" "}
             </Typography>
+            <p style={{ fontSize: "13px" }}>Note: COD fee of Rs.100 will be added to Cash on Delivery</p>
             <div
               style={{
                 padding: "20px 0",
@@ -362,8 +388,10 @@ export default function Checkout({ setCheckoutOpen }) {
                   display: "block",
                   margin: "0px auto",
                 }}
+                onClick={() => handleCOD()}
               >
                 Cash On Delivery
+
               </Button>
 
               <Button
@@ -458,57 +486,57 @@ export default function Checkout({ setCheckoutOpen }) {
                     {cartItems?.map((item, index) => {
                       return (
                         <>
-                        <Grid
-                          container
-                          key={index}
-                          spacing={2}
-                          sx={{
-                            maxWidth: "100%",
-                            marginBottom: "10px",
-                            marginLeft: "0px",
-                            paddingTop: "10px"
-                          }}
-                        >
                           <Grid
-                            item
-                            xs={12}
-                            sm={3}
+                            container
+                            key={index}
+                            spacing={2}
                             sx={{
-                              [theme.breakpoints.down("sm")]: {
-                                justifyContent: "center",
-                                display: "flex",
-                              },
+                              maxWidth: "100%",
+                              marginBottom: "10px",
+                              marginLeft: "0px",
+                              paddingTop: "10px"
                             }}
                           >
-                            <ButtonBase sx={{ width: 90, height: 90 }}>
-                              <Img
-                                alt="complex"
-                                src={`${process.env.BASE_IMAGE}/product/${item?.product?._id}/${item?.product?.image?.[0]?.url}`}
-                              />
-                            </ButtonBase>
+                            <Grid
+                              item
+                              xs={12}
+                              sm={3}
+                              sx={{
+                                [theme.breakpoints.down("sm")]: {
+                                  justifyContent: "center",
+                                  display: "flex",
+                                },
+                              }}
+                            >
+                              <ButtonBase sx={{ width: 90, height: 90 }}>
+                                <Img
+                                  alt="complex"
+                                  src={`${process.env.BASE_IMAGE}/product/${item?.product?._id}/${item?.product?.image?.[0]?.url}`}
+                                />
+                              </ButtonBase>
+                            </Grid>
+                            <Grid item xs={12} sm={9}>
+                              <Box sx={{ textAlign: "initial" }}>
+                                <Typography
+                                  sx={{
+                                    fontSize: "11px",
+                                    color: "darkgoldenrod",
+                                    textTransform: "capitalize",
+                                  }}
+                                >
+                                  {item.product.title} {item.product.color}{" "}
+                                  {item.product.size}
+                                </Typography>
+                                <Typography sx={{ fontSize: "11px" }}>
+                                  Quantity: {item.quantity}
+                                </Typography>
+                                <Typography sx={{ fontSize: "11px" }}>
+                                  Price: Rs. {item.product.price}
+                                </Typography>
+                              </Box>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={12} sm={9}>
-                            <Box sx={{ textAlign: "initial" }}>
-                              <Typography
-                                sx={{
-                                  fontSize: "11px",
-                                  color: "darkgoldenrod",
-                                  textTransform: "capitalize",
-                                }}
-                              >
-                                {item.product.title} {item.product.color}{" "}
-                                {item.product.size}
-                              </Typography>
-                              <Typography sx={{ fontSize: "11px" }}>
-                                Quantity: {item.quantity}
-                              </Typography>
-                              <Typography sx={{ fontSize: "11px" }}>
-                                Price: Rs. {item.product.price}
-                              </Typography>
-                            </Box>
-                          </Grid>
-                        </Grid>
-                        <Divider />
+                          <Divider />
 
                         </>
                       );
@@ -518,22 +546,44 @@ export default function Checkout({ setCheckoutOpen }) {
                   <Box
                     sx={{
                       display: "flex",
+                      flexDirection: "column",
                       justifyContent: "space-between",
                       padding: "10px 27px",
                     }}
                   >
-                    <Typography sx={{ fontSize: "13px", fontWeight: 500 }}>
-                      Total Price
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: "13px",
-                        fontWeight: 500,
-                        color: "darkgoldenrod",
-                      }}
-                    >
-                      Rs. {priceTotal}
-                    </Typography>
+                    {codPrice > 0 && <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+                      <Typography sx={{ fontSize: "13px", fontWeight: 500, float: "left" }}>
+                        COD Price
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                          fontWeight: 500,
+                          color: "darkgoldenrod",
+
+                        }}
+                      >
+                        Rs. {100}
+                      </Typography>
+                    </div>
+                    }
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+                      <Typography sx={{ fontSize: "13px", fontWeight: 500 }}>
+                        Total Price
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                          fontWeight: 500,
+                          color: "darkgoldenrod",
+                        }}
+                      >
+                        Rs. {priceTotal}
+                      </Typography>
+                    </div>
+
                   </Box>
                 </Box>
               </Grid>
