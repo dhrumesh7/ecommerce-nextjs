@@ -20,7 +20,8 @@ export default function Search() {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const [searchText, setSearchText] = React.useState('')
-  const loading = open && options.length === 0;
+  const [loading, setLoading] = React.useState(false);
+  // const loading = open && options.length === 0;
 
   const router = useRouter()
 
@@ -51,21 +52,24 @@ export default function Search() {
     }
   }, [open]);
 
-  React.useEffect(() => {
-    if(searchText && !options.length){
-      setOpen(false)
-    }
-  }, [searchText])
+  // React.useEffect(() => {
+  //   if(searchText && !options.length){
+  //     setOpen(false)
+  //   }
+  // }, [searchText])
   const searchCall =async (query)  => {
 
     if(!query) return;
     try {
+      setLoading(true);
       const response = await searchProductsService({text: query});
       const data = response?.data?.data
+      setLoading(false);
       // setOptions([...response?.data?.data]);
       return data
-    
+      
     } catch (error) {
+      setLoading(false);
       console.log(error)
       return
     }
@@ -74,7 +78,6 @@ export default function Search() {
   const debouncedFetchData = debounce(async (query) => {
     setSearchText(query)
    const res = await searchCall(query);
-   console.log('res',res)
 
    setOptions(res || [])
    }, 500);
@@ -129,7 +132,6 @@ export default function Search() {
       }
       }}
       popupIcon={<></>}
-      // clearIcon={<CloseIconStyled sx={{width: "80%", }}/>}
       renderInput={(params) => (
         <TextField
         sx={{border : '#000', color : '$000', outline: '#000'}}
@@ -152,12 +154,6 @@ export default function Search() {
       )}
       renderOption={(props, option, state) => renderOption(props, option, state)}
     />
-    {/* <ReactSearchBox
-        placeholder="Placeholder"
-        value="Doe"
-        data={this.data}
-        callback={(record) => console.log(record)}
-      /> */}
     </div>
   );
 }

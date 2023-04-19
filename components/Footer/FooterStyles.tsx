@@ -38,7 +38,7 @@ grid-gap: 20px;
 `;
 
 export const FooterLink = styled('a')`
-color: #fff;
+color: #000000;
 margin-bottom: 20px;
 font-size: 14px;
 text-decoration: none;
@@ -52,7 +52,7 @@ display: block;
 
 export const Heading = styled('p')`
 font-size: 18px;
-color: #fff;
+color: #000000;
 font-weight: 500;
 margin-bottom: 30px;
 letter-spacing: 3px;

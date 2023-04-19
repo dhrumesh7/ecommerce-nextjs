@@ -11,10 +11,10 @@ import { Box, Grid } from "@mui/material";
 import { ContainerStyled } from "../Styled";
 const Footer = () => {
   return (
-    <Box sx={{ padding: "50px 60px", background: "#222222" }}>
+    <Box sx={{ padding: "50px 60px", background: "#ffffff", borderTop: '1px solid #e8e8e1' }}>
       <ContainerStyled>
         <Grid container rowSpacing={2} spacing={2}>
-          <Grid item xs={12} md={6} sx={{ color: "#ffffff" }}>
+          <Grid item xs={12} md={6} sx={{ color: "#000000" }}>
             <div>
               <p style={{ fontWeight: 600 }}>Manufactured & Marketed By:</p>
               <br></br> Arya Silk Mills<br></br>A-UG-527 Avadh Rituraj Textile
@@ -28,8 +28,8 @@ const Footer = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Heading>Contact Us</Heading>
-            <FooterLink href="#">+91 70160 22603</FooterLink>
-            <FooterLink href="#">aryasilkmills@gmail.com</FooterLink>
+            <FooterLink href="callto:+917016022603:">+91 70160 22603</FooterLink>
+            <FooterLink href="mailto:aryasilkmills@gmail.com">aryasilkmills@gmail.com</FooterLink>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Heading>Social Media</Heading>
