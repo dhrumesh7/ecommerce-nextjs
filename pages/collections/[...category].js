@@ -1,6 +1,6 @@
 import Filter from "../../components/Filter";
 import ProductListGrid from "../../components/productList/productListGrid";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone';
 import CloseIcon from "@mui/icons-material/Close";
 import { Button, Drawer, Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -83,7 +83,7 @@ export default function Category() {
     }
   }
 
-  const [isFilter, setIsFilter] = useState(desktop);
+  const [isFilter, setIsFilter] = useState(false);
 
   const filterClick = () => {
     setIsFilter(!isFilter);
@@ -109,8 +109,8 @@ export default function Category() {
               className={FilterCss.filterIconDiv}
               onClick={() => filterClick()}
             >
-              {isFilter ? <CloseIcon /> : <FilterListIcon />}
-              <span>Filter</span>
+              {isFilter ? <CloseIcon /> : <FilterAltTwoToneIcon />}
+              <span>Filters</span>
             </div>
           </div>
 

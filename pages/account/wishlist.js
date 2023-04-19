@@ -58,7 +58,7 @@ export default function Address() {
       <div className={wishlistCSS.profileSideBarMain}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
-            <SideBar />
+            <SideBar user={user}/>
           </Grid>
           {isApiCalled && <Grid container item xs={12} md={8}>
             {wishlist.length ?

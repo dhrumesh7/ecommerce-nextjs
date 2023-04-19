@@ -1,5 +1,5 @@
 .productTitle {
-  font-weight: 300;
+  font-weight: 500;
   margin: 0;
   margin-bottom: 15px;
   text-transform: uppercase;
@@ -7,45 +7,45 @@
   font-size: 24px;
 }
 .productDescription {
-  font-weight: 400;
+  font-weight: 500;
   margin: 0;
   margin-bottom: 10px;
   font-size: 14px;
   letter-spacing: 0.3em;
 }
 .productPrice {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.3em;
   margin: 0;
   letter-spacing: 0.1em;
 }
 .detailsTitle {
-  letter-spacing: 0.3em;
-  font-weight: 400;
+  letter-spacing: 0.2em;
+  font-weight: bold;
   font-size: 12px;
   margin-bottom: 10px;
   text-transform: capitalize;
 }
 .descriptionText {
-  font-weight: 400;
-  font-size: 14px;
-//   margin-bottom: 10px;
+  font-weight: 300;
+  font-size: 90%;
   line-height: 1.8;
+  text-transform: capitalize;
 }
 .descriptionTitle {
-  font-weight: 500;
-  font-size: 16px;
-  margin-bottom: 25px;
-  line-height: 2;
+  font-weight: bold;
+  font-size: 90%;
+  // line-height: 2;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   span{
-    font-weight: 400;
-    font-size: 14px;
+    font-weight: 300;
+    font-size: 100%;
     line-height: 1.8;
     text-transform: capitalize;
   }
 }
+
 .detailsButton {
   font-size: 12px;
   padding: 9px 15px;
@@ -64,7 +64,7 @@
   width: 100%;
   padding: 10px;
   letter-spacing: 0.2em;
-  font-weight: 500;
+  font-weight: bold;
   color: #ffffff;
   background: darkgoldenrod;
   border: none;

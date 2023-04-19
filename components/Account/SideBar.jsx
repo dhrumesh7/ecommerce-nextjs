@@ -23,17 +23,18 @@ export const logOut = async () => {
     // push('/')
 }
 
-export default function SideBar() {
+export default function SideBar({user}) {
+    console.log('user', user)
     const { push } = useRouter();
 
     const drawer = (<nav aria-label="main mailbox folders">
-        <List >
+      {user &&   <List>
             <ListItem disablePadding>
                 <ListItemButton onClick={() => push('/account/profile')}>
                     <ListItemIcon>
                         <PermIdentityIcon />
                     </ListItemIcon>
-                    <ListItemText primary="My Profile" style={{ fontSize: "5px" }} />
+                    <ListItemText primary="My Profile" />
                 </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -72,7 +73,7 @@ export default function SideBar() {
             </ListItem>
             <Divider />
             <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton disabled={user?.loginType === 'google'}>
                     <ListItemIcon>
                         <LockResetOutlinedIcon />
                     </ListItemIcon>
@@ -87,7 +88,7 @@ export default function SideBar() {
                     <ListItemText primary="Log Out" />
                 </ListItemButton>
             </ListItem>
-        </List>
+        </List>}
     </nav>)
 
     return (

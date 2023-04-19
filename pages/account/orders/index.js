@@ -36,6 +36,8 @@ export default function Address() {
   });
 
   const { push } = useRouter();
+
+  const [user, setUser] = useState();
   const [orders, setOrders] = useState([]);
   const [isApiCalled, setApiCalled] = useState(false);
 
@@ -43,6 +45,7 @@ export default function Address() {
     try {
       const response = await getOrderListService();
       setOrders(response?.data?.data?.orders);
+      setUser(response?.data?.data)
       setApiCalled(true);
     } catch (error) {
       toast.error(error.message);
@@ -63,7 +66,7 @@ export default function Address() {
       <div className={wishlistCSS.profileSideBarMain}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
-            <SideBar />
+            <SideBar user={user}/>
           </Grid>
           {isApiCalled && (
             <Grid container item xs={12} md={8}>

@@ -71,6 +71,7 @@ const Product = ({ data }) => {
       const response = await getSimiliarProductsService({
         category: data.category,
         subcategory: data.subcategory,
+        productId: data._id
       });
       setSimilarProducts(response?.data?.data?.similarProducts);
       setApiCall(true);
@@ -267,7 +268,7 @@ const Product = ({ data }) => {
               <div>
                 <p className={styles.descriptionTitle}>PRODUCT DESCRIPTION</p>
                 <ul className={styles.descriptionUl}>
-                  {data?.description?.features.map((feature, index) => {
+                  {data?.description?.features?.map((feature, index) => {
                     return (
                       <li key={index} className={styles.descriptionText}>
                         {feature}
@@ -280,7 +281,7 @@ const Product = ({ data }) => {
                   <li className={styles.descriptionText}>Full Sleeves</li> */}
                 </ul>
               </div>
-              <div>
+              <div style={{display: "flex", flexDirection: "column", gap: "15px", marginTop: "10px"}}>
                 <p className={styles.descriptionTitle}>
                   Fabric : <span>{data?.description?.fabric}</span>
                 </p>
@@ -294,7 +295,7 @@ const Product = ({ data }) => {
             </div>
           </Grid>
         </Grid>
-        <Box sx={{ width: "100%", maxWidth: "100%" }}>
+        <Box sx={{ width: "100%", maxWidth: "100%", marginTop: "10px" }}>
           <Tabs
             value={value}
             onChange={handleChange}

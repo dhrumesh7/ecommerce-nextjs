@@ -4,7 +4,7 @@ import {
   Grid,
 } from "@mui/material";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
+import EditIcon from "@mui/icons-material/Edit";
 import SideBar from "../../components/Account/SideBar";
 import profileCSS from "../../styles/Account.module.scss";
 import { getUserProfileService } from "../../services/user.services";
@@ -15,8 +15,10 @@ import { ContainerStyled } from "../../components/Styled";
 import { Controller } from "react-hook-form";
 import Select from "react-select";
 
+
 export default function Address() {
 
+  const [user, setUser] = useState();
   const [formData, setFormData] = useState({});
   const [deliveryAddress, setDeliveryAddress] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -25,6 +27,7 @@ export default function Address() {
     try {
       const response = await getUserProfileService();
       setDeliveryAddress(response?.data?.data?.deliveryAddress);
+      setUser(response?.data?.data)
     } catch (error) {
       console.log("er", error);
     }
@@ -48,7 +51,7 @@ export default function Address() {
       <div className={profileCSS.profileSideBarMain}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
-            <SideBar />
+            <SideBar user={user}/>
           </Grid>
           <Grid item xs={12} md={8}>
             <Box
@@ -124,8 +127,9 @@ export default function Address() {
                                   Default
                                 </Box>
                               ) }
-                              <EditLocationAltIcon
-                                style={address.isDefault ? {  position: 'absolute', right: '10px', top:'25px'}: {  position: 'absolute', right: '10px', top:'15px'}  }
+                              <EditIcon
+                              fontSize="small"
+                                style={address.isDefault ? {  position: 'absolute', right: '10px', top:'30px'}: {  position: 'absolute', right: '10px', top:'15px'}  }
                               />
                               <div className={profileCSS.addressBoxContent}>
                                 <p>

@@ -90,7 +90,7 @@ export default function Search() {
   }));
   
   function renderOption(props, option, { selected }) {
-    console.log(props);
+    console.log(' props --->',props);
     const label = props.key;
     return (
       <StyledOption selected={selected} component="li">

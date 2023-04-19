@@ -179,8 +179,8 @@ const Order = () => {
                 </>)
             })
             }
-            <Grid item xs={12} sx={{ marginBottom: "30px", fontWeight: 500, fontSize: "20px" }}>
-             {data?.codPrice > 0 && <p>COD amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.codPrice}</span></p>}
+            <Grid item xs={12} sx={{ marginBottom: "30px", fontWeight: 500, fontSize: "20px", display :"flex", flexDirection: "column", gap: 2 }}>
+             {data?.codPrice > 0 && <p>COD amount : <span style={{ color: "darkgoldenrod"}}>Rs. {data.codPrice}</span></p>}
               <p>Total amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.amount}</span></p>
             </Grid>
             {/* <Grid item xs={6}>
@@ -195,7 +195,7 @@ const Order = () => {
               <Typography variant="h5" sx={{ marginBottom: '10px', color: "darkgoldenrod" }} >Delivery Address</Typography>
               <Typography sx={{ marginBottom: '10px', textTransform: "capitalize", fontWeight: 500 }}>
                 {" "}
-                <p>{data?.address?.firstName} {data?.address?.lastName} - {data?.address?.contactNumber} </p> {" "}
+                <p>{data?.address?.firstName} {data?.address?.lastName} | {data?.address?.contactNumber} </p> {" "}
               </Typography>
               <Typography sx={{ marginBottom: '10px', textTransform: "capitalize" }}>
                 {data?.address?.address1}{data?.address?.address2 ? `, ${data?.address?.address2}` : ''}<br />

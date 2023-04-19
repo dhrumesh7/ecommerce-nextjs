@@ -7,6 +7,8 @@ import Select from "react-select";
 import profileCSS from "../../styles/Account.module.scss";
 import { useEffect, useState } from "react";
 import { addAddressService } from "../../services/user.services";
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 export default function AddressForm({
   setIsEdit,
@@ -14,8 +16,27 @@ export default function AddressForm({
   deliveryAddress,
   setDeliveryAddress,
 }) {
-  const { register, handleSubmit, control, reset } = useForm({
+
+  const validationSchema = yup.object({
+    firstName: yup.string().required('First Name is required'),
+    lastName: yup.string().required('First Name is required'),
+    address1: yup.string().required('Address 1 is required'),
+    zipCode: yup.string().required('Zip Code is required'),
+    city: yup.mixed().required('City is required'),
+    state: yup.mixed().required('State is required'),
+    country: yup.mixed().required('Country is required'),
+    contactNumber: yup
+      .string()
+      .nullable()
+      .transform((v, o) => (o === '' ? null : v))
+      .matches(/^[0-9]+$/, 'Mobile number must be only digits')
+      .max(10)
+      .min(10, 'Mobile number must be only 10 digits'),
+  });
+
+  const { register, handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: {},
+    resolver: yupResolver(validationSchema)
   });
 
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -44,9 +65,9 @@ export default function AddressForm({
   const saveFormData = async (data) => {
     console.log(data);
     if (deliveryAddress?.length < 1) data.isDefault = true;
-    data.country = data?.country?.name || "";
-    data.state = data?.state?.name || "";
-    data.city = data?.city?.name || "";
+    data.country = data?.country?.name || data?.country || "";
+    data.state = data?.state?.name || data?.state || "";
+    data.city = data?.city?.name || data?.city || "";
 
     const response = await addAddressService(data);
     console.log(response);
@@ -60,6 +81,7 @@ export default function AddressForm({
       background: "whitesmoke",
       borderRadius: state.isFocused ? "3px 3px 0 0" : 3,
       boxShadow: state.isFocused ? null : null,
+      fontWeight: 300,
       "&:hover": {
         borderColor: state.isFocused ? "black" : "transparent",
       },
@@ -78,7 +100,7 @@ export default function AddressForm({
   return (
     <>
       <form onSubmit={handleSubmit(saveFormData)} style={{ width: "100%" }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{fontSize: "15px", fontWeight: "bold"}}>
           <Grid item xs={12} sm={6}>
             <div className={profileCSS.inputDiv}>
               <label htmlFor="firstName">First Name</label>
@@ -88,6 +110,11 @@ export default function AddressForm({
                 className={profileCSS.inputBox}
                 {...register("firstName", { required: true })}
               />
+              {errors.firstName && (
+                <span className={profileCSS.formError}>
+                  {errors.firstName.message}
+                </span>
+              )}
             </div>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -99,6 +126,11 @@ export default function AddressForm({
                 className={profileCSS.inputBox}
                 {...register("lastName", { required: true })}
               />
+              {errors.lastName && (
+                <span className={profileCSS.formError}>
+                  {errors.lastName.message}
+                </span>
+              )}
             </div>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -110,6 +142,11 @@ export default function AddressForm({
                 className={profileCSS.inputBox}
                 {...register("address1", { required: true })}
               />
+              {errors.address1 && (
+                <span className={profileCSS.formError}>
+                  {errors.address1.message}
+                </span>
+              )}
             </div>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -120,6 +157,7 @@ export default function AddressForm({
                 autoComplete="address2"
                 className={profileCSS.inputBox}
                 {...register("address2")}
+
               />
             </div>
           </Grid>
@@ -143,6 +181,11 @@ export default function AddressForm({
                 className={profileCSS.inputBox}
                 {...register("zipCode", { required: true })}
               />
+              {errors.zipCode && (
+                <span className={profileCSS.formError}>
+                  {errors.zipCode.message}
+                </span>
+              )}
             </div>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -154,6 +197,11 @@ export default function AddressForm({
                 className={profileCSS.inputBox}
                 {...register("contactNumber", { required: true })}
               />
+              {errors.contactNumber && (
+                <span className={profileCSS.formError}>
+                  {errors.contactNumber.message}
+                </span>
+              )}
             </div>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -179,7 +227,13 @@ export default function AddressForm({
                   />
                 )}
               />
+
             </div>
+            {errors.country && (
+              <span className={profileCSS.formError}>
+                {errors.country.message}
+              </span>
+            )}
           </Grid>
           <Grid item xs={12} sm={6}>
             <div className={profileCSS.inputDiv}>
@@ -205,6 +259,11 @@ export default function AddressForm({
                 )}
               />
             </div>
+            {errors.state && (
+              <span className={profileCSS.formError}>
+                {errors.state.message}
+              </span>
+            )}
           </Grid>
           <Grid item xs={12} sm={6}>
             <div className={profileCSS.inputDiv}>
@@ -231,6 +290,11 @@ export default function AddressForm({
                 )}
               />
             </div>
+            {errors.city && (
+              <span className={profileCSS.formError}>
+                {errors.city.message}
+              </span>
+            )}
           </Grid>
           <Grid item xs={12}>
             <Button

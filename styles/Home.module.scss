@@ -7,8 +7,11 @@
     margin-top: 20px;
     margin-bottom: 20px;
     width: fit-content;
+    padding: 5px;
     gap: 10px;
     cursor: pointer;
+    border: 1px solid;
+    border-radius: 3px;
 }
 
 .filterOuterDiv {
