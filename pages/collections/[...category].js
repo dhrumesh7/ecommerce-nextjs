@@ -97,9 +97,11 @@ export default function Category() {
             <Drawer anchor={"bottom"} open={isFilter} onClose={() => setIsFilter(false)}
               PaperProps={{ sx: { height: '-webkit-fill-available' } }}>
               <Filter
+                 currentFilters={filters}
                 type={type}
                 slug={type === "category" ? category[0] : category[1]}
                 appliedFilters={(data) => { setFilters(data); setIsFilter(false) }}
+                isFilter={isFilter}
               />
             </Drawer>
           )}

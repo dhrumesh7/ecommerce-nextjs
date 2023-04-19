@@ -22,10 +22,11 @@ const marks = [
   { value: 100, label: "$100" },
 ];
 
-const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
+const Filter = ({ currentFilters, type, slug, appliedFilters, isFilter }) => {
   const [filterList, setFilterList] = useState([]);
   const [sliderValue, setSliderValue] = useState([]);
   const [checkedSlugs, setCheckedSlugs] = useState([]);
+  const [isChanged, setIsChanged] = useState(false);
 
   async function fetchData() {
     const filters = await getFilterListService({ type, slug });
@@ -33,13 +34,11 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
     setFilterList(filterData);
     const defaultminPrice = filterData?.priceRange?.min;
     const defaultmaxPrice = filterData?.priceRange?.max;
-    
+
     setSliderValue([defaultminPrice, defaultmaxPrice]);
     setCheckedSlugs(currentFilters?.slugs || [])
   }
-  useEffect(() => {
-    fetchData();
-  }, []);
+ 
 
   useEffect(() => {
     fetchData();
@@ -47,14 +46,19 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
+    setIsChanged(true)
   };
 
-//   useEffect(() => {
-//     appliedFilters({
-//       priceRange: { minPrice: sliderValue[0], maxPrice: sliderValue[1] },
-//       slugs: checkedSlugs,
-//     });
-//   }, [sliderValue, checkedSlugs]);
+  useEffect(() => {
+    if (isChanged) {
+      appliedFilters({
+        priceRange: { minPrice: sliderValue[0], maxPrice: sliderValue[1] },
+        slugs: checkedSlugs,
+      });
+    }
+
+  }, [checkedSlugs]);
+
   const handleTextFieldChange = (event) => {
     const id = event.target.id;
     const value = event.target.value;
@@ -71,6 +75,8 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
     } else {
       setCheckedSlugs(checkedSlugs.filter((c) => c !== slug));
     }
+    setIsChanged(true)
+
   };
 
   const applyFilter = () => {
@@ -84,9 +90,10 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
     setCheckedSlugs([]);
     const defaultminPrice = filterList?.priceRange?.min;
     const defaultmaxPrice = filterList?.priceRange?.max;
-    
+
     setSliderValue([defaultminPrice, defaultmaxPrice]);
     appliedFilters();
+    setIsChanged(true)
   }
 
   return (
@@ -101,7 +108,7 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
           aria-controls="category-filter-content"
           id="category-filter-header"
         >
-          <Typography variant="subtitle1" sx={{fontWeight: 600}}>Category</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>Category</Typography>
         </AccordionSummary>
         <AccordionDetails sx={{ margin: 0 }}>
           <FormControl component="fieldset">
@@ -130,7 +137,7 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
           aria-controls="price-filter-content"
           id="price-filter-header"
         >
-          <Typography variant="subtitle1" sx={{fontWeight: 600}}>Price</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>Price</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <div style={{ width: "100%" }}>
@@ -197,6 +204,25 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
                 color: "black",
               }}
             />
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#000000",
+                color: "#ffffff",
+                width: "48%",
+                padding: "5px",
+                border: "1px solid #000000",
+                ":hover": {
+                  color: "#ffffff",
+                  backgroundColor: "#000000",
+                },
+                display: "block",
+                margin: "10px auto",
+              }}
+              onClick={applyFilter}
+            >
+              Filter Price
+            </Button>
           </div>
         </AccordionDetails>
       </Accordion>
@@ -237,8 +263,8 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
           </FormControl>
         </AccordionDetails>
       </Accordion> */}
-      <div style={{ padding: "20px 0",display:'flex', justifyContent: 'space-evenly' }}>
-      <Button
+      <div style={{ padding: "20px 0", display: 'flex', justifyContent: 'space-evenly' }}>
+        <Button
           variant="contained"
           sx={{
             backgroundColor: "#ffffff",
@@ -257,7 +283,7 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
         >
           Clear Filter
         </Button>
-        <Button
+        {/* <Button
           variant="contained"
           sx={{
             backgroundColor: "#000000",
@@ -275,8 +301,8 @@ const Filter = ({ currentFilters, type, slug, appliedFilters }) => {
           onClick={applyFilter}
         >
           Apply Filter
-        </Button>
-        
+        </Button> */}
+
       </div>
     </Box>
   );

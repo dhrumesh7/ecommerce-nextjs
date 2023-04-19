@@ -99,3 +99,27 @@
   -moz-box-shadow: 0 8px 10px -10px #222;
   box-shadow: 0 8px 10px -10px #222;
 }
+
+.addToWishlist {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 50%;
+  color: black;
+  z-index: 100;
+}
+
+.addToWishlist:hover {
+  background-color: white;
+
+  color: red;
+}
+
+.addToWishlist i {
+  font-size: 24px;
+  vertical-align: middle;
+}

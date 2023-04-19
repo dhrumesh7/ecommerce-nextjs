@@ -81,7 +81,7 @@ export default function Address() {
                         >
                           <Link href={`/products/${wish.slug}`} style={{ textDecoration: "none" }}>
                             <div className={wishlistCSS.addressBoxContent}>
-                              <p >{wish.title}</p>
+                              <p style={{fontSize: "12px", fontWeight: 700, color: "darkgoldenrod"}}>{wish.title}</p>
                               <div style={{ width: "70px" }}>
                                 <img
                                   src={`${process.env.BASE_IMAGE}/product/${wish?._id}/${wish?.image?.[0]?.url}`}
@@ -89,8 +89,8 @@ export default function Address() {
                                   alt="product"
                                 />
                               </div>
-                              <div style={{ width: "100%" }}>
-                                <p>Rs {wish.price}</p>
+                              <div style={{ width: "100%", fontSize: "15px", fontWeight: "bold" }}>
+                                <p>Rs. {wish.price}</p>
 
                                 <Button
                                   sx={{
