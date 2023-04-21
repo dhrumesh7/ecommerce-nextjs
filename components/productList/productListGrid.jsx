@@ -58,6 +58,18 @@ export default function ProductListGrid({ title, products }) {
     }
   }
 
+  const wishlistStyle = {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    backgroundColor: 'white',
+    borderRadius: '50%',
+    color: 'black',
+    zIndex: 100,
+  }
   return (
     <>
       {/* <h3 className={globalStyles.productListTitle}>Product List</h3> */}
@@ -83,11 +95,11 @@ export default function ProductListGrid({ title, products }) {
                           <>
                             {
                               !user?.wishlist?.find(pr => pr === product._id) ?
-                                <IconButton className={globalStyles.addToWishlist} onClick={(e) => addToWishList(e, product._id)}>
+                                <IconButton sx={wishlistStyle} onClick={(e) => addToWishList(e, product._id)}>
                                   <FavoriteBorder fontSize="small" />
                                 </IconButton>
                                 :
-                                <IconButton className={globalStyles.addToWishlist} onClick={(e) => removeFromWishlist(e, product._id)}>
+                                <IconButton sx={wishlistStyle} onClick={(e) => removeFromWishlist(e, product._id)}>
                                   <Favorite fontSize="small" sx={{ color: "red" }} />
                                 </IconButton>
                             }
