@@ -145,7 +145,7 @@ const Product = ({ data }) => {
   useEffect(() => {
     console.log(activeImageIndex);
   }, [activeImageIndex]);
-  const [zoomOpen, setZoomOpen] = useState(true);
+  const [zoomOpen, setZoomOpen] = useState(false);
   return (
     <>
       <Modal
@@ -241,7 +241,7 @@ const Product = ({ data }) => {
             {!desktop && (
               <Grid item xs={12}>
                 {" "}
-                <ImageSlider data={data} />
+                <ImageSlider data={data} zoom={()=> setZoomOpen(true) } />
               </Grid>
             )}
 

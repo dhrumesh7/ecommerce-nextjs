@@ -2,7 +2,7 @@ import globalStyles from "../../styles/global.module.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-export default function ImageSlider({data}) {
+export default function ImageSlider({data,zoom}) {
   var settings = {
     className: "center",
     centerMode: true,
@@ -20,7 +20,7 @@ export default function ImageSlider({data}) {
             data?.image?.map((image, index) => {
               return(
                 <div key={index}>
-                <img src={`${process.env.BASE_IMAGE}/product/${data?._id}/${image.url}`} alt="" style={{width : '90%'}} />
+                <img src={`${process.env.BASE_IMAGE}/product/${data?._id}/${image.url}`} alt="" style={{width : '90%'}} onClick={()=>zoom()}  />
                
               </div>
               )
