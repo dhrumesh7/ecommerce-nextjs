@@ -153,6 +153,13 @@ const Product = ({ data }) => {
         onClose={() => setZoomOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        BackdropProps={{
+          style: {
+            backgroundColor: '#ffffff',
+            boxShadow: 'none',
+          },
+        }}
+       
       >
         <Box
           sx={{
@@ -166,7 +173,7 @@ const Product = ({ data }) => {
             src={`${process.env.BASE_IMAGE}/product/${data?._id}/${data?.image?.[activeImageIndex]?.url}`}
             alt={"activeImageIndex"}
             style={{
-              width: "100%",
+              width: "95%",
               margin: "50px auto",
               maxHeight: "calc(100vh)",
               objectFit: "contain",
@@ -175,13 +182,13 @@ const Product = ({ data }) => {
           />
           <Box sx={{ position: "absolute", bottom: 50, left: 0, right: 0 }}>
             <Box sx={{display: 'flex' , width : '100%', justifyContent: 'center', gap: '25px' }}>
-              <Button disabled={activeImageIndex == 0} onClick={() => handleImageChange(false)} sx={{background : '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', ':hover': {
+              <Button disabled={activeImageIndex == 0} onClick={() => handleImageChange(false)} sx={{background : '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', boxShadow : '0px 0px 10px #cccccc', ':hover': {
                 background: '#000000', color: '#ffffff'
               } }}  ><NavigateBeforeIcon size='large' /></Button>
-              <Button onClick={() => setZoomOpen(false)} sx={{background : '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', ':hover': {
+              <Button onClick={() => setZoomOpen(false)} sx={{background : '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', boxShadow : '0px 0px 10px #cccccc', ':hover': {
                 background: '#000000', color: '#ffffff'
               } }}><CloseIcon size='large' /></Button>
-              <Button disabled={activeImageIndex == data?.image.length -1 } onClick={() => handleImageChange(true)} sx={{background : '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', ':hover': {
+              <Button disabled={activeImageIndex == data?.image.length -1 } onClick={() => handleImageChange(true)} sx={{background : '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000' , boxShadow : '0px 0px 10px #cccccc' , ':hover': {
                 background: '#000000', color: '#ffffff'
               } }}><NavigateNextIcon size='large' /></Button>
             </Box>
