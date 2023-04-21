@@ -48,3 +48,7 @@ export const getOrderListService = (body) => {
 export const getOrderService = (orderId) => {
     return get(`/user/order/${orderId}`);
 };
+
+export const getWishList = (orderId) => {
+    return get(`/user/order/${orderId}`);
+};

@@ -19,6 +19,9 @@ import { signOut } from 'next-auth/react'
 export const logOut = async () => {
     const response = await logOutService()
     const res = await signOut({ callbackUrl: "/" })
+    if(window && window.localStorage){
+        window.localStorage.removeItem('token')
+    }
     console.log('signout ', res)
     // push('/')
 }
