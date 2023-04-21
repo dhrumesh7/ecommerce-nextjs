@@ -66,6 +66,9 @@ export default function SignInSide() {
     console.log(response.data)
     if (response.data) {
       push('/account/profile')
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem('token', JSON.stringify(response.data))
+      }
     }
   }
 

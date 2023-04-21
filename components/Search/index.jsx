@@ -57,17 +57,17 @@ export default function Search() {
   //     setOpen(false)
   //   }
   // }, [searchText])
-  const searchCall =async (query)  => {
+  const searchCall = async (query) => {
 
-    if(!query) return;
+    if (!query) return;
     try {
       setLoading(true);
-      const response = await searchProductsService({text: query});
+      const response = await searchProductsService({ text: query });
       const data = response?.data?.data
       setLoading(false);
       // setOptions([...response?.data?.data]);
       return data
-      
+
     } catch (error) {
       setLoading(false);
       console.log(error)
@@ -77,12 +77,12 @@ export default function Search() {
 
   const debouncedFetchData = debounce(async (query) => {
     setSearchText(query)
-   const res = await searchCall(query);
+    const res = await searchCall(query);
 
-   setOptions(res || [])
-   }, 500);
-   
-   const StyledOption = styled('li')(({ theme }) => ({
+    setOptions(res || [])
+  }, 500);
+
+  const StyledOption = styled('li')(({ theme }) => ({
     padding: theme.spacing(1),
     display: 'flex',
     alignItems: 'center',
@@ -91,69 +91,70 @@ export default function Search() {
       marginRight: theme.spacing(1),
     },
   }));
-  
+
   function renderOption(props, option, { selected }) {
-    console.log(' props --->',props);
     const label = props.key;
+
     return (
-      <StyledOption selected={selected} component="li">
+      <>  <StyledOption selected={selected} component="li" >
         {/* <ListItemIcon>
           {selected ? <CheckIcon /> : null}
         </ListItemIcon> */}
         <ListItemText primary={label} />
       </StyledOption>
+      </>
     );
   }
-  
+
   return (
-    <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-    <Autocomplete
-      id="search-bar"
-      size='small'
-      sx={{ width: 300 }}
-      open={open}
-      onOpen={() => {
-        setOpen(searchText ? true : false);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
-      isOptionEqualToValue={(option, value) => option.title === value.title}
-      getOptionLabel={(option) => option.title}
-      options={options}
-      loading={loading}
-      onChange={(event, option) => {
-        if(option){
-        router.push({pathname: `/products/${option?.slug}`});
-        setOptions([]);
-        setSearchText('');
-        setOpen(false)
-        event.target.value = ''
-      }
-      }}
-      popupIcon={<></>}
-      renderInput={(params) => (
-        <TextField
-        sx={{border : '#000', color : '$000', outline: '#000'}}
-        variant="standard"
-        placeholder='Search'
-          {...params}
-          onChange={(e) => debouncedFetchData(e.target.value)}
-          InputProps={{
-            ...params.InputProps,
-            startAdornment: (  <InputAdornment position="start"> <SearchIcon /> 
-            </InputAdornment>  ),
-            endAdornment: (
-              <React.Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} />  : null }
-                {params.InputProps.endAdornment}
-              </React.Fragment>
-            ),
-          }}
-        />
-      )}
-      renderOption={(props, option, state) => renderOption(props, option, state)}
-    />
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <Autocomplete
+        id="search-bar"
+        size='small'
+        sx={{ width: 300 }}
+        open={open}
+        onOpen={() => {
+          setOpen(searchText ? true : false);
+        }}
+        onClose={() => {
+          setOpen(false);
+        }}
+        isOptionEqualToValue={(option, value) => option.title === value.title}
+        getOptionLabel={(option) => option.title}
+        options={options}
+        loading={loading}
+        onChange={(event, option) => {
+          if (option) {
+            router.push({ pathname: `/products/${option?.slug}` });
+            setOptions([]);
+            setSearchText('');
+            setOpen(false)
+            event.target.value = ''
+          }
+        }}
+        popupIcon={<></>}
+        renderInput={(params) => (
+          <TextField
+            sx={{ border: '#000', color: '$000', outline: '#000' }}
+            variant="standard"
+            placeholder='Search'
+            {...params}
+            onChange={(e) => debouncedFetchData(e.target.value)}
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: (<InputAdornment position="start"> <SearchIcon />
+              </InputAdornment>),
+              endAdornment: (
+                <React.Fragment>
+                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+        renderOption={(props, option, state) => renderOption(props, option, state)}
+      />
     </div>
   );
 }

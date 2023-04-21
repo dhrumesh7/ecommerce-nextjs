@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Button, Drawer, Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import FilterCss from "../../styles/Home.module.scss";
-import { display } from "@mui/system";
+import Select from "react-select";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   getAllProductsService,
@@ -25,6 +25,8 @@ export default function Category() {
   const [page, setPage] = useState(1);
   const [slug, setSlug] = useState();
   const [filters, setFilters] = useState();
+  const [sortValue, setSortValue] = useState('popularity');
+
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
   const tablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -46,7 +48,7 @@ export default function Category() {
 
   useEffect(() => {
     fetchProducts(true);
-  }, [slug, filters]);
+  }, [slug, filters, sortValue]);
 
   async function fetchProducts(isReset) {
     if (category) {
@@ -57,6 +59,7 @@ export default function Category() {
             page: isReset ? 1 : page + 1,
             category: category[0],
             filters,
+            sortValue
           });
           break;
         case "subcategory":
@@ -64,12 +67,14 @@ export default function Category() {
             page: isReset ? 1 : page + 1,
             subcategory: category[1],
             filters,
+            sortValue
           });
           break;
         case "all":
           res = await getAllProductsService({
             page: isReset ? 1 : page + 1,
             filters,
+            sortValue
           });
           break;
         default:
@@ -89,6 +94,37 @@ export default function Category() {
     setIsFilter(!isFilter);
   };
 
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      background: "whitesmoke",
+      borderRadius: state.isFocused ? "3px 3px 0 0" : 3,
+      boxShadow: state.isFocused ? null : null,
+      maxWidth: "160px",
+      // marginTop: "20px",
+      // marginBottom: "20px",
+      "&:hover": {
+        borderColor: state.isFocused ? "black" : "transparent",
+      },
+    }),
+    menu: (base) => ({
+      ...base,
+      borderRadius: 0,
+      marginTop: 0,
+    }),
+    menuList: (base) => ({
+      ...base,
+      padding: 0,
+    }),
+  };
+
+  const sortOptions = [
+    {value: "popularity",label: "Popularity"},
+    {value: "price-ascending",label: "Price Low To High"},
+    {value: "price-descending",label: "Price High To Low"},
+    {value: "new",label: "New Arrivals"}
+  ]
+
   return (
     <>
       {category && (
@@ -97,7 +133,7 @@ export default function Category() {
             <Drawer anchor={"bottom"} open={isFilter} onClose={() => setIsFilter(false)}
               PaperProps={{ sx: { height: '-webkit-fill-available' } }}>
               <Filter
-                 currentFilters={filters}
+                currentFilters={filters}
                 type={type}
                 slug={type === "category" ? category[0] : category[1]}
                 appliedFilters={(data) => { setFilters(data); setIsFilter(false) }}
@@ -105,7 +141,7 @@ export default function Category() {
               />
             </Drawer>
           )}
-          <div style={{ marginBottom: "40px" }}>
+          <div style={{ marginBottom: "40px", display: "flex", justifyContent: "space-between" }}>
             <div
               type="button"
               className={FilterCss.filterIconDiv}
@@ -113,6 +149,18 @@ export default function Category() {
             >
               {isFilter ? <CloseIcon /> : <FilterAltTwoToneIcon />}
               <span>Filters</span>
+            </div>
+
+            <div style={{display: "flex", justifyContent: "center", marginTop: "20px", marginBottom: "20px", alignItems: "center", gap: 10}}>
+              <span>Sort By</span>
+              <Select
+                options={sortOptions}
+                value={sortValue}
+                onChange={(item) => {
+                  setSortValue(item);
+                }}
+                styles={customStyles}
+              />
             </div>
           </div>
 

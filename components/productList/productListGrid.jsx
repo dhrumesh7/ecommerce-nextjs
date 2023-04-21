@@ -7,6 +7,7 @@ import 'aos/dist/aos.css';
 import { Favorite, FavoriteBorder, Favourite } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { addToWishListService, getUserProfileService, removeFromWishListService } from "../../services/user.services";
+import axios from "axios";
 
 export default function ProductListGrid({ title, products }) {
 
@@ -14,17 +15,20 @@ export default function ProductListGrid({ title, products }) {
 
   async function fetchData(data) {
     try {
-
       const response = await getUserProfileService();
       setUser(response?.data?.data);
-
     } catch (error) {
       console.log('err', error)
     }
   }
 
+
   useEffect(() => {
-    fetchData();
+    if (typeof window !== "undefined") {
+      if (window.localStorage.token) {
+        fetchData();
+      }
+    }
     AOS.init();
   }, []);
 
@@ -54,6 +58,18 @@ export default function ProductListGrid({ title, products }) {
     }
   }
 
+  const wishlistStyle = {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    backgroundColor: 'white',
+    borderRadius: '50%',
+    color: 'black',
+    zIndex: 100,
+  }
   return (
     <>
       {/* <h3 className={globalStyles.productListTitle}>Product List</h3> */}
@@ -75,14 +91,19 @@ export default function ProductListGrid({ title, products }) {
                     <Link href={`/products/${product.slug}`} style={{ color: "black", textDecoration: "none" }}>
 
                       {
-                        !user?.wishlist?.find(pr => pr === product._id) ?
-                          <IconButton className={globalStyles.addToWishlist} onClick={(e) => addToWishList(e, product._id)}>
-                            <FavoriteBorder fontSize="small" />
-                          </IconButton>
-                          :
-                          <IconButton className={globalStyles.addToWishlist} onClick={(e) => removeFromWishlist(e, product._id)}>
-                            <Favorite fontSize="small" sx={{ color: "red" }} />
-                          </IconButton>
+                        user && (
+                          <>
+                            {
+                              !user?.wishlist?.find(pr => pr === product._id) ?
+                                <IconButton sx={wishlistStyle} onClick={(e) => addToWishList(e, product._id)}>
+                                  <FavoriteBorder fontSize="small" />
+                                </IconButton>
+                                :
+                                <IconButton sx={wishlistStyle} onClick={(e) => removeFromWishlist(e, product._id)}>
+                                  <Favorite fontSize="small" sx={{ color: "red" }} />
+                                </IconButton>
+                            }
+                          </>)
                       }
 
                       <img src={product.image?.[0]?.url ? `${process.env.BASE_IMAGE}/product/${product._id}/${product.image?.[0]?.url}` : "/product.webp"} alt="" className={globalStyles.productImage} />

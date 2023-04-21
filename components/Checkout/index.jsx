@@ -48,6 +48,7 @@ export default function Checkout({ setCheckoutOpen }) {
   const [priceTotal, setPriceTotal] = useState(0);
   const [currentStep, setCurrentStep] = useState(1);
   const [codPrice, setcodPrice] = useState(0);
+  const [apiCall, setApiCall] = useState(false);
 
   // const [addNew, setAddNew] = useState(false);
 
@@ -75,6 +76,7 @@ export default function Checkout({ setCheckoutOpen }) {
       );
       setCartItems(stockChecked);
       setPriceTotal(priceTotal);
+      setApiCall(true);
     } catch (error) {
       console.log("er", error);
     }
@@ -441,7 +443,7 @@ export default function Checkout({ setCheckoutOpen }) {
   };
   return (
     <>
-      <Dialog
+   {apiCall  &&  <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="address-modal-title"
@@ -593,7 +595,7 @@ export default function Checkout({ setCheckoutOpen }) {
             )}
           </Grid>
         </DialogContent>
-      </Dialog>
+      </Dialog>}
     </>
   );
 }

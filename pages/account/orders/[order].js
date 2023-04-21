@@ -4,10 +4,10 @@ import styles from "../../../styles/cart.module.scss";
 import React, { useEffect, useState } from "react";
 import { ContainerStyled } from "../../../components/Styled";
 import RatingInput from "../../../components/Rating";
-import ShipmentStepper from "../../../components/Stepper";
+import TrackingStepper from "../../../components/Stepper";
 import { useRouter } from "next/router";
 import { getOrderService } from "../../../services/user.services";
-import { cancelShipmentService } from "../../../services/shipment.service";
+import { cancelShipmentService, getShipmentService } from "../../../services/shipment.service";
 import { toast } from "react-toastify";
 import Link from "next/link";
 
@@ -16,11 +16,16 @@ const Order = () => {
   const { order } = router.query;
   console.log("order is", order);
   const [data, setData] = useState();
+  const [shipment, setShipment] = useState();
+
   async function fetchData() {
     if (order) {
       try {
         const response = await getOrderService(order);
+        const shipmentResponse = await getShipmentService(order);
+        console.log('shipment ', shipmentResponse.data.data)
         setData(response?.data?.data);
+        setShipment(shipmentResponse?.data?.data);
       } catch (error) {
         console.log(error);
       }
@@ -47,7 +52,7 @@ const Order = () => {
       toast.error(error?.response?.data?.message || error?.message);
     }
   };
-
+  console.log('shopment', shipment)
   return (
     <>
       {data && (
@@ -70,81 +75,47 @@ const Order = () => {
             {data?.products?.map((pr) => {
               return (
                 <>
-                <Link href={`/products/${pr?.product?.slug}`} style={{textDecoration: "none", color: "black"}}>
-                  <Grid
-                    container
-                    item={12}
-                    spacing={3}
-                    sx={{
-                      paddingTop: 0,
-                      boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",
-                      maxWidth: "100%",
-                      margin: "0px auto 20px",
-                    }}
-                  >
-                    <Grid item xs={3} sm={1.2}>
-                      <Box>
-                        <Img
-                          alt="complex"
-                          src={`${process.env.BASE_IMAGE}/product/${pr?.product?._id}/${pr?.product?.image?.[0]?.url}`}
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={9} sm={5} container>
-                      <Grid
-                        item
-                        xs
-                        container
-                        direction="column"
-                        rowSpacing={1}
-                        justifyContent={"space-evenly"}
-                      >
-                        <Grid item xs>
-                          <Typography
-                            sx={{
-                              color: "darkgoldenrod",
-                              textTransform: "capitalize",
-                            }}
-                            gutterBottom
-                            variant="subtitle1"
-                            component="div"
-                          >
-                            {pr?.product?.title}
-                          </Typography>
-                          <p
-                            className={productDetailsStyles.descriptionTitle}
-                            style={{
-                              marginBottom: 0,
-                              lineHeight: "inherit",
-                              fontSize: "0.8rem",
-                            }}
-                          >
-                            Quantity: {pr?.quantity}
-                          </p>
-                          {pr?.product?.color && (
-                            <p
-                              className={
-                                productDetailsStyles.descriptionTitle
-                              }
-                              style={{
-                                marginBottom: 0,
-                                lineHeight: "inherit",
-                                fontSize: "0.8rem",
+                  <Link href={`/products/${pr?.product?.slug}`} style={{ textDecoration: "none", color: "black" }}>
+                    <Grid
+                      container
+                      item={12}
+                      spacing={3}
+                      sx={{
+                        paddingTop: 0,
+                        boxShadow: "rgb(188 187 187 / 62%) 0px 0px 15px",
+                        maxWidth: "100%",
+                        margin: "0px auto 20px",
+                      }}
+                    >
+                      <Grid item xs={3} sm={1.2}>
+                        <Box>
+                          <Img
+                            alt="complex"
+                            src={`${process.env.BASE_IMAGE}/product/${pr?.product?._id}/${pr?.product?.image?.[0]?.url}`}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={9} sm={5} container>
+                        <Grid
+                          item
+                          xs
+                          container
+                          direction="column"
+                          rowSpacing={1}
+                          justifyContent={"space-evenly"}
+                        >
+                          <Grid item xs>
+                            <Typography
+                              sx={{
+                                color: "darkgoldenrod",
+                                textTransform: "capitalize",
                               }}
+                              gutterBottom
+                              variant="subtitle1"
+                              component="div"
                             >
-                              COLOR :{" "}
-                              <span>
-                                {" "}
-                                {
-                                  pr?.product?.stocks?.find(
-                                    (stk) =>
-                                      stk.sku === pr?.sku
-                                  )?.color
-                                }{" "}
-                              </span>
-                            </p>
-                          )}
-                          {pr?.product?.size && (
+                              {pr?.product?.title}
+                            </Typography>
                             <p
                               className={productDetailsStyles.descriptionTitle}
                               style={{
@@ -153,39 +124,75 @@ const Order = () => {
                                 fontSize: "0.8rem",
                               }}
                             >
-                              SIZE : <span> {pr?.product?.size} </span>
+                              Quantity: {" "}
+                              <span>{pr?.quantity}</span>
                             </p>
-                          )}
+                            {pr?.product?.color && (
+                              <p
+                                className={
+                                  productDetailsStyles.descriptionTitle
+                                }
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                COLOR :{" "}
+                                <span>
+                                  {" "}
+                                  {
+                                    pr?.product?.stocks?.find(
+                                      (stk) =>
+                                        stk.sku === pr?.sku
+                                    )?.color
+                                  }{" "}
+                                </span>
+                              </p>
+                            )}
+                            {pr?.product?.size && (
+                              <p
+                                className={productDetailsStyles.descriptionTitle}
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                SIZE : <span> {pr?.product?.size} </span>
+                              </p>
+                            )}
+                          </Grid>
                         </Grid>
                       </Grid>
-                    </Grid>
-                    <Grid item sm={2} xs={12}>
-                      {/* <p className={styles.productPrice}>
+                      <Grid item sm={2} xs={12}>
+                        {/* <p className={styles.productPrice}>
                         ₹ {pr?.product?.price}
                       </p> */}
-                    </Grid>
-                    <Grid item sm={3} xs={12}>
-                      <p className={styles.productPrice}>
-                        ₹ {pr?.product?.price}
-                      </p>
-                    </Grid>
-                    {/* <Grid item xs={12}>
+                      </Grid>
+                      <Grid item sm={3} xs={12}>
+                        <p className={styles.productPrice}>
+                          ₹ {pr?.product?.price}
+                        </p>
+                      </Grid>
+                      {/* <Grid item xs={12}>
                         <RatingInput />
                       </Grid> */}
-                    <Grid item xs={12}><Divider /></Grid>
+                      <Grid item xs={12}><Divider /></Grid>
 
-                  </Grid>
+                    </Grid>
                   </Link>
                 </>)
             })
             }
-            <Grid item xs={12} sx={{ marginBottom: "30px", fontWeight: 500, fontSize: "20px", display :"flex", flexDirection: "column", gap: 2 }}>
-             {data?.codPrice > 0 && <p>COD amount : <span style={{ color: "darkgoldenrod"}}>Rs. {data.codPrice}</span></p>}
+            {/* <Grid item xs={6}>
+              <TrackingStepper trackingData={shipment?.shipmentData} />
+            </Grid> */}
+
+            <Grid item xs={12} sx={{ marginBottom: "30px", fontWeight: 500, fontSize: "20px", display: "flex", flexDirection: "column", gap: 2 }}>
+              {data?.codPrice > 0 && <p>COD amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.codPrice}</span></p>}
               <p>Total amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.amount}</span></p>
             </Grid>
-            {/* <Grid item xs={6}>
-                <ShipmentStepper />
-              </Grid> */}
 
             <Grid
               item
@@ -211,7 +218,7 @@ const Order = () => {
                 }}
               >
                 <Button
-                  disabled={data?.orderStatus === "cancelled"}
+                  disabled={data?.orderStatus === "cancelled" || shipment?.shipmentData}
                   variant="contained"
                   onClick={() => onCancelShipment()}
                   sx={{
