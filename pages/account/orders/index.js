@@ -69,7 +69,7 @@ export default function Address() {
             <SideBar user={user}/>
           </Grid>
           {isApiCalled && (
-            <Grid container item xs={12} md={8}>
+            <Grid container item xs={12} md={8} sx={{maxHeight: "100vh", overflow: "scroll", padding: "5px"}}>
               {orders?.length ? (
                 <>
                   {orders.map(({ products, amount, orderStatus, _id }, i) => {
@@ -146,7 +146,8 @@ export default function Address() {
                                     fontSize: "0.8rem",
                                   }}
                                 >
-                                  Quantity: {products?.[0]?.quantity}
+                                  Quantity: {" "}
+                                  <span>{products?.[0]?.quantity}</span>
                                 </p>
                                 {products?.[0]?.product?.color && (
                                   <p

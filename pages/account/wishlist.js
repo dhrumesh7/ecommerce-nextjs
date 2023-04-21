@@ -16,6 +16,7 @@ import { Country, State, City, ICountry } from "country-state-city";
 import Select from "react-select";
 import SideBar from "../../components/Account/SideBar";
 import wishlistCSS from "../../styles/Account.module.scss";
+import globalStyles from "../../styles/global.module.scss";
 import { useEffect, useState, useId } from "react";
 import { getWishListService, removeFromWishListService } from "../../services/user.services";
 import { toast } from "react-toastify";
@@ -58,7 +59,7 @@ export default function Address() {
       <div className={wishlistCSS.profileSideBarMain}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
-            <SideBar user={user}/>
+            <SideBar user={user} />
           </Grid>
           {isApiCalled && <Grid container item xs={12} md={8}>
             {wishlist.length ?
@@ -81,7 +82,7 @@ export default function Address() {
                         >
                           <Link href={`/products/${wish.slug}`} style={{ textDecoration: "none" }}>
                             <div className={wishlistCSS.addressBoxContent}>
-                              <p style={{fontSize: "12px", fontWeight: 700, color: "darkgoldenrod"}}>{wish.title}</p>
+                              <p style={{ fontSize: "12px", fontWeight: 700, color: "darkgoldenrod" }}>{wish.title}</p>
                               <div style={{ width: "70px" }}>
                                 <img
                                   src={`${process.env.BASE_IMAGE}/product/${wish?._id}/${wish?.image?.[0]?.url}`}
@@ -90,7 +91,27 @@ export default function Address() {
                                 />
                               </div>
                               <div style={{ width: "100%", fontSize: "15px", fontWeight: "bold" }}>
-                                <p>Rs. {wish.price}</p>
+                                {(wish?.noOfferprice - wish?.price) / 100 > 0 ? (
+                                  <>
+                                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, marginBottom: "10px" }}>
+                                      <p className={globalStyles.productPrice}>
+                                        ₹ {Number(wish?.price).toLocaleString('en')}{" "}
+                                        <span style={{ color: "gray", textDecoration: "line-through" }}>
+                                          {" "}
+
+                                          ₹ {Number(wish?.noOfferprice).toLocaleString('en')}
+
+                                        </span>
+                                        <span style={{ color: "green", fontSize: "15px", marginLeft: "5px" }}>
+                                          {Math.round((wish?.noOfferprice - wish?.price) / 100)}% Off
+                                        </span>
+                                      </p>
+                                    </div>
+
+                                  </>
+                                ) : (
+                                  <p className={globalStyles.productPrice}>Rs. {Number(wish?.price).toLocaleString('en')}</p>
+                                )}
 
                                 <Button
                                   sx={{

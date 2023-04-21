@@ -281,7 +281,7 @@ const Filter = ({ currentFilters, type, slug, appliedFilters, isFilter }) => {
           }}
           onClick={clearFilter}
         >
-          Clear Filter
+          Clear Filters
         </Button>
         {/* <Button
           variant="contained"

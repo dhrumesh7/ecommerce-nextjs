@@ -145,7 +145,7 @@ const Product = ({ data }) => {
   useEffect(() => {
     console.log(activeImageIndex);
   }, [activeImageIndex]);
-  const [zoomOpen, setZoomOpen] = useState(true);
+  const [zoomOpen, setZoomOpen] = useState(false);
   return (
     <>
       <Modal
@@ -153,6 +153,7 @@ const Product = ({ data }) => {
         onClose={() => setZoomOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{backgroundColor: "white"}}
       >
         <Box
           sx={{
