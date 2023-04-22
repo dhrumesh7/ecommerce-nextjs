@@ -31,6 +31,9 @@ import Link from "next/link";
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import CloseIcon from '@mui/icons-material/Close';
+import { ProductSeo } from "../../components/SEO";
+import siteMetadata from '../../data/siteMetadata.json';
+
 export const addToCart = async (productId, sku) => {
   try {
     if (!sku || !productId)
@@ -136,9 +139,9 @@ const Product = ({ data }) => {
     setSelectedColor(color);
   };
   const handleImageChange = (value) => {
-    if(value ){
+    if (value) {
       setActiveImageIndex(activeImageIndex + 1);
-    }else{
+    } else {
       setActiveImageIndex(activeImageIndex - 1);
     }
   };
@@ -148,6 +151,13 @@ const Product = ({ data }) => {
   const [zoomOpen, setZoomOpen] = useState(false);
   return (
     <>
+      <ProductSeo
+        url={`${siteMetadata.siteUrl}/products/${data.slug}`}
+        title={data?.title}
+        summary={data?.description?.other || data?.title}
+        images={data?.image}
+        product={data}
+      />
       <Modal
         open={zoomOpen}
         onClose={() => setZoomOpen(false)}
@@ -159,7 +169,7 @@ const Product = ({ data }) => {
             boxShadow: 'none',
           },
         }}
-       
+
       >
         <Box
           sx={{
@@ -181,16 +191,22 @@ const Product = ({ data }) => {
             loading="lazy"
           />
           <Box sx={{ position: "absolute", bottom: 50, left: 0, right: 0 }}>
-            <Box sx={{display: 'flex' , width : '100%', justifyContent: 'center', gap: '25px' }}>
-              <Button disabled={activeImageIndex == 0} onClick={() => handleImageChange(false)} sx={{background : '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', boxShadow : '0px 0px 10px #cccccc', ':hover': {
-                background: '#000000', color: '#ffffff'
-              } }}  ><NavigateBeforeIcon size='large' /></Button>
-              <Button onClick={() => setZoomOpen(false)} sx={{background : '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', boxShadow : '0px 0px 10px #cccccc', ':hover': {
-                background: '#000000', color: '#ffffff'
-              } }}><CloseIcon size='large' /></Button>
-              <Button disabled={activeImageIndex == data?.image.length -1 } onClick={() => handleImageChange(true)} sx={{background : '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000' , boxShadow : '0px 0px 10px #cccccc' , ':hover': {
-                background: '#000000', color: '#ffffff'
-              } }}><NavigateNextIcon size='large' /></Button>
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', gap: '25px' }}>
+              <Button disabled={activeImageIndex == 0} onClick={() => handleImageChange(false)} sx={{
+                background: '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', boxShadow: '0px 0px 10px #cccccc', ':hover': {
+                  background: '#000000', color: '#ffffff'
+                }
+              }}  ><NavigateBeforeIcon size='large' /></Button>
+              <Button onClick={() => setZoomOpen(false)} sx={{
+                background: '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', boxShadow: '0px 0px 10px #cccccc', ':hover': {
+                  background: '#000000', color: '#ffffff'
+                }
+              }}><CloseIcon size='large' /></Button>
+              <Button disabled={activeImageIndex == data?.image.length - 1} onClick={() => handleImageChange(true)} sx={{
+                background: '#ffffff', borderRadius: '52px', padding: '20px 17px', color: '#000000', boxShadow: '0px 0px 10px #cccccc', ':hover': {
+                  background: '#000000', color: '#ffffff'
+                }
+              }}><NavigateNextIcon size='large' /></Button>
             </Box>
           </Box>
         </Box>
@@ -241,7 +257,7 @@ const Product = ({ data }) => {
             {!desktop && (
               <Grid item xs={12}>
                 {" "}
-                <ImageSlider data={data} zoom={()=> setZoomOpen(true) } />
+                <ImageSlider data={data} zoom={() => setZoomOpen(true)} />
               </Grid>
             )}
 
