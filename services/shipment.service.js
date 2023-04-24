@@ -7,3 +7,7 @@ export const cancelShipmentService = (body) => {
 export const getShipmentService = (orderId) => {
     return get(`/shipment/tracking/${orderId}`);
 };
+
+export const invoiceService = (shipRocketOrderId) => {
+    return get(`/shipment/invoice/${shipRocketOrderId}`);
+};

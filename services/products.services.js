@@ -6,6 +6,19 @@ export const getAllProductsService = (query) => {
     });
 };
 
+export const getSaleProductsService = (query) => {
+    return get('/products/sale', {
+        params: query
+    });
+};
+
+export const getNewProductsService = (query) => {
+    return get('/products/new', {
+        params: query
+    });
+};
+
+
 export const getCategoryProductsService = (query) => {
     return get('/products/category', {
         params: query

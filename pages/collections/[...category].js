@@ -10,6 +10,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import {
   getAllProductsService,
   getCategoryProductsService,
+  getNewProductsService,
+  getSaleProductsService,
   getSubCategoryProductsService,
 } from "../../services/products.services";
 import { useRouter } from "next/router";
@@ -34,12 +36,13 @@ export default function Category() {
   const type =
     category?.length === 2
       ? "subcategory"
-      : category?.[0] === "all"
-        ? "all"
+      : ['all', 'sale', 'new-arrivals'].includes(category?.[0])
+        ? category?.[0]
         : "category";
   useEffect(() => {
+    console.log('all', type)
     if (category) {
-      if (category[0] === "all") {
+      if (['all', 'sale', 'new-arrivals'].includes(category?.[0])) {
         fetchProducts(true);
       }
       setSlug(type === "category" ? category[0] : category[1]);
@@ -72,6 +75,20 @@ export default function Category() {
           break;
         case "all":
           res = await getAllProductsService({
+            page: isReset ? 1 : page + 1,
+            filters,
+            sortValue
+          });
+          break;
+        case "sale":
+          res = await getSaleProductsService({
+            page: isReset ? 1 : page + 1,
+            filters,
+            sortValue
+          });
+          break;
+        case "new-arrivals":
+          res = await getNewProductsService({
             page: isReset ? 1 : page + 1,
             filters,
             sortValue
@@ -119,10 +136,10 @@ export default function Category() {
   };
 
   const sortOptions = [
-    {value: "popularity",label: "Popularity"},
-    {value: "price-ascending",label: "Price Low To High"},
-    {value: "price-descending",label: "Price High To Low"},
-    {value: "new",label: "New Arrivals"}
+    { value: "popularity", label: "Popularity" },
+    { value: "price-ascending", label: "Price Low To High" },
+    { value: "price-descending", label: "Price High To Low" },
+    { value: "new", label: "New Arrivals" }
   ]
 
   return (
@@ -151,7 +168,7 @@ export default function Category() {
               <span>Filters</span>
             </div>
 
-            <div style={{display: "flex", justifyContent: "center", marginTop: "20px", marginBottom: "20px", alignItems: "center", gap: 10}}>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", marginBottom: "20px", alignItems: "center", gap: 10 }}>
               <span>Sort By</span>
               <Select
                 options={sortOptions}

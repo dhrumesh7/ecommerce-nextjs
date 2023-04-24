@@ -7,7 +7,7 @@ import RatingInput from "../../../components/Rating";
 import TrackingStepper from "../../../components/Stepper";
 import { useRouter } from "next/router";
 import { getOrderService } from "../../../services/user.services";
-import { cancelShipmentService, getShipmentService } from "../../../services/shipment.service";
+import { cancelShipmentService, getShipmentService, invoiceService } from "../../../services/shipment.service";
 import { toast } from "react-toastify";
 import Link from "next/link";
 
@@ -53,6 +53,27 @@ const Order = () => {
     }
   };
   console.log('shopment', shipment)
+
+  const downloadInvoice = async () => {
+    try {
+      const response = await invoiceService(shipment.shipRocketOrderId);
+
+      const invoiceUrl = response?.data?.data?.invoice_url;
+      if(!invoiceUrl) toast.error('Something went wrong while downloading invoice!');
+
+      const link = document.createElement('a');
+      link.href = invoiceUrl;
+      link.download = 'invoice.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error?.message);
+
+    }
+  }
+  
   return (
     <>
       {data && (
@@ -240,7 +261,8 @@ const Order = () => {
 
                 <Button
                   variant="contained"
-                  disabled={true}
+                  disabled={data?.orderStatus === "cancelled"}
+                  onClick={() => downloadInvoice()}
                   sx={{
                     backgroundColor: "#000000",
                     color: "white",

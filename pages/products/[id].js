@@ -66,6 +66,8 @@ const Product = ({ data }) => {
     price: 1999,
     description: "EMI Options Are available !",
   });
+
+  const [images, setImages] = useState(data?.image)
   const [selectedColor, setSelectedColor] = useState();
   const [selectedSku, setSelectedSku] = useState();
   const [isApiCall, setApiCall] = useState();
@@ -135,8 +137,11 @@ const Product = ({ data }) => {
     const sku = data?.stocks?.find(
       (stk) => stk.color.toLowerCase() === color.toLowerCase()
     )?.sku;
+
+
     setSelectedSku(sku);
     setSelectedColor(color);
+
   };
   const handleImageChange = (value) => {
     if (value) {
@@ -145,10 +150,28 @@ const Product = ({ data }) => {
       setActiveImageIndex(activeImageIndex - 1);
     }
   };
+
+  useEffect(() => {
+    console.log('selectce color', selectedColor, data?.image)
+
+  
+  }, [selectedColor])
   useEffect(() => {
     console.log(activeImageIndex);
   }, [activeImageIndex]);
+  
   const [zoomOpen, setZoomOpen] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+
+  const handleImageClick = (e) => {
+    // Get the coordinates of the click relative to the image
+    const x = e.nativeEvent.offsetX;
+    const y = e.nativeEvent.offsetY;
+    // Set the transform property of the image to zoom in on the clicked area
+    e.target.style.transformOrigin = `${x}px ${y}px`;
+    e.target.style.transform = isZoomed ? "none" : "scale(2)";
+    setIsZoomed(!isZoomed);
+  };
   return (
     <>
       <ProductSeo
@@ -187,8 +210,11 @@ const Product = ({ data }) => {
               margin: "50px auto",
               maxHeight: "calc(100vh)",
               objectFit: "contain",
+              cursor: "zoom-in",
+
             }}
             loading="lazy"
+            onClick={handleImageClick}
           />
           <Box sx={{ position: "absolute", bottom: 50, left: 0, right: 0 }}>
             <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', gap: '25px' }}>
@@ -247,7 +273,7 @@ const Product = ({ data }) => {
                   <img
                     src={`${process.env.BASE_IMAGE}/product/${data?._id}/${data?.image?.[activeImageIndex]?.url}`}
                     alt={"activeImageIndex"}
-                    style={{ width: "100%", margin: "0 auto" }}
+                    style={{ width: "100%", margin: "0 auto", cursor: "zoom-out" }}
                     loading="lazy"
                     onClick={() => setZoomOpen(true)}
                   />
