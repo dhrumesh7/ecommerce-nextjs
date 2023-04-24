@@ -34,7 +34,7 @@ export default function ContactUs() {
           <div className={styles.formContainer2}>
             <TextField style={{ margin: "10px" }} label="MESSAGE" variant="outlined" margin="normal" sx={{ width: "100%" }} multiline rows={6} id="standard-multiline-static" />
           </div>
-          <div style={{ marginTop: "3%" }}>
+          <div style={{ marginTop: "3%", marginBottom: '50px' }}>
             <Button variant="contained" style={{ backgroundColor: "black", width: "100px", padding: "10px" }}>SEND</Button>
           </div>
         </form>
