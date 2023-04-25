@@ -33,6 +33,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import CloseIcon from '@mui/icons-material/Close';
 import { ProductSeo } from "../../components/SEO";
 import siteMetadata from '../../data/siteMetadata.json';
+import { devNull } from "os";
 
 export const addToCart = async (productId, sku) => {
   try {
@@ -68,7 +69,8 @@ const Product = ({ data }) => {
   });
 
   const [images, setImages] = useState(data?.image)
-  const [selectedColor, setSelectedColor] = useState();
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [imageList, setImageList] = useState([]);
   const [selectedSku, setSelectedSku] = useState();
   const [isApiCall, setApiCall] = useState();
 
@@ -90,6 +92,22 @@ const Product = ({ data }) => {
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    console.log(selectedColor)
+    if(selectedColor){
+      const tempData = data.image.filter((e)=>{
+        console.log('e',e, e.color.toLowerCase().trim() === selectedColor.toLowerCase());
+      return  e.color.toLowerCase().trim() === selectedColor.toLowerCase()
+      });
+      setImageList([...tempData])
+      console.log(tempData,'t1')
+    }else{
+      const tempData = [...data.image]
+      setImageList([...tempData])
+      console.log(tempData,'t2')
+    }
+    setActiveImageIndex(0)
+  }, [data.image, selectedColor]);
 
   const addToWishList = async () => {
     try {
@@ -106,7 +124,6 @@ const Product = ({ data }) => {
 
   const [value, setValue] = useState("1");
 
-  console.log("activeImageIndex", activeImageIndex);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -122,7 +139,6 @@ const Product = ({ data }) => {
   let inStock = false;
   data?.stocks?.every((stk) => {
     if (stk.stock) {
-      console.log("yes i;m in");
       inStock = true;
       return false;
     } else {
@@ -151,14 +167,7 @@ const Product = ({ data }) => {
     }
   };
 
-  useEffect(() => {
-    console.log('selectce color', selectedColor, data?.image)
 
-  
-  }, [selectedColor])
-  useEffect(() => {
-    console.log(activeImageIndex);
-  }, [activeImageIndex]);
   
   const [zoomOpen, setZoomOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -203,7 +212,7 @@ const Product = ({ data }) => {
           }}
         >
           <img
-            src={`${process.env.BASE_IMAGE}/product/${data?._id}/${data?.image?.[activeImageIndex]?.url}`}
+            src={`${process.env.BASE_IMAGE}/product/${data?._id}/${imageList?.[activeImageIndex]?.url}`}
             alt={"activeImageIndex"}
             style={{
               width: "95%",
@@ -249,7 +258,7 @@ const Product = ({ data }) => {
                     gap={5}
                     sx={{ margin: 0 }}
                   >
-                    {data?.image?.map((item, index) => (
+                    {imageList?.map((item, index) => (
                       <ImageListItem
                         key={item}
                         sx={{ width: "80%", cursor: "pointer" }}
@@ -271,7 +280,7 @@ const Product = ({ data }) => {
                 </Grid>
                 <Grid item xs={12} md={10}>
                   <img
-                    src={`${process.env.BASE_IMAGE}/product/${data?._id}/${data?.image?.[activeImageIndex]?.url}`}
+                    src={`${process.env.BASE_IMAGE}/product/${data?._id}/${imageList?.[activeImageIndex]?.url}`}
                     alt={"activeImageIndex"}
                     style={{ width: "100%", margin: "0 auto", cursor: "zoom-out" }}
                     loading="lazy"
@@ -335,7 +344,6 @@ const Product = ({ data }) => {
                             : "1px solid #e0f1fd",
                       }}
                     >
-                      {console.log("sku ", data.stocks)}
                       {clr}
                     </button>
                   );
@@ -349,7 +357,6 @@ const Product = ({ data }) => {
               <button className={styles.detailsButton}>XL</button>
               <button className={styles.detailsButton}>XXL</button>
             </div> */}
-              {console.log("instaock", inStock)}
               {!inStock && (
                 <p
                   className={styles.outOfStockNote}
