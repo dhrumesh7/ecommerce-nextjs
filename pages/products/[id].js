@@ -92,22 +92,23 @@ const Product = ({ data }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
   useEffect(() => {
-    console.log(selectedColor)
-    if(selectedColor){
-      const tempData = data.image.filter((e)=>{
-        console.log('e',e, e.color.toLowerCase().trim() === selectedColor.toLowerCase());
-      return  e.color.toLowerCase().trim() === selectedColor.toLowerCase()
-      });
-      setImageList([...tempData])
-      console.log(tempData,'t1')
-    }else{
+    // if (selectedColor) {
+    //   const tempData = data.image.filter((e) => {
+    //     console.log('e', e, e.color.toLowerCase().trim() === selectedColor.toLowerCase());
+    //     return e.color.toLowerCase().trim() === selectedColor.toLowerCase()
+    //   });
+    //   setImageList([...tempData])
+    //   console.log(tempData, 't1')
+    // } else {
       const tempData = [...data.image]
       setImageList([...tempData])
-      console.log(tempData,'t2')
-    }
+    //   console.log(tempData, 't2')
+    // }
     setActiveImageIndex(0)
-  }, [data.image, selectedColor]);
+    setSelectedColor('')
+  }, [data.image]);
 
   const addToWishList = async () => {
     try {
@@ -149,15 +150,21 @@ const Product = ({ data }) => {
     setActiveImageIndex(0);
   }, [data]);
 
+  useEffect(() => {
+    if(activeImageChange){
+      const color = data?.image?.[activeImageIndex]?.color;
+      setSelectedColor(color || selectedColor)
+    }
+  }, [activeImageIndex])
   const handleColorChange = (color) => {
     const sku = data?.stocks?.find(
       (stk) => stk.color.toLowerCase() === color.toLowerCase()
     )?.sku;
-
+    const imgIndex = data.image.findIndex(img => img.color.trim().toLowerCase() === color.trim().toLowerCase())
 
     setSelectedSku(sku);
     setSelectedColor(color);
-
+    setActiveImageIndex(imgIndex)
   };
   const handleImageChange = (value) => {
     if (value) {
@@ -167,7 +174,9 @@ const Product = ({ data }) => {
     }
   };
 
-
+  const activeImageChange = (index) => {
+    setActiveImageIndex(index)
+  }
   
   const [zoomOpen, setZoomOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -260,9 +269,9 @@ const Product = ({ data }) => {
                   >
                     {imageList?.map((item, index) => (
                       <ImageListItem
-                        key={item}
+                        key={index}
                         sx={{ width: "80%", cursor: "pointer" }}
-                        onClick={() => setActiveImageIndex(index)}
+                        onClick={() => activeImageChange(index)}
                         style={
                           index == activeImageIndex
                             ? { border: "1px solid", padding: 2 }
@@ -331,7 +340,7 @@ const Product = ({ data }) => {
                       disabled={
                         !data.stocks.find(
                           (stock) =>
-                            stock?.color.toLowerCase() === clr.toLowerCase()
+                            stock?.color.toLowerCase()?.trim() === clr.toLowerCase()?.trim()
                         )
                       }
                       key={index}
@@ -339,7 +348,7 @@ const Product = ({ data }) => {
                       onClick={() => handleColorChange(clr)}
                       style={{
                         border:
-                          selectedColor === clr
+                          selectedColor?.trim()?.toLowerCase() === clr?.trim()?.toLowerCase()
                             ? "1px solid black"
                             : "1px solid #e0f1fd",
                       }}
@@ -370,7 +379,14 @@ const Product = ({ data }) => {
                   if (data?.color?.length > 1 && !selectedColor) {
                     return toast.info("Please choose color.");
                   }
-                  addToCart(data._id, selectedSku);
+                  const prInStock = data?.stocks?.find(
+                    (stock) =>
+                      stock?.sku === selectedSku
+                  )?.stock
+         
+                  if(prInStock){
+                    addToCart(data._id, selectedSku);
+                  }
                 }}
               >
                 ADD TO CART

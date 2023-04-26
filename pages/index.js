@@ -9,7 +9,25 @@ import { useEffect } from "react";
 import siteMetadata from '../data/siteMetadata.json'
 import { PageSeo } from "../components/SEO";
 
-export default function Home({ newArrivals, topSellers, categories }) {
+export default function Home({ newArrivals, topSellers, categories, banners }) {
+  const topBanners = banners.find(banner => banner.type === 'top_banner');
+  const secondBanners = banners.find(banner => banner.type === 'second_banner');
+
+  const topSlider = topBanners.image.map(banner => {
+    return {
+      src: `${process.env.BASE_IMAGE}/banner/${topBanners._id}/${banner.url}`,
+      link: '/collections/saree'
+    }
+  })?.sort((a, b) => a.order - b.order);
+
+  const secondSlider = secondBanners.image.map(banner => {
+    return {
+      src: `${process.env.BASE_IMAGE}/banner/${secondBanners._id}/${banner.url}`,
+      link: '/collections/saree'
+    }
+  })?.sort((a, b) => a.order - b.order);
+
+  console.log(topSlider)
   useEffect(() => {
     AOS.init();
   }, []);
@@ -21,7 +39,7 @@ export default function Home({ newArrivals, topSellers, categories }) {
         url={siteMetadata.siteUrl}
       />
 
-      <Carousel images={[{ src: "saree-primary.webp", link: '/collections/saree' }]} />
+      <Carousel images={topSlider} />
       <ContainerStyled>
         <div data-aos="fade-up"
           data-aos-duration="2000"
@@ -32,7 +50,7 @@ export default function Home({ newArrivals, topSellers, categories }) {
       </ContainerStyled>
 
       <div style={{ margin: "40px 0" }}>
-        <Carousel images={[{ src: "/banner1.webp", link: '/collections/saree' }]} />
+        <Carousel images={secondSlider} />
         <ContainerStyled>
           <div data-aos="fade-up"
             data-aos-duration="2000"
@@ -46,23 +64,31 @@ export default function Home({ newArrivals, topSellers, categories }) {
           </div>
         </ContainerStyled>
       </div>
-      <div style={{display : 'flex', justifyContent : 'space-evenly', gap: '10px', margin : '50px 15px'}}>
-                <div style={{display : 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
-                  <img src={'/cm.jpg'} alt='' style={{maxWidth: '100%'}} />
-                  <p style={{textTransform: 'uppercase', fontSize:'12px', fontWeight: 500}} >Check</p>
-                </div>
-                <div style={{display : 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
-                  <img src={'/cm.jpg'} alt='' style={{maxWidth: '100%'}} />
-                  <p style={{textTransform: 'uppercase', fontSize:'12px', fontWeight: 500}} >Check</p>
-                </div>
-                <div style={{display : 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
-                  <img src={'/cm.jpg'} alt='' style={{maxWidth: '100%'}} />
-                  <p style={{textTransform: 'uppercase', fontSize:'12px', fontWeight: 500}} >Check</p>
-                </div>
-                <div style={{display : 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
-                  <img src={'/cm.jpg'} alt='' style={{maxWidth: '100%'}} />
-                  <p style={{textTransform: 'uppercase', fontSize:'12px', fontWeight: 500}} >Check</p>
-                </div>
+      <div
+        data-aos="fade-up"
+        data-aos-duration="2000"
+        data-aos-once="true"
+        style={{ display: 'flex', justifyContent: 'space-evenly', gap: '10px', margin: '50px 15px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+          <img src={'/free-delivery.png'} alt='' style={{ maxWidth: '100%' }} />
+          <p style={{ textTransform: 'uppercase', fontSize: '12px', fontWeight: 500 }} >free shipping</p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+          <img src={'/quality-assurance.png'} alt='' style={{ maxWidth: '100%' }} />
+          <p style={{ textTransform: 'uppercase', fontSize: '12px', fontWeight: 500 }} >Assured quality</p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+          <img src={'/credit-card.png'} alt='' style={{ maxWidth: '100%' }} />
+          <p style={{ textTransform: 'uppercase', fontSize: '12px', fontWeight: 500 }} >Secure payment</p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+          <img src={'/insurance.png'} alt='' style={{ maxWidth: '100%' }} />
+          <p style={{ textTransform: 'uppercase', fontSize: '12px', fontWeight: 500 }} >100% Purchase protection</p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+          <img src={'/discount.png'} alt='' style={{ maxWidth: '100%' }} />
+          <p style={{ textTransform: 'uppercase', fontSize: '12px', fontWeight: 500 }} >Best price promise</p>
+        </div>
       </div>
     </>
   );
@@ -72,15 +98,24 @@ export async function getStaticProps() {
   let newArrivals = [];
   let topSellers = [];
   let categories = [];
+  let banners = [];
+
 
   try {
+    const bannerData = await fetch(
+      `${process.env.BACKEND_URL}/banner`
+    );
+
     const data = await fetch(
       `${process.env.BACKEND_URL}/products/home`
     );
+    const bannerResponse = await bannerData.json();
     const response = await data.json();
+
     newArrivals = response?.data?.newArrivals;
     topSellers = response?.data?.topSellers;
     categories = response?.data?.categories;
+    banners = bannerResponse?.data
 
   } catch (error) {
     console.log('err', error)
@@ -90,7 +125,8 @@ export async function getStaticProps() {
     props: {
       newArrivals,
       topSellers,
-      categories
+      categories,
+      banners
     },
     revalidate: 60
   }
