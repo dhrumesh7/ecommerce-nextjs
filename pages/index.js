@@ -46,6 +46,24 @@ export default function Home({ newArrivals, topSellers, categories }) {
           </div>
         </ContainerStyled>
       </div>
+      <div style={{display : 'flex', justifyContent : 'space-evenly', gap: '10px', margin : '50px 15px'}}>
+                <div style={{display : 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+                  <img src={'/cm.jpg'} alt='' style={{maxWidth: '100%'}} />
+                  <p>Check</p>
+                </div>
+                <div style={{display : 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+                  <img src={'/cm.jpg'} alt='' style={{maxWidth: '100%'}} />
+                  <p>Check</p>
+                </div>
+                <div style={{display : 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+                  <img src={'/cm.jpg'} alt='' style={{maxWidth: '100%'}} />
+                  <p>Check</p>
+                </div>
+                <div style={{display : 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+                  <img src={'/cm.jpg'} alt='' style={{maxWidth: '100%'}} />
+                  <p>Check</p>
+                </div>
+      </div>
     </>
   );
 }
