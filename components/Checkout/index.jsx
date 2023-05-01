@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import { useState } from "react";
-import { DialogContent, styled, useTheme } from "@mui/material";
+import { DialogContent, styled, TextField, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -10,7 +10,7 @@ import ButtonBase from "@mui/material/ButtonBase";
 import { Button, Radio } from "@mui/material";
 import logo from "../../public/category.jpg";
 import { useEffect } from "react";
-import { getCartListService } from "../../services/user.services";
+import { checkRewardService, getCartListService } from "../../services/user.services";
 import { toast } from "react-toastify";
 import {
   CODOrderService,
@@ -49,6 +49,8 @@ export default function Checkout({ setCheckoutOpen }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [codPrice, setcodPrice] = useState(0);
   const [apiCall, setApiCall] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [couponVerifyRes, setCouponVerifyRes] = useState('');
 
   // const [addNew, setAddNew] = useState(false);
 
@@ -225,7 +227,7 @@ export default function Checkout({ setCheckoutOpen }) {
 
       const checkoutData = {
         cartItems,
-        priceTotal : priceTotal + (codPrice || 0),
+        priceTotal: priceTotal + (codPrice || 0),
         codPrice,
         address,
       };
@@ -249,6 +251,18 @@ export default function Checkout({ setCheckoutOpen }) {
     await displayRazorpay();
   };
   const theme = useTheme();
+
+  const onCouponCodeApply = async () => {
+    try {
+      const response = await checkRewardService({ code: couponCode });
+      setCouponVerifyRes(response.data)
+      console.log(response.data)
+
+    } catch (error) {
+      return toast.error(error?.response?.data?.message || error.message);
+    }
+  }
+
   const RenderComponent = () => {
     switch (currentStep) {
       case 1:
@@ -367,6 +381,16 @@ export default function Checkout({ setCheckoutOpen }) {
               {" "}
               Select Payment Method{" "}
             </Typography>
+            <Box sx={{ marginTop: "20px", marginBottom: "10px", display: "flex", gap: "10px", alignItems: "center" }}>
+
+              <TextField placeholder="Enter Coupon Code" value={couponCode} onChange={(e) => setCouponCode(e?.target?.value)} />
+              <Button variant="contained" sx={{ height: "40px", background: "black" }} onClick={() => onCouponCodeApply()}>Apply</Button>
+
+            </Box>
+             <Typography sx={{ marginBottom: "30px", color: "red" }}>
+              {couponVerifyRes.message}
+            </Typography>
+            
             <p style={{ fontSize: "13px" }}>Note: COD fee of Rs.100 will be added to Cash on Delivery</p>
             <div
               style={{
@@ -443,7 +467,7 @@ export default function Checkout({ setCheckoutOpen }) {
   };
   return (
     <>
-   {apiCall  &&  <Dialog
+      {apiCall && <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="address-modal-title"

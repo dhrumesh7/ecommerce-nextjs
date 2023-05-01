@@ -91,17 +91,23 @@ export default function Search() {
       marginRight: theme.spacing(1),
     },
   }));
+const searchClick = (slug) => {
+  router.push(`/products/${slug}`)
+  setSearchText('');
 
+}
   function renderOption(props, option, { selected }) {
     const label = props.key;
-
     return (
-      <>  <StyledOption selected={selected} component="li" >
+      <> 
+      {/* <Link href={`/products/${option.slug}`} style={{textDecoration: "none", color: "black"}}> */}
+      <StyledOption selected={selected} component="li" onClick={()=> searchClick(option.slug)}>
         {/* <ListItemIcon>
           {selected ? <CheckIcon /> : null}
         </ListItemIcon> */}
         <ListItemText primary={label} />
       </StyledOption>
+      {/* </Link> */}
       </>
     );
   }
@@ -153,7 +159,7 @@ export default function Search() {
             }}
           />
         )}
-        renderOption={(props, option, state) => renderOption(props, option, state)}
+        renderOption={(props, option, state) => searchText && renderOption(props, option, state)}
       />
     </div>
   );

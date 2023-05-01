@@ -52,3 +52,7 @@ export const getOrderService = (orderId) => {
 export const getWishList = (orderId) => {
     return get(`/user/order/${orderId}`);
 };
+
+export const checkRewardService = (body) => {
+    return post(`/reward/check/`, body);
+};

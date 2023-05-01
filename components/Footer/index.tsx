@@ -25,9 +25,11 @@ const Footer = () => {
               </p>
               India
             </div>
+
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Heading>Contact Us</Heading>
+            <FooterLink href="/about-us">About Us</FooterLink>
             <FooterLink href="callto:+917016022603:">+91 70160 22603</FooterLink>
             <FooterLink href="mailto:aryasilkmills@gmail.com">aryasilkmills@gmail.com</FooterLink>
           </Grid>
