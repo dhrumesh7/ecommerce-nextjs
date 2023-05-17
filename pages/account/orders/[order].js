@@ -85,6 +85,7 @@ const Order = () => {
               margin: "20px 0",
             }}
           >
+            <h3>{data.orderStatus}</h3>
             Order ID - {data._id}
           </Typography>
 
@@ -212,6 +213,7 @@ const Order = () => {
 
             <Grid item xs={12} sx={{ marginBottom: "30px", fontWeight: 500, fontSize: "20px", display: "flex", flexDirection: "column", gap: 2 }}>
               {data?.codPrice > 0 && <p>COD amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.codPrice}</span></p>}
+              {data?.couponPrice > 0 && <p>Discount : <span style={{ color: "green" }}>Rs. {data.couponPrice}</span></p>}
               <p>Total amount : <span style={{ color: "darkgoldenrod" }}>Rs. {data.amount}</span></p>
             </Grid>
 

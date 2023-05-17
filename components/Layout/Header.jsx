@@ -70,7 +70,7 @@ export default function Header({ children }) {
 
               >
                 <Link href="/">
-                  <img src="/logo-transperant.png" style={{ width: "125px", cursor: "pointer" }} alt="" />
+                  <img src="/logo-transperant.png" style={{ width: mobile ? "160px": "200px", cursor: "pointer" }} alt="" />
                   </Link>
               </div>
             </div>

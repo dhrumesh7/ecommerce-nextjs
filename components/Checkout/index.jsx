@@ -48,6 +48,7 @@ export default function Checkout({ setCheckoutOpen }) {
   const [priceTotal, setPriceTotal] = useState(0);
   const [currentStep, setCurrentStep] = useState(1);
   const [codPrice, setcodPrice] = useState(0);
+  const [couponPrice, setCouponPrice] = useState(0);
   const [apiCall, setApiCall] = useState(false);
   const [couponCode, setCouponCode] = useState('');
   const [couponVerifyRes, setCouponVerifyRes] = useState('');
@@ -129,9 +130,11 @@ export default function Checkout({ setCheckoutOpen }) {
     const checkoutData = {
       cartItems,
       priceTotal,
+      couponPrice,
       address,
     };
 
+    if(couponVerifyRes.flag) checkoutData.coupon = couponVerifyRes.data;
     try {
       const result = await createOrderService(checkoutData);
 
@@ -229,8 +232,11 @@ export default function Checkout({ setCheckoutOpen }) {
         cartItems,
         priceTotal: priceTotal + (codPrice || 0),
         codPrice,
+        couponPrice,
         address,
       };
+
+      if(couponVerifyRes.flag) checkoutData.coupon = couponVerifyRes.data;
 
       const result = await CODOrderService(checkoutData)
       toast.success("Your order has been successfully placed!");
@@ -254,15 +260,21 @@ export default function Checkout({ setCheckoutOpen }) {
 
   const onCouponCodeApply = async () => {
     try {
+      if(couponVerifyRes?.flag) return;
       const response = await checkRewardService({ code: couponCode });
-      setCouponVerifyRes(response.data)
-      console.log(response.data)
-
+      const resData = response.data;
+      setCouponVerifyRes(resData)
+      if (resData.flag) {
+        setCouponPrice(resData?.data?.value)
+        console.log('price ifd coup applied', priceTotal, codPrice, resData)
+        setPriceTotal(priceTotal + codPrice - resData?.data?.value)
+      }
+      setCouponCode('')
     } catch (error) {
       return toast.error(error?.response?.data?.message || error.message);
     }
   }
-
+  console.log('coupoon res', couponVerifyRes)
   const RenderComponent = () => {
     switch (currentStep) {
       case 1:
@@ -384,13 +396,13 @@ export default function Checkout({ setCheckoutOpen }) {
             <Box sx={{ marginTop: "20px", marginBottom: "10px", display: "flex", gap: "10px", alignItems: "center" }}>
 
               <TextField placeholder="Enter Coupon Code" value={couponCode} onChange={(e) => setCouponCode(e?.target?.value)} />
-              <Button variant="contained" sx={{ height: "40px", background: "black" }} onClick={() => onCouponCodeApply()}>Apply</Button>
+               <Button disabled={!couponCode && couponVerifyRes} variant="contained" sx={{ height: "40px", background: "black" }} onClick={() => onCouponCodeApply()}>Apply</Button>
 
             </Box>
-             <Typography sx={{ marginBottom: "30px", color: "red" }}>
-              {couponVerifyRes.message}
+            <Typography sx={{ marginBottom: "30px", color: couponVerifyRes.flag ? "green" : "red" }}>
+              {couponVerifyRes.flag ? 'Offer Applied' : couponVerifyRes.message}
             </Typography>
-            
+
             <p style={{ fontSize: "13px" }}>Note: COD fee of Rs.100 will be added to Cash on Delivery</p>
             <div
               style={{
@@ -550,7 +562,9 @@ export default function Checkout({ setCheckoutOpen }) {
                                     textTransform: "capitalize",
                                   }}
                                 >
-                                  {item.product.title} {item.product.color}{" "}
+                                  {item.product.title}{" "}
+                                  ( {item.product.stocks.find(stk => stk.sku === item.sku)?.color} )
+                                   {/* {item.product.color}{" "} */}
                                   {item.product.size}
                                 </Typography>
                                 <Typography sx={{ fontSize: "11px" }}>
@@ -591,6 +605,23 @@ export default function Checkout({ setCheckoutOpen }) {
                         }}
                       >
                         Rs. {100}
+                      </Typography>
+                    </div>
+                    }
+                    {couponPrice > 0 && <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+                      <Typography sx={{ fontSize: "13px", fontWeight: 500, float: "left" }}>
+                        Discount
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                          fontWeight: 500,
+                          color: "green",
+
+                        }}
+                      >
+                      {`-  Rs. ${couponPrice}`}
                       </Typography>
                     </div>
                     }

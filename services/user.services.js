@@ -33,8 +33,8 @@ export const updateCartService = (body) => {
     return patch('/user/cart', body);
 };
 
-export const removeCartService = (productId) => {
-    return deleteReq(`/user/cart/${productId}`);
+export const removeCartService = (productId, sku) => {
+    return deleteReq(`/user/cart/${productId}/${sku}`);
 };
 
 export const getCartListService = (body) => {

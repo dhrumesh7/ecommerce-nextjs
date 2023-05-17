@@ -85,10 +85,10 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
     }
   }
 
-  async function handleRemoveItem(itemId) {
-    const response = await removeCartService(itemId);
+  async function handleRemoveItem(itemId, sku) {
+    const response = await removeCartService(itemId, sku);
     setCartItems((prevCartItems) =>
-      prevCartItems.filter((item) => item?.product?._id !== itemId)
+       prevCartItems.filter((item) =>  item.sku !== sku)
     );
   }
 
@@ -254,7 +254,7 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
                               display: "inline",
                               marginLeft: '15px',
                             }}
-                            onClick={() => handleRemoveItem(pr?.product?._id)}
+                            onClick={() => handleRemoveItem(pr?.product?._id, pr.sku)}
                           >
                             Remove
                           </Button>
