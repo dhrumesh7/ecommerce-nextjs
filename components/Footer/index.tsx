@@ -34,12 +34,19 @@ const Footer = () => {
             <FooterLink href="mailto:aryasilkmills@gmail.com">aryasilkmills@gmail.com</FooterLink>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
+            <Heading>Corporate</Heading>
+            <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
+            <FooterLink href="/terms-conditions">Terms & Conditions</FooterLink>
+            <FooterLink href="/cancellation-refund-policy">Cancellation & Refund Policy</FooterLink>
+            <FooterLink href="/shipping-delivery-policy">Shipping & Delivery</FooterLink>
+          </Grid>
+          {/* <Grid item xs={12} sm={6} md={3}>
             <Heading>Social Media</Heading>
             <FooterLink href="#">Facebook</FooterLink>
             <FooterLink href="#">Instagram</FooterLink>
             <FooterLink href="#">Twitter</FooterLink>
             <FooterLink href="#">Youtube</FooterLink>
-          </Grid>
+          </Grid> */}
         </Grid>
       </ContainerStyled>
     </Box>

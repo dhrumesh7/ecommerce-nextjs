@@ -493,17 +493,12 @@ const Product = ({ data }) => {
                   2) Defective Products, Wrong Products or Damaged Products
                   issue should be raised within 24 hrs of delivery<br></br>
                   3) All Orders wherein FREE Products included are not eligible
-                  {/* for Refund or Exchange<br></br>For more details on our
-                Returns/Exchange Policies, please{" "}
-                <strong>
-                  <a href="">click here․</a>
-                </strong> */}
                 </div>
               )}
               {value === "3" && (
                 <div id="tab3" class="tabcontent active">
                   To place any Returns / Exchange Request,{" "}
-                  <Link href="/">
+                  <Link href="/contact-us">
                     <strong>click here.</strong>
                   </Link>
                 </div>
