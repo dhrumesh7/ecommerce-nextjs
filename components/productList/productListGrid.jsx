@@ -8,6 +8,7 @@ import { Favorite, FavoriteBorder, Favourite } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { addToWishListService, getUserProfileService, removeFromWishListService } from "../../services/user.services";
 import axios from "axios";
+import { calPercentage } from "../../services/helper.service";
 
 export default function ProductListGrid({ title, products }) {
 
@@ -108,7 +109,7 @@ export default function ProductListGrid({ title, products }) {
 
                       <img src={product.image?.[0]?.url ? `${process.env.BASE_IMAGE}/product/${product._id}/${product.image?.[0]?.url}` : "/product.webp"} alt="" className={globalStyles.productImage} />
                       <p className={globalStyles.productName}>{product.title}</p>
-                      {(product?.noOfferprice - product?.price) / 100 > 0 ? (
+                      {calPercentage(product?.price, product?.noOfferprice) > 0 ? (
                         <>
                           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10 }}>
                             <p className={globalStyles.productPrice}>
@@ -120,7 +121,7 @@ export default function ProductListGrid({ title, products }) {
 
                               </span>
                               <span style={{ color: "green", fontSize: "15px", marginLeft: "5px" }}>
-                                {Math.round((product?.noOfferprice - product?.price) / 100)}% Off
+                                {calPercentage(product?.price, product?.noOfferprice)}% Off
                               </span>
                             </p>
                           </div>

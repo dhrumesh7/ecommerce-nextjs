@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { ContainerStyled } from "../../components/Styled";
 import Link from "next/link";
 import globalStyles from "../../styles/global.module.scss";
+import { calPercentage } from "../../services/helper.service";
 export default function Category() {
   const router = useRouter();
   const { category } = router.query;
@@ -226,7 +227,7 @@ export default function Category() {
                           <p className={globalStyles.productName}>
                             {product.title}
                           </p>
-                          {(product?.noOfferprice - product?.price) / 100 > 0 ? (
+                          {calPercentage(product?.price, product?.noOfferprice) > 0 ? (
                             <>
                               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10 }}>
                                 <p className={globalStyles.productPrice}>
@@ -238,7 +239,7 @@ export default function Category() {
 
                                   </span>
                                   <span style={{ color: "green", fontSize: "15px", marginLeft: "5px" }}>
-                                    {Math.round((product?.noOfferprice - product?.price) / 100)}% Off
+                                    {calPercentage(product?.price, product?.noOfferprice)}% Off
                                   </span>
                                 </p>
                               </div>

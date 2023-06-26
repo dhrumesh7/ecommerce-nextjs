@@ -66,10 +66,10 @@ export default function Address() {
       <div className={wishlistCSS.profileSideBarMain}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
-            <SideBar user={user}/>
+            <SideBar user={user} />
           </Grid>
           {isApiCalled && (
-            <Grid container item xs={12} md={8} sx={{maxHeight: "100vh", overflow: "scroll", padding: "5px"}}>
+            <Grid container item xs={12} md={8} sx={{ maxHeight: "100vh", overflow: "scroll", padding: "5px" }}>
               {orders?.length ? (
                 <>
                   {orders.map(({ products, amount, orderStatus, _id }, i) => {
@@ -196,7 +196,7 @@ export default function Address() {
                           <Grid item sm={2} xs={12}>
                             <p className={styles.productPrice}>₹ {amount}</p>
                           </Grid>
-                          <Grid item sm={3} xs={12}>
+                          <Grid item sm={3} xs={12} sx={{ textTransform: "capitalize" }}>
                             {orderStatus}
                           </Grid>
                         </Grid>

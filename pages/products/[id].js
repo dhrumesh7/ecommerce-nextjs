@@ -34,6 +34,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { ProductSeo } from "../../components/SEO";
 import siteMetadata from '../../data/siteMetadata.json';
 import { devNull } from "os";
+import { calPercentage } from "../../services/helper.service";
 
 export const addToCart = async (productId, sku) => {
   try {
@@ -102,8 +103,8 @@ const Product = ({ data }) => {
     //   setImageList([...tempData])
     //   console.log(tempData, 't1')
     // } else {
-      const tempData = [...data.image]
-      setImageList([...tempData])
+    const tempData = [...data.image]
+    setImageList([...tempData])
     //   console.log(tempData, 't2')
     // }
     setActiveImageIndex(0)
@@ -151,7 +152,7 @@ const Product = ({ data }) => {
   }, [data]);
 
   useEffect(() => {
-    if(activeImageChange){
+    if (activeImageChange) {
       const color = data?.image?.[activeImageIndex]?.color;
       setSelectedColor(color || selectedColor)
     }
@@ -177,7 +178,7 @@ const Product = ({ data }) => {
   const activeImageChange = (index) => {
     setActiveImageIndex(index)
   }
-  
+
   const [zoomOpen, setZoomOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
 
@@ -190,6 +191,7 @@ const Product = ({ data }) => {
     e.target.style.transform = isZoomed ? "none" : "scale(2)";
     setIsZoomed(!isZoomed);
   };
+
   return (
     <>
       <ProductSeo
@@ -307,12 +309,12 @@ const Product = ({ data }) => {
 
             <Grid item xs={12} md={6}>
               <h1 className={styles.productTitle}>{data?.title}</h1>
-              {(data?.noOfferprice - data?.price) / 100 > 0 ? (
+              {calPercentage(data?.price, data?.noOfferprice) > 0 ? (
                 <>
                   <p className={styles.productPrice}>
                     Rs. {Number(data?.price).toLocaleString("en")}{" "}
                     <span style={{ color: "green", fontSize: "0.8em" }}>
-                      {Math.round((data?.noOfferprice - data?.price) / 100)}%
+                      {calPercentage(data?.price, data?.noOfferprice)}%
                       Off
                     </span>
                   </p>
@@ -340,7 +342,7 @@ const Product = ({ data }) => {
                       disabled={
                         !data.stocks.find(
                           (stock) =>
-                            stock?.color.toLowerCase()?.trim() === clr.toLowerCase()?.trim()
+                            stock?.color?.toLowerCase()?.trim() === clr?.toLowerCase()?.trim()
                         )
                       }
                       key={index}
@@ -383,8 +385,8 @@ const Product = ({ data }) => {
                     (stock) =>
                       stock?.sku === selectedSku
                   )?.stock
-         
-                  if(prInStock){
+
+                  if (prInStock) {
                     addToCart(data._id, selectedSku);
                   }
                 }}
@@ -400,7 +402,7 @@ const Product = ({ data }) => {
               <div>
                 <p
                   className={styles.descriptionText}
-                  style={{ marginBottom: 25 }}
+                  style={{ marginBottom: 25, textTransform: 'none' }}
                 >
                   {/* Pintek Navy Shirt is the perfect choice for clubwear or Party
                 Night. ts custom fit and curve hem give an attractive and

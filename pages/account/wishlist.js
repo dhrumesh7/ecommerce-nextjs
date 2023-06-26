@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import { ContainerStyled } from "../../components/Styled";
 import Link from "next/link";
 import { addToCart } from "../products/[id]";
+import { calPercentage } from "../../services/helper.service";
 
 export default function Address() {
   const [user, setUser] = useState();
@@ -91,7 +92,7 @@ export default function Address() {
                                 />
                               </div>
                               <div style={{ width: "100%", fontSize: "15px", fontWeight: "bold" }}>
-                                {(wish?.noOfferprice - wish?.price) / 100 > 0 ? (
+                                {calPercentage(wish?.price, wish?.noOfferprice) > 0 ? (
                                   <>
                                     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, marginBottom: "10px" }}>
                                       <p className={globalStyles.productPrice}>
@@ -103,7 +104,7 @@ export default function Address() {
 
                                         </span>
                                         <span style={{ color: "green", fontSize: "15px", marginLeft: "5px" }}>
-                                          {Math.round((wish?.noOfferprice - wish?.price) / 100)}% Off
+                                          {calPercentage(wish?.price, wish?.noOfferprice)}% Off
                                         </span>
                                       </p>
                                     </div>

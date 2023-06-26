@@ -59,7 +59,7 @@ const Order = () => {
       const response = await invoiceService(shipment.shipRocketOrderId);
 
       const invoiceUrl = response?.data?.data?.invoice_url;
-      if(!invoiceUrl) toast.error('Something went wrong while downloading invoice!');
+      if (!invoiceUrl) toast.error('Something went wrong while downloading invoice!');
 
       const link = document.createElement('a');
       link.href = invoiceUrl;
@@ -73,7 +73,7 @@ const Order = () => {
 
     }
   }
-  
+
   return (
     <>
       {data && (
@@ -85,7 +85,7 @@ const Order = () => {
               margin: "20px 0",
             }}
           >
-            <h3>{data.orderStatus}</h3>
+            <h3 style={{ textTransform: "capitalize" }}>{data.orderStatus}</h3>
             Order ID - {data._id}
           </Typography>
 
@@ -240,26 +240,53 @@ const Order = () => {
                   justifyContent: "space-evenly",
                 }}
               >
-                <Button
-                  disabled={data?.orderStatus === "cancelled" || shipment?.shipmentData}
-                  variant="contained"
-                  onClick={() => onCancelShipment()}
-                  sx={{
-                    backgroundColor: "#ffffff",
-                    color: "#000000",
-                    width: "48%",
-                    padding: "10px",
-                    border: "1px solid #000000",
-                    ":hover": {
-                      color: "#ffffff",
-                      backgroundColor: "#000000",
-                    },
-                    display: "block",
-                    margin: "0px auto",
-                  }}
-                >
-                  Cancel order
-                </Button>
+                {
+                  shipment?.shipmentData?.awb ?
+                    <Link
+                      href={`https://shiprocket.co/tracking/${shipment?.shipmentData?.awb}`}
+                      target="_blank"
+                      style={{
+                        textDecoration: "none",
+                        backgroundColor: "#ffffff",
+                        color: "#000000",
+                        width: "48%",
+                        padding: "10px",
+                        border: "1px solid #000000",
+                        ":hover": {
+                          color: "#ffffff",
+                          backgroundColor: "#000000",
+                        },
+                        borderRadius: "4px",
+                        display: "block",
+                        margin: "0px auto",
+                        textAlign: "center"
+                      }}
+                    >
+                      TRACK ORDER
+                    </Link>
+                    :
+                    <Button
+                      disabled={data?.orderStatus === "cancelled" || shipment?.shipmentData}
+                      variant="contained"
+                      onClick={() => onCancelShipment()}
+                      sx={{
+                        backgroundColor: "#ffffff",
+                        color: "#000000",
+                        width: "48%",
+                        padding: "10px",
+                        border: "1px solid #000000",
+                        ":hover": {
+                          color: "#ffffff",
+                          backgroundColor: "#000000",
+                        },
+                        display: "block",
+                        margin: "0px auto",
+                      }}
+                    >
+                      Cancel order
+                    </Button>
+                }
+
 
                 <Button
                   variant="contained"

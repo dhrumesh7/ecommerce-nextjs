@@ -83,7 +83,7 @@ export default function Home({ newArrivals, topSellers, categories, banners }) {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
           <img src={'/insurance.png'} alt='' style={{ maxWidth: '100%' }} />
-          <p style={{ textTransform: 'uppercase', fontSize: '12px', fontWeight: 500 }} >100% Purchase protection</p>
+          <p style={{ textTransform: 'uppercase', fontSize: '12px', fontWeight: 500 }} > Purchase protection</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
           <img src={'/discount.png'} alt='' style={{ maxWidth: '100%' }} />
