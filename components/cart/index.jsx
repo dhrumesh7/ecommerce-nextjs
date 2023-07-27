@@ -168,7 +168,7 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
                             variant="subtitle1"
                             component="div"
                           >
-                            {pr.product.title}
+                            {pr?.product?.title}
                           </Typography>
                           <p
                             className={productDetailsStyles.descriptionTitle}
@@ -178,7 +178,7 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
                               fontSize: "0.8rem",
                             }}
                           >
-                           {pr.product.color && <>COLOR : <span> {pr.product.stocks.find(stk => stk.sku === pr.sku)?.color} </span></>}
+                           {pr?.product?.color && <>COLOR : <span> {pr?.product?.stocks.find(stk => stk.sku === pr.sku)?.color} </span></>}
                           </p>
                           <p
                             className={productDetailsStyles.descriptionTitle}
@@ -188,7 +188,7 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
                               fontSize: "0.8rem",
                             }}
                           >
-                          {pr.product.size &&  <>SIZE : <span> {pr.product.size} </span></>}
+                          {pr?.product?.size &&  <>SIZE : <span> {pr?.product?.size} </span></>}
                           </p>
                         </Grid>
                          {!pr.inStock &&<Typography sx={{color:"red", fontWeight: "500"}} >Out of stock</Typography>}
@@ -197,7 +197,7 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
                           <ToggleButtonGroup
                             size={"small"}
                             aria-label="text alignment"
-                            disabled={pr.inStock ? false : true}
+                            disabled={pr?.inStock ? false : true}
                           >
                             <ToggleButton
                               size="small"

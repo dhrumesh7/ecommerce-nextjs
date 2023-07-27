@@ -85,11 +85,6 @@ export default function SignInSide() {
       if (response?.data?.flag) {
         push('/')
       }
-
-      console.log({
-        email: data.get('email'),
-        password: data.get('password'),
-      });
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message)
     }

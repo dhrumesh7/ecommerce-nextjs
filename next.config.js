@@ -4,7 +4,7 @@ const nextConfig = {
   rewrites: async () => {
     return [{
       source: '/backend/:slug*',
-      destination: 'http://3.111.148.12:4020/:slug*'
+      destination: 'http://localhost:4020/:slug*'
     }]
   },
   env: {

@@ -10,17 +10,17 @@ import siteMetadata from '../data/siteMetadata.json'
 import { PageSeo } from "../components/SEO";
 
 export default function Home({ newArrivals, topSellers, categories, banners }) {
-  const topBanners = banners.find(banner => banner.type === 'top_banner');
-  const secondBanners = banners.find(banner => banner.type === 'second_banner');
+  const topBanners = banners?.find(banner => banner.type === 'top_banner');
+  const secondBanners = banners?.find(banner => banner.type === 'second_banner');
 
-  const topSlider = topBanners.image.map(banner => {
+  const topSlider = topBanners?.image?.map(banner => {
     return {
       src: `${process.env.BASE_IMAGE}/banner/${topBanners._id}/${banner.url}`,
       link: '/collections/saree'
     }
   })?.sort((a, b) => a.order - b.order);
 
-  const secondSlider = secondBanners.image.map(banner => {
+  const secondSlider = secondBanners?.image?.map(banner => {
     return {
       src: `${process.env.BASE_IMAGE}/banner/${secondBanners._id}/${banner.url}`,
       link: '/collections/saree'

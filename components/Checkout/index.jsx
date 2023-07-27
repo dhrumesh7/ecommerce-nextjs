@@ -67,14 +67,18 @@ export default function Checkout({ setCheckoutOpen }) {
 
       const cartrResponse = await getCartListService();
       const cartItems = cartrResponse?.data?.data?.cart;
+
+      console.log('cart items', cartItems)
       const stockChecked = cartItems.filter((item) => {
         const skuStock = item?.product?.stocks?.find(
           (stk) => stk.sku === item.sku
         )?.stock;
         return skuStock > item.quantity;
       });
+
+      console.log('stockChecked', stockChecked)
       const priceTotal = stockChecked.reduce(
-        (prev, next) => prev + next.product.price * next.quantity,
+        (prev, next) => prev + ((next?.product?.price || 0)  * next?.quantity),
         0
       );
       setCartItems(stockChecked);
@@ -114,14 +118,14 @@ export default function Checkout({ setCheckoutOpen }) {
   }
 
   async function displayRazorpay() {
-    const res = await loadScript(
-      "https://checkout.razorpay.com/v1/checkout.js"
-    );
+    // const res = await loadScript(
+    //   "https://checkout.razorpay.com/v1/checkout.js"
+    // );
 
-    if (!res) {
-      toast.error("Razorpay SDK failed to load. Are you online?");
-      return;
-    }
+    // if (!res) {
+    //   toast.error("Razorpay SDK failed to load. Are you online?");
+    //   return;
+    // }
 
     const address = deliveryAddress.find(
       (address) => address._id === selectedAddress
@@ -193,7 +197,34 @@ export default function Checkout({ setCheckoutOpen }) {
     }
   }
 
+  const displayPhonepe = async () => {
+    try {
+      
+      const address = deliveryAddress.find(
+        (address) => address._id === selectedAddress
+      );
+
+      const checkoutData = {
+        cartItems,
+        priceTotal,
+        couponPrice,
+        address,
+      };
+
+      if(couponVerifyRes.flag) checkoutData.coupon = couponVerifyRes.data;
+
+      const result = await createOrderService(checkoutData);
+      
+      const phonepeUrl = result?.data?.data?.instrumentResponse?.redirectInfo?.url;
+      router.replace(phonepeUrl)
+      
+    } catch (error) {
+      return toast.error(error?.response?.data?.message || error.message);
+      
+    }
+  }
   const [open, setOpen] = useState(true);
+
 
   const handleOpen = () => {
     setOpen(true);
@@ -254,7 +285,7 @@ export default function Checkout({ setCheckoutOpen }) {
 
   const onContinue = async () => {
     setCheckoutOpen(false);
-    await displayRazorpay();
+    await displayPhonepe();
   };
   const theme = useTheme();
 
@@ -266,7 +297,7 @@ export default function Checkout({ setCheckoutOpen }) {
       setCouponVerifyRes(resData)
       if (resData.flag) {
         setCouponPrice(resData?.data?.value)
-        console.log('price ifd coup applied', priceTotal, codPrice, resData)
+
         setPriceTotal(priceTotal + codPrice - resData?.data?.value)
       }
       setCouponCode('')
@@ -274,7 +305,7 @@ export default function Checkout({ setCheckoutOpen }) {
       return toast.error(error?.response?.data?.message || error.message);
     }
   }
-  console.log('coupoon res', couponVerifyRes)
+
   const RenderComponent = () => {
     switch (currentStep) {
       case 1:
@@ -498,6 +529,7 @@ export default function Checkout({ setCheckoutOpen }) {
         >
           <Grid container spacing={3}>
             {RenderComponent()}
+            {console.log("heeey", currentStep, cartItems, priceTotal)}
             {currentStep !== 0 && cartItems && priceTotal && (
               <Grid item xs={12} md={6}>
                 <Box

@@ -161,7 +161,7 @@ const Product = ({ data }) => {
     const sku = data?.stocks?.find(
       (stk) => stk.color.toLowerCase() === color.toLowerCase()
     )?.sku;
-    const imgIndex = data.image.findIndex(img => img.color.trim().toLowerCase() === color.trim().toLowerCase())
+    const imgIndex = data?.image?.findIndex(img => img?.color?.trim().toLowerCase() === color?.trim().toLowerCase())
 
     setSelectedSku(sku);
     setSelectedColor(color);
