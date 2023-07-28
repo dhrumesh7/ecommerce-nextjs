@@ -78,7 +78,7 @@ export default function Header({ children }) {
               className={LayoutStyle.iconList}
 
             >
-              {desktop && <Search />}
+              {mobile || tablet ? null : <Search />}
               <div
                 className={LayoutStyle.iconDev}
                 onClick={() => push("/account/profile")}
