@@ -1,38 +1,85 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# E-Commerce Platform - Frontend (Next.js)
+
+## Overview
+
+This repository contains the frontend application for an e-commerce platform, built using **Next.js**. The application provides a user-friendly interface for browsing products, managing the shopping cart, viewing and updating the wishlist, and tracking orders. It communicates with a backend API to handle data management and user authentication.
+
+## Features
+
+- **Product Listings**: Display and filter products by categories, subcategories, and various attributes.
+- **Search Functionality**: Search for products using keywords.
+- **Wishlist**: Add or remove products from the wishlist.
+- **Cart Management**: Add, update, or remove products from the cart.
+- **Order Tracking**: View order details and download invoices.
+- **Authentication**: User sign-up, login, and logout functionalities.
+- **Responsive Design**: Optimized for both desktop and mobile devices.
+- **Animation**: Smooth scroll animations using AOS.
+
+## Tech Stack
+
+- **Next.js**: React framework for server-side rendering and static site generation.
+- **React**: UI library for building user interfaces.
+- **Axios**: HTTP client for making API requests.
+- **Styled Components**: For component-level styling (or use CSS/SCSS as applicable).
+- **Toast Notifications**: For user feedback and alerts.
+- **AOS**: Animate On Scroll library for adding animations to elements on scroll.
+
+## Prerequisites
+
+Ensure you have the following installed on your local machine:
+
+- **Node.js** (v16 or later)
+- **npm**
+
+Access to the backend API is also required for full functionality.
 
 ## Getting Started
 
-First, run the development server:
+### Clone the Repository
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/dhrumesh7/ecommerce-nextjs
+cd ecommerce-nextjs
+```
+
+### Install Dependencies
+
+After cloning the repository, install the necessary dependencies by running:
+
+```bash
+npm install
+```
+
+### Environment Variables
+
+Add environment variables in the next.config.js
+
+
+### Running the Development Server
+
+To run the development server, use the following command:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+```
+Open http://localhost:3000 in your browser to view the application.
+
+
+### Building for Production
+
+To create an optimized production build, use the command:
+
+```bash
+npm run build
 ```
 
-Open [http://3.111.148.12:3000](http://3.111.148.12:3000) with your browser to see the result.
+Then, to start the server:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```bash
+npm run start
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://3.111.148.12:3000/api/hello](http://3.111.148.12:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+This will serve the production-ready version of the application.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
