@@ -27,7 +27,6 @@ export default function Home({ newArrivals, topSellers, categories, banners }) {
     }
   })?.sort((a, b) => a.order - b.order);
 
-  console.log(topSlider)
   useEffect(() => {
     AOS.init();
   }, []);
@@ -118,7 +117,7 @@ export async function getStaticProps() {
     banners = bannerResponse?.data
 
   } catch (error) {
-    console.log('err', error)
+    console.log('error: ', error)
   }
 
   return {

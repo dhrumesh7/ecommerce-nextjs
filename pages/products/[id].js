@@ -95,18 +95,8 @@ const Product = ({ data }) => {
   }, []);
 
   useEffect(() => {
-    // if (selectedColor) {
-    //   const tempData = data.image.filter((e) => {
-    //     console.log('e', e, e.color.toLowerCase().trim() === selectedColor.toLowerCase());
-    //     return e.color.toLowerCase().trim() === selectedColor.toLowerCase()
-    //   });
-    //   setImageList([...tempData])
-    //   console.log(tempData, 't1')
-    // } else {
     const tempData = [...data.image]
     setImageList([...tempData])
-    //   console.log(tempData, 't2')
-    // }
     setActiveImageIndex(0)
     setSelectedColor('')
   }, [data.image]);
@@ -512,7 +502,6 @@ const Product = ({ data }) => {
             title={"SIMILR PRODUCTS"}
             products={similarProducts}
           />
-          {/* <ProductListSlider /> */}
         </ContainerStyled>
       )}
     </>
@@ -527,7 +516,7 @@ export async function getServerSideProps({ params }) {
     );
     data = await res.json();
   } catch (error) {
-    console.log("eer", error);
+    console.log("error: ", error);
   }
   if (!data?.data)
     return {

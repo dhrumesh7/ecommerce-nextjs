@@ -41,7 +41,6 @@ export default function Category() {
         ? category?.[0]
         : "category";
   useEffect(() => {
-    console.log('all', type)
     if (category) {
       if (['all', 'sale', 'new-arrivals'].includes(category?.[0])) {
         fetchProducts(true);
@@ -119,8 +118,6 @@ export default function Category() {
       borderRadius: state.isFocused ? "3px 3px 0 0" : 3,
       boxShadow: state.isFocused ? null : null,
       maxWidth: "160px",
-      // marginTop: "20px",
-      // marginBottom: "20px",
       "&:hover": {
         borderColor: state.isFocused ? "black" : "transparent",
       },

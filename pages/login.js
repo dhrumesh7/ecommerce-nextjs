@@ -35,16 +35,13 @@ function Copyright(props) {
 }
 
 const loginWithGoogle = async () => {
-
   const data = await signIn("google");
-  console.log('data', data)
-
 };
 
 export async function getServerSideProps({ req }) {
   const parsedCookies = cookie.parse(req?.headers?.cookie || '');
   const token = parsedCookies?.token
-  console.log('token', token)
+
   if (token) {
     return {
       redirect: {
@@ -63,7 +60,7 @@ export default function SignInSide() {
 
   async function checkSession() {
     const response = await axios.get('/api/auth/jwt');
-    console.log(response.data)
+
     if (response.data) {
       push('/account/profile')
       if (typeof window !== "undefined") {

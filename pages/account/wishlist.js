@@ -38,7 +38,6 @@ export default function Address() {
       setApiCalled(true);
     } catch (error) {
       console.log(error)
-      // toast.error(error.message);
     }
   }
   useEffect(() => {

@@ -16,18 +16,17 @@ import { useRouter } from 'next/navigation';
 import { logOutService } from '../../services/auth.services';
 import { signOut } from 'next-auth/react'
 
+// Logout function
 export const logOut = async () => {
     const response = await logOutService()
     const res = await signOut({ callbackUrl: "/" })
     if(window && window.localStorage){
         window.localStorage.removeItem('token')
     }
-    console.log('signout ', res)
-    // push('/')
 }
 
+// Sidebar Component
 export default function SideBar({user}) {
-    console.log('user', user)
     const { push } = useRouter();
 
     const drawer = (<nav aria-label="main mailbox folders">
@@ -57,15 +56,6 @@ export default function SideBar({user}) {
                     <ListItemText primary="My Orders" />
                 </ListItemButton>
             </ListItem>
-            {/* <ListItem disablePadding>
-                <ListItemButton>
-                    <ListItemIcon>
-                        <EmojiEventsOutlinedIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Rewards" />
-                </ListItemButton>
-            </ListItem> */}
-            {/* <Divider /> */}
             <ListItem disablePadding>
                 <ListItemButton onClick={() => push('/account/wishlist')}>
                     <ListItemIcon>

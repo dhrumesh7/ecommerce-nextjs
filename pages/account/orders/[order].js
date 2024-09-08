@@ -14,7 +14,7 @@ import Link from "next/link";
 const Order = () => {
   const router = useRouter();
   const { order } = router.query;
-  console.log("order is", order);
+
   const [data, setData] = useState();
   const [shipment, setShipment] = useState();
 
@@ -23,7 +23,7 @@ const Order = () => {
       try {
         const response = await getOrderService(order);
         const shipmentResponse = await getShipmentService(order);
-        console.log('shipment ', shipmentResponse.data.data)
+
         setData(response?.data?.data);
         setShipment(shipmentResponse?.data?.data);
       } catch (error) {
@@ -35,13 +35,13 @@ const Order = () => {
   useEffect(() => {
     fetchData();
   }, [order]);
+  
   const Img = styled("img")({
     margin: "auto",
     display: "block",
     maxWidth: "100%",
     maxHeight: "100%",
   });
-  console.log("data ", data);
 
   const onCancelShipment = async () => {
     try {
@@ -52,7 +52,6 @@ const Order = () => {
       toast.error(error?.response?.data?.message || error?.message);
     }
   };
-  console.log('shopment', shipment)
 
   const downloadInvoice = async () => {
     try {

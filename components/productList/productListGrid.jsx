@@ -19,7 +19,7 @@ export default function ProductListGrid({ title, products }) {
       const response = await getUserProfileService();
       setUser(response?.data?.data);
     } catch (error) {
-      console.log('err', error)
+      console.log('error: ', error)
     }
   }
 

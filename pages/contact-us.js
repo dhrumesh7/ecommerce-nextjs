@@ -13,7 +13,6 @@ export default function ContactUs() {
 
 
   const sendQuery = async () => {
-    console.log('caled')
     toast.success('Your request submitted successfully');
     setName('')
     setEmail('')

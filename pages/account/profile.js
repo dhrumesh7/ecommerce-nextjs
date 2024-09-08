@@ -48,7 +48,6 @@ const Profile = () => {
     try {
       const response = await getUserProfileService();
       const userData = response?.data?.data
-      console.log('user data geneder', userData)
       setUser(userData)
       reset({
         firstName: userData.firstName,
@@ -57,25 +56,21 @@ const Profile = () => {
         contactNumber: userData.contactNumber,
         gender: userData.gender
       });
-      console.log(response.data)
     } catch (error) {
       console.log('err', error)
     }
   }
   useEffect(() => {
     fetchData()
-    console.log('user', user)
   }, [])
 
   const saveFormData = async (data) => {
-    console.log(data);
     try {
       const response = await updateUserProfileService(data);
       setUser(response?.data)
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message)
     }
-    // const updated = awa
   };
 
   const editClick = () => {

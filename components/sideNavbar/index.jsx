@@ -25,7 +25,7 @@ export const CloseIconStyled = styled(CloseIcon)({
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect } from "react";
 import { getAllCategoryService } from "../../services/category.services";
-// import { redirect, useRouter } from 'next/navigation';
+
 import { useRouter } from 'next/router'
 
 
@@ -65,7 +65,7 @@ export default function SideNavBar(props) {
   const [category, setCategory] = useState([])
   async function fetchData() {
     const categoryData = await getAllCategoryService()
-    // console.log(categoryData?.data?.data)
+
     const defaultData = [
       {
         name: "SALE",

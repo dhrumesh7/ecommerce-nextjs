@@ -53,10 +53,6 @@ export default function Checkout({ setCheckoutOpen }) {
   const [couponCode, setCouponCode] = useState('');
   const [couponVerifyRes, setCouponVerifyRes] = useState('');
 
-  // const [addNew, setAddNew] = useState(false);
-
-  //   const [default, setDeliveryAddress] = useState([])
-
   async function fetchData() {
     try {
       const response = await getUserProfileService();
@@ -68,7 +64,6 @@ export default function Checkout({ setCheckoutOpen }) {
       const cartrResponse = await getCartListService();
       const cartItems = cartrResponse?.data?.data?.cart;
 
-      console.log('cart items', cartItems)
       const stockChecked = cartItems.filter((item) => {
         const skuStock = item?.product?.stocks?.find(
           (stk) => stk.sku === item.sku
@@ -76,7 +71,6 @@ export default function Checkout({ setCheckoutOpen }) {
         return skuStock > item.quantity;
       });
 
-      console.log('stockChecked', stockChecked)
       const priceTotal = stockChecked.reduce(
         (prev, next) => prev + ((next?.product?.price || 0)  * next?.quantity),
         0
@@ -85,7 +79,7 @@ export default function Checkout({ setCheckoutOpen }) {
       setPriceTotal(priceTotal);
       setApiCall(true);
     } catch (error) {
-      console.log("er", error);
+      console.log("error: ", error);
     }
   }
 
@@ -94,15 +88,12 @@ export default function Checkout({ setCheckoutOpen }) {
   }, []);
 
   useEffect(() => {
-    console.log("delivry address", deliveryAddress);
   }, [deliveryAddress]);
 
   const handleAddressChange = (event) => {
-    console.log(event.target.value);
     setSelectedAddress(event.target.value);
   };
 
-  console.log("render");
   function loadScript(src) {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -153,7 +144,6 @@ export default function Checkout({ setCheckoutOpen }) {
         image: { logo },
         order_id: order_id,
         handler: async function (response) {
-          console.log(response);
           const data = {
             orderCreationId: order_id,
             razorpayPaymentId: response.razorpay_payment_id,
@@ -280,7 +270,6 @@ export default function Checkout({ setCheckoutOpen }) {
   };
 
   useEffect(() => {
-    console.log("selecte ", selectedAddress);
   }, [selectedAddress]);
 
   const onContinue = async () => {
@@ -529,7 +518,6 @@ export default function Checkout({ setCheckoutOpen }) {
         >
           <Grid container spacing={3}>
             {RenderComponent()}
-            {console.log("heeey", currentStep, cartItems, priceTotal)}
             {currentStep !== 0 && cartItems && priceTotal && (
               <Grid item xs={12} md={6}>
                 <Box

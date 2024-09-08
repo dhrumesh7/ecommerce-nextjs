@@ -29,7 +29,7 @@ export default function Address() {
       setDeliveryAddress(response?.data?.data?.deliveryAddress);
       setUser(response?.data?.data)
     } catch (error) {
-      console.log("er", error);
+      console.log("error: ", error);
     }
   }
 

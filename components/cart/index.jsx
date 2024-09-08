@@ -3,7 +3,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import {  useState } from "react";
+import { useState } from "react";
 import { styled } from "@mui/material";
 import { DrawerHeader, CloseIconStyled } from "../sideNavbar";
 import Grid from "@mui/material/Grid";
@@ -12,7 +12,7 @@ import styles from "../../styles/cart.module.scss";
 import productDetailsStyles from "../../styles/ProductDetails.module.scss";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import {  Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { useEffect } from "react";
 import {
   getCartListService,
@@ -38,13 +38,12 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
       const response = await getCartListService();
       const cartItems = response?.data?.data?.cart;
       const stockChecked = cartItems.map(item => {
-        const itemCopy = {...item};
+        const itemCopy = { ...item };
         const skuStock = item?.product?.stocks?.find(stk => stk.sku === item.sku)?.stock
         itemCopy.inStock = skuStock < item.quantity ? false : true;
         return itemCopy
       })
 
-      console.log('stock checked', stockChecked)
       setCartItems(stockChecked);
     } catch (error) {
       // toast.error(error.message)
@@ -58,14 +57,13 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
 
   useEffect(() => {
     const priceTotal = cartItems.reduce(
-      (prev, next) => next.inStock ?  prev + next.product.price * next.quantity : 0 ,
+      (prev, next) => next.inStock && next?.product ? prev + next.product.price * next.quantity : 0,
       0
     );
     setSubTotal(priceTotal);
   }, [cartItems]);
 
   async function handleUpdateQuantity(itemId, newQuantity, sku) {
-    console.log('sku', sku)
     if (!newQuantity) return;
     try {
       const response = await updateCartService({
@@ -88,7 +86,7 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
   async function handleRemoveItem(itemId, sku) {
     const response = await removeCartService(itemId, sku);
     setCartItems((prevCartItems) =>
-       prevCartItems.filter((item) =>  item.sku !== sku)
+      prevCartItems.filter((item) => item.sku !== sku)
     );
   }
 
@@ -140,136 +138,140 @@ export default function Cart({ cartShow, setCartStatus, setCheckoutOpen }) {
           <>
             {cartItems.map((pr, i) => {
               return (
-                <Box key={i} sx={{padding: "5px"}}>
-                  <Grid container spacing={1} p={1}>
-                    <Grid item xs={3}  sx={{opacity: pr.inStock ? "100%" :"50%"}}>
-                      <Box>
-                        <Img
-                          alt="complex"
-                          src={`${process.env.BASE_IMAGE}/product/${pr?.product?._id}/${pr?.product?.image?.[0]?.url}`}
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={7} container >
-                      <Grid
-                        item
-                        xs
-                        container
-                        direction="column"
-                        rowSpacing={1}
-                      >
-                        <Grid item xs sx={{opacity: pr.inStock ? "100%" :"50%"}}>
-                          <Typography
-                            sx={{
-                              color: "darkgoldenrod",
-                              textTransform: "capitalize",
-                            }}
-                            gutterBottom
-                            variant="subtitle1"
-                            component="div"
-                          >
-                            {pr?.product?.title}
-                          </Typography>
-                          <p
-                            className={productDetailsStyles.descriptionTitle}
-                            style={{
-                              marginBottom: 0,
-                              lineHeight: "inherit",
-                              fontSize: "0.8rem",
-                            }}
-                          >
-                           {pr?.product?.color && <>COLOR : <span> {pr?.product?.stocks.find(stk => stk.sku === pr.sku)?.color} </span></>}
-                          </p>
-                          <p
-                            className={productDetailsStyles.descriptionTitle}
-                            style={{
-                              marginBottom: 0,
-                              lineHeight: "inherit",
-                              fontSize: "0.8rem",
-                            }}
-                          >
-                          {pr?.product?.size &&  <>SIZE : <span> {pr?.product?.size} </span></>}
-                          </p>
-                        </Grid>
-                         {!pr.inStock &&<Typography sx={{color:"red", fontWeight: "500"}} >Out of stock</Typography>}
-                        <Grid item >
-                          <Box style={{justifyContent: 'flex-start', alignItem: 'center', display: 'flex'}}>
-                          <ToggleButtonGroup
-                            size={"small"}
-                            aria-label="text alignment"
-                            disabled={pr?.inStock ? false : true}
-                          >
-                            <ToggleButton
-                              size="small"
-                              value="add"
-                              aria-label="left aligned"
-                              sx={{ height: "35px", width: "35px" }}
-                              onClick={() =>
-                                handleUpdateQuantity(
-                                  pr.product._id,
-                                  pr.quantity - 1,
-                                  pr.sku
-                                )
-                              }
-                            >
-                              <RemoveIcon />
-                            </ToggleButton>
-                            <ToggleButton
-                              size="small"
-                              value=""
-                              aria-label="centered"
-                              disabled
-                              sx={{ height: "35px", width: "35px" }}
-                            >
-                              {pr.quantity}
-                            </ToggleButton>
-                            <ToggleButton
-                              size="small"
-                              value="remove"
-                              aria-label="right aligned"
-                              sx={{ height: "35px", width: "35px" }}
-                              onClick={() =>
-                                handleUpdateQuantity(
-                                  pr.product._id,
-                                  pr.quantity + 1,
-                                  pr.sku
-                                )
-                              }
-                            >
-                              <AddIcon />
-                            </ToggleButton>
-                          </ToggleButtonGroup>
-                          <Button
-                            variant="contained"
-                            sx={{
-                              backgroundColor: "#000000",
-                              color: "white",
-                              padding: "0px 15px",
-                              fontSize: '12px',
-                              ":hover": {
-                                color: "#000000",
-                                backgroundColor: "white",
-                                border: "1px solid #000000",
-                              },
-                              display: "inline",
-                              marginLeft: '15px',
-                            }}
-                            onClick={() => handleRemoveItem(pr?.product?._id, pr.sku)}
-                          >
-                            Remove
-                          </Button>
+                <>
+                  {pr.product &&
+                    <Box key={i} sx={{ padding: "5px" }}>
+                      <Grid container spacing={1} p={1}>
+                        <Grid item xs={3} sx={{ opacity: pr.inStock ? "100%" : "50%" }}>
+                          <Box>
+                            <Img
+                              alt="complex"
+                              src={`${process.env.BASE_IMAGE}/product/${pr?.product?._id}/${pr?.product?.image?.[0]?.url}`}
+                            />
                           </Box>
                         </Grid>
+                        <Grid item xs={7} container >
+                          <Grid
+                            item
+                            xs
+                            container
+                            direction="column"
+                            rowSpacing={1}
+                          >
+                            <Grid item xs sx={{ opacity: pr.inStock ? "100%" : "50%" }}>
+                              <Typography
+                                sx={{
+                                  color: "darkgoldenrod",
+                                  textTransform: "capitalize",
+                                }}
+                                gutterBottom
+                                variant="subtitle1"
+                                component="div"
+                              >
+                                {pr?.product?.title}
+                              </Typography>
+                              <p
+                                className={productDetailsStyles.descriptionTitle}
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                {pr?.product?.color && <>COLOR : <span> {pr?.product?.stocks.find(stk => stk.sku === pr.sku)?.color} </span></>}
+                              </p>
+                              <p
+                                className={productDetailsStyles.descriptionTitle}
+                                style={{
+                                  marginBottom: 0,
+                                  lineHeight: "inherit",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                {pr?.product?.size && <>SIZE : <span> {pr?.product?.size} </span></>}
+                              </p>
+                            </Grid>
+                            {!pr.inStock && <Typography sx={{ color: "red", fontWeight: "500" }} >Out of stock</Typography>}
+                            <Grid item >
+                              <Box style={{ justifyContent: 'flex-start', alignItem: 'center', display: 'flex' }}>
+                                <ToggleButtonGroup
+                                  size={"small"}
+                                  aria-label="text alignment"
+                                  disabled={pr?.inStock ? false : true}
+                                >
+                                  <ToggleButton
+                                    size="small"
+                                    value="add"
+                                    aria-label="left aligned"
+                                    sx={{ height: "35px", width: "35px" }}
+                                    onClick={() =>
+                                      handleUpdateQuantity(
+                                        pr.product._id,
+                                        pr.quantity - 1,
+                                        pr.sku
+                                      )
+                                    }
+                                  >
+                                    <RemoveIcon />
+                                  </ToggleButton>
+                                  <ToggleButton
+                                    size="small"
+                                    value=""
+                                    aria-label="centered"
+                                    disabled
+                                    sx={{ height: "35px", width: "35px" }}
+                                  >
+                                    {pr.quantity}
+                                  </ToggleButton>
+                                  <ToggleButton
+                                    size="small"
+                                    value="remove"
+                                    aria-label="right aligned"
+                                    sx={{ height: "35px", width: "35px" }}
+                                    onClick={() =>
+                                      handleUpdateQuantity(
+                                        pr.product._id,
+                                        pr.quantity + 1,
+                                        pr.sku
+                                      )
+                                    }
+                                  >
+                                    <AddIcon />
+                                  </ToggleButton>
+                                </ToggleButtonGroup>
+                                <Button
+                                  variant="contained"
+                                  sx={{
+                                    backgroundColor: "#000000",
+                                    color: "white",
+                                    padding: "0px 15px",
+                                    fontSize: '12px',
+                                    ":hover": {
+                                      color: "#000000",
+                                      backgroundColor: "white",
+                                      border: "1px solid #000000",
+                                    },
+                                    display: "inline",
+                                    marginLeft: '15px',
+                                  }}
+                                  onClick={() => handleRemoveItem(pr?.product?._id, pr.sku)}
+                                >
+                                  Remove
+                                </Button>
+                              </Box>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={2} sx={{ opacity: pr.inStock ? "100%" : "50%" }}>
+                          <p className={styles.productPrice}>
+                            ₹ {pr.product.price * pr.quantity}
+                          </p>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                    <Grid item xs={2}  sx={{opacity: pr.inStock ? "100%" :"50%"}}>
-                      <p className={styles.productPrice}>
-                        ₹ {pr.product.price * pr.quantity}
-                      </p>
-                    </Grid>
-                  </Grid>
-                  <Divider />
-                </Box>
+                      <Divider />
+                    </Box>
+                  }
+                </>
               );
             })}
             <div className={styles.subTotal}>

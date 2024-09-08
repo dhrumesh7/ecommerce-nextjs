@@ -62,7 +62,7 @@ export const ProductSeo = ({ title, summary, url, images = [], product }) => {
       alt: title,
     }
   })
-  console.log('featurd', featuredImages)
+
   return (
     <>
       <NextSeo

@@ -8,7 +8,6 @@ const withAuth = (WrappedComponent) => {
 
     useEffect(() => {
       const token = getCookie();
-      console.log('token', token)
       if (!token) {
         router.push('/login');
       }

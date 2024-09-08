@@ -8,6 +8,7 @@ const api = axios.create({
     baseURL: '/backend',
 });
 
+// API request interceptors
 api.interceptors.request.use(
     (config) => {
         const options = { ...config };
@@ -22,6 +23,7 @@ api.interceptors.request.use(
     }
 );
 
+// API response interceptors
 api.interceptors.response.use(
     (response) => {
         return response;
@@ -46,12 +48,16 @@ api.interceptors.response.use(
     }
 );
 
+// GET request function
 export const get = (url, param) => trackPromise(api.get(url, param));
 
+// POST request function
 export const post = (url, param) => trackPromise(api.post(url, param));
 
+// PATCH request function
 export const patch = (url, param) => trackPromise(api.patch(url, param));
 
+// DELETE request function
 export const deleteReq = (url, param) => trackPromise(api.delete(url, param));
 
 

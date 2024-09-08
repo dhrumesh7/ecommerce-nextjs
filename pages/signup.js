@@ -41,10 +41,7 @@ function Copyright(props) {
   );
 }
 const loginWithGoogle = async () => {
-
   const data = await signIn("google");
-  console.log('data', data)
-
 };
 const theme = createTheme();
 
@@ -67,7 +64,6 @@ export default function SignUp() {
 
   async function checkSession() {
     const response = await axios.get('/api/auth/jwt');
-    console.log(response.data)
     if (response.data) {
       push('/account/profile')
       if (typeof window !== "undefined") {
@@ -89,13 +85,6 @@ export default function SignUp() {
       if (res?.data?.flag) {
         push('/')
       }
-      console.log('res', res.data)
-      console.log({
-        email: data.get('email'),
-        password: data.get('password'),
-        lastName: data.get('lastName'),
-        firstName: data.get('firstName'),
-      });
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || error.message)

@@ -10,6 +10,7 @@ import { addAddressService } from "../../services/user.services";
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+// Address form component
 export default function AddressForm({
   setIsEdit,
   data,
@@ -17,6 +18,7 @@ export default function AddressForm({
   setDeliveryAddress,
 }) {
 
+  // Validation schema for address form
   const validationSchema = yup.object({
     firstName: yup.string().required('First Name is required'),
     lastName: yup.string().required('First Name is required'),
@@ -43,6 +45,7 @@ export default function AddressForm({
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
 
+  // On data change update country, state and city
   useEffect(() => {
     if (data) {
       const country = Country.getAllCountries()?.find(cn => cn.name === data.country)
@@ -57,20 +60,16 @@ export default function AddressForm({
   }, [data]);
 
   useEffect(() => {
-    console.log(selectedCountry);
-    console.log(selectedCountry?.isoCode);
     console.log(State?.getStatesOfCountry(selectedCountry?.isoCode));
   }, [selectedCountry]);
 
   const saveFormData = async (data) => {
-    console.log(data);
     if (deliveryAddress?.length < 1) data.isDefault = true;
     data.country = data?.country?.name || data?.country || "";
     data.state = data?.state?.name || data?.state || "";
     data.city = data?.city?.name || data?.city || "";
 
     const response = await addAddressService(data);
-    console.log(response);
     setIsEdit(false);
     setDeliveryAddress(response?.data?.data?.deliveryAddress);
   };
@@ -96,7 +95,7 @@ export default function AddressForm({
       padding: 0,
     }),
   };
-  console.log('setcted', selectedCountry)
+
   return (
     <>
       <form onSubmit={handleSubmit(saveFormData)} style={{ width: "100%" }}>
