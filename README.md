@@ -14,6 +14,7 @@ This repository contains the frontend application for an e-commerce platform, bu
 - **Authentication**: User sign-up, login, and logout functionalities.
 - **Responsive Design**: Optimized for both desktop and mobile devices.
 - **Animation**: Smooth scroll animations using AOS.
+- **SEO Optimization**: Proper meta tags, Open Graph, and Twitter cards for enhanced search engine visibility and social sharing.
 
 ## Tech Stack
 
